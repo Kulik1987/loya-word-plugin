@@ -1,0 +1,4 @@
+{
+  "eslint.validate": ["javascript", "javascriptreact", "typescript"],
+  "cSpell.words": ["fluentui", "Griffel"]
+}
