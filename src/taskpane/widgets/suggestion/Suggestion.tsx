@@ -1,5 +1,5 @@
 /* global Word console */
-
+/// <reference types="office-js" />
 import * as React from "react";
 // import { useState } from "react";
 import { Button, Text, makeStyles } from "@fluentui/react-components";
@@ -18,32 +18,46 @@ const useStyles = makeStyles({
   // },
 });
 
+export enum LevelOfCriticalEnum {
+  "CRITICAL" = "CRITICAL",
+  "HIGH" = "HIGH",
+  "LOW" = "LOW",
+}
+
+export enum InsertPlaceEnum {
+  "AFTER" = "After",
+  "BEFORE" = "Before",
+  "REPLACE" = "Replace",
+}
+
 type SuggestionPropT = {
   data: {
+    levelOfCriticality: LevelOfCriticalEnum;
     targetText: string;
-    suggestionText: string;
+    change?: {
+      text: string;
+      place?: InsertPlaceEnum;
+    };
+    note?: {
+      text: string;
+    };
   };
 };
 
 const Suggestion = (props: SuggestionPropT) => {
   // const [text, setText] = useState<string>("Some text.");
-  const { targetText, suggestionText } = props.data;
+  const { targetText, note, change } = props.data;
+  const { data } = props;
+
+  const changeText = change?.text;
+  const noteText = note?.text;
+
+  const isChangeExist = !!changeText;
+  const isNoteExist = !!noteText;
+
   const styles = useStyles();
-  console.log({ targetText, suggestionText });
 
-  // const getSelection = () => {
-  //   return Word.run(function (context) {
-  //     var range = context.document.getSelection();
-  //     range.font.color = "red";
-  //     range.load("text");
-
-  //     return context.sync().then(function () {
-  //       console.log('The selected text was "' + range.text + '".');
-  //     });
-  //   });
-  // };
-
-  const handleSearch = async (targetText: string) => {
+  const handleShowInDocument = async (targetText: string) => {
     // Does a basic text search and highlights matches in the document.
     await Word.run(async (context) => {
       const body = context.document.body;
@@ -60,60 +74,50 @@ const Suggestion = (props: SuggestionPropT) => {
       }
     });
   };
-  // const handleAddNote = async () => {
-  //   // Создаем "примечание" в документе.
-  //   await Word.run(async (context) => {
-  //     const range = context.document.getSelection();
-  //     const contentControl = range.insertContentControl();
-  //     contentControl.tag = "note";
-  //     contentControl.title = "Note Title";
-  //     contentControl.insertText("Your note text goes here.", "End");
-  //     contentControl.cannotEdit = true;
-  //     contentControl.color = "green"; // Например, зеленый цвет для примечания
-  //     await context.sync();
-  //   });
-  // };
-  const handleAddNotes = async () => {
-    // Sets a comment on the selected content.
-    Word.run(async (context) => {
-      // Получаем активный документ
-      // var body = context.document.body;
-      const range = context.document.getSelection();
-      // Выбираем текст, куда вы хотите вставить комментарий
-      // var range = body.getRange("End");
 
-      // Вставляем комментарий
-      var comment = range.insertComment("Ваш пользовательский комментарий здесь.");
-      console.log("comment", comment);
+  const handleAddNote = async (targetText: string, noteText: string) => {
+    await Word.run(async (context) => {
+      const body = context.document.body;
+      const searchResults = body.search(targetText, { matchCase: false, matchWholeWord: true });
 
-      // Сохраняем изменения
-      return context.sync().then(function () {
-        console.log("Комментарий успешно добавлен.");
-      });
+      context.load(searchResults, "text, font");
+
+      await context.sync();
+
+      if (searchResults.items.length > 0) {
+        const foundItem = searchResults.items[0];
+        foundItem.insertComment(noteText ?? "");
+      } else {
+        console.log("Фрагмент текста не найден.");
+      }
     }).catch((error) => {
       console.log("Error: " + error);
     });
   };
-  const handleAddComment = async () => {
-    // Sets a comment on the selected content.
-    await Word.run(async (context) => {
-      const range = context.document.getSelection();
-      const contentControl = range.insertContentControl();
-      contentControl.tag = "note";
-      contentControl.title = "Comment Title";
-      // contentControl.appearance = "comment";
-      contentControl.insertText("Your comment text goes here.", "End");
-      contentControl.cannotEdit = true;
-      // contentControl.color = "green";
-      contentControl.insertHtml(
-        '<div style="border-top: 1px solid red; background-color: yellow;">Your comment text goes here.</div>',
-        "End"
-      );
-      await context.sync();
-    });
-  };
 
-  const handleEdit = async (targetText: string, suggestionText: string) => {
+  // const handleAddComment = async () => {
+  //   // Sets a comment on the selected content.
+  //   await Word.run(async (context) => {
+  //     const range = context.document.getSelection();
+  //     const contentControl = range.insertContentControl();
+  //     contentControl.tag = "note";
+  //     contentControl.title = "Comment Title";
+  //     // contentControl.appearance = "comment";
+  //     contentControl.insertText("Your comment text goes here.", "End");
+  //     contentControl.cannotEdit = true;
+  //     // contentControl.color = "green";
+  //     contentControl.insertHtml(
+  //       '<div style="border-top: 1px solid red; background-color: yellow;">Your comment text goes here.</div>',
+  //       "End"
+  //     );
+  //     await context.sync();
+  //   });
+  // };
+
+  const handleApplyChange = async () => {
+    const { targetText, change } = data;
+    const { text: changeText, place } = change;
+    // const
     await Word.run(async (context) => {
       const body = context.document.body;
       const searchResults = body.search(targetText, { matchWholeWord: true });
@@ -123,21 +127,30 @@ const Suggestion = (props: SuggestionPropT) => {
       await context.sync();
 
       if (searchResults.items.length > 0) {
-        searchResults.items[0].insertText(suggestionText, "Replace");
+        searchResults.items[0].insertText(changeText, place);
       }
     });
+  };
+
+  const handleDismiss = () => {
+    console.log("dismiss");
   };
 
   return (
     <div className={styles.wrapper}>
       <hr />
+      <div>High</div>
       <div>
         <Text weight="bold">Target: </Text>
         <Text>{targetText}</Text>
       </div>
       <div>
-        <Text weight="bold">Suggestion: </Text>
-        <Text>{suggestionText}</Text>
+        <Text weight="bold">ChangeText: </Text>
+        <Text>{changeText}</Text>
+      </div>
+      <div>
+        <Text weight="bold">NoteText: </Text>
+        <Text>{noteText}</Text>
       </div>
       <div
         // className={styles.buttons}
@@ -146,30 +159,28 @@ const Suggestion = (props: SuggestionPropT) => {
           gap: "16px",
         }}
       >
-        <Button
-          appearance="primary"
-          disabled={false}
-          size="large"
-          onClick={() => handleEdit(targetText, suggestionText)}
-        >
-          Edit
+        <Button appearance="outline" disabled={false} size="small" onClick={() => handleShowInDocument(targetText)}>
+          Show
         </Button>
-        <Button appearance="primary" disabled={false} size="large" onClick={handleAddComment}>
-          Add Comment
+        {isChangeExist && (
+          <Button appearance="primary" disabled={false} size="large" onClick={handleApplyChange}>
+            Apply Change
+          </Button>
+        )}
+        {isNoteExist && (
+          <Button
+            appearance="primary"
+            disabled={false}
+            size="large"
+            onClick={() => handleAddNote(targetText, noteText)}
+          >
+            Add Note
+          </Button>
+        )}
+        <Button appearance="primary" disabled={false} size="large" onClick={handleDismiss}>
+          Dismiss
         </Button>
-        <Button appearance="primary" disabled={false} size="large" onClick={handleAddNotes}>
-          Add Notes
-        </Button>
-        <Button appearance="primary" disabled={false} size="large" onClick={() => handleSearch(targetText)}>
-          Search text
-        </Button>
-        {/* <Button appearance="primary" disabled={false} size="large" onClick={handleAddNote}>
-          handleAddNote
-        </Button> */}
       </div>
-      {/* <Button appearance="primary" disabled={false} size="large" onClick={getSelection}>
-        Apply
-      </Button> */}
     </div>
   );
 };

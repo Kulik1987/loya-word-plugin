@@ -1,10 +1,11 @@
 import * as React from "react";
 // import Header from "./components/Header";
 // import HeroList, { HeroListItem } from "./HeroList";
-import TextInsertion from "./components/TextInsertion";
+// import TextInsertion from "./components/TextInsertion";
 import { Suggestion } from "./widgets";
 import { Button, makeStyles } from "@fluentui/react-components";
 // import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
+import { LevelOfCriticalEnum, InsertPlaceEnum } from "./widgets/suggestion/Suggestion";
 
 interface AppProps {
   title?: string;
@@ -18,6 +19,8 @@ const useStyles = makeStyles({
 
 const App = (props: AppProps) => {
   const { title } = props;
+  console.log(title);
+
   const styles = useStyles();
   // The list items are static and won't change at runtime,
   // so this should be an ordinary const, not a part of state.
@@ -37,14 +40,34 @@ const App = (props: AppProps) => {
   // ];
   const fakeResponseAPI = [
     {
-      targetText: "Prices are set in the invoices in Euro",
-      suggestionText: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, laboriosam dignissimos. ",
+      levelOfCriticality: LevelOfCriticalEnum.HIGH,
+      targetText: "настоящий Договор утрачивает свою силу и считается недействительным",
+      change: {
+        text: ", за исключением случаев, когда Арендатор выполняет обязательства в течение 30 дней после указанного срока",
+        place: InsertPlaceEnum.AFTER,
+      },
+      note: {
+        text: "В договоре должен быть предусмотрен определенный льготный период для выполнения арендатором своих обязательств",
+      },
     },
     {
-      targetText: "VALUE OF",
-      suggestionText:
-        "Reprehenderit mollitia cupiditate cumque, alias maxime doloremque unde minima est, tempora, voluptatum tenetur suscipit aliquam? Repellendus illo earum molestiae.",
+      levelOfCriticality: LevelOfCriticalEnum.HIGH,
+      targetText:
+        "Арендодатель вправе в любое время отказаться от настоящего Договора, предупредив об этом Арендатора за две недели",
+      change: {
+        text: "Арендодатель вправе в любое время отказаться от настоящего Договора, предупредив об этом Арендатора за один месяц",
+        place: InsertPlaceEnum.REPLACE,
+      },
+      note: {
+        text: "Срок уведомления о расторжении договора должен быть увеличен, чтобы защитить интересы арендатора.",
+      },
     },
+    // {
+    //   levelOfCriticality: "low",
+    //   targetText: "VALUE OF",
+    //   suggestionText:
+    //     "Reprehenderit mollitia cupiditate cumque, alias maxime doloremque unde minima est, tempora, voluptatum tenetur suscipit aliquam? Repellendus illo earum molestiae.",
+    // },
   ];
 
   const handleStartReview = () => {};
