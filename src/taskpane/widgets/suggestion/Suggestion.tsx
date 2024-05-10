@@ -75,7 +75,7 @@ const Suggestion = (props: SuggestionPropT) => {
     });
   };
 
-  const handleAddNote = async (targetText: string, commentText: string) => {
+  const handleAddComment = async (targetText: string, commentText: string) => {
     await Word.run(async (context) => {
       const body = context.document.body;
       const searchResults = body.search(targetText, { matchCase: false, matchWholeWord: true });
@@ -172,7 +172,7 @@ const Suggestion = (props: SuggestionPropT) => {
             appearance="primary"
             disabled={false}
             size="large"
-            onClick={() => handleAddNote(targetText, commentText)}
+            onClick={() => handleAddComment(targetText, commentText)}
           >
             Add comment
           </Button>
