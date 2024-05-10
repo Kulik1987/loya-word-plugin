@@ -50,10 +50,10 @@ const Suggestion = (props: SuggestionPropT) => {
   const { data } = props;
 
   const changeText = change?.text;
-  const noteText = note?.text;
+  const commentText = note?.text;
 
   const isChangeExist = !!changeText;
-  const isNoteExist = !!noteText;
+  const isNoteExist = !!commentText;
 
   const styles = useStyles();
 
@@ -75,7 +75,7 @@ const Suggestion = (props: SuggestionPropT) => {
     });
   };
 
-  const handleAddNote = async (targetText: string, noteText: string) => {
+  const handleAddNote = async (targetText: string, commentText: string) => {
     await Word.run(async (context) => {
       const body = context.document.body;
       const searchResults = body.search(targetText, { matchCase: false, matchWholeWord: true });
@@ -86,7 +86,7 @@ const Suggestion = (props: SuggestionPropT) => {
 
       if (searchResults.items.length > 0) {
         const foundItem = searchResults.items[0];
-        foundItem.insertComment(noteText ?? "");
+        foundItem.insertComment(commentText ?? "");
       } else {
         console.log("Фрагмент текста не найден.");
       }
@@ -150,7 +150,7 @@ const Suggestion = (props: SuggestionPropT) => {
       </div>
       <div>
         <Text weight="bold">NoteText: </Text>
-        <Text>{noteText}</Text>
+        <Text>{commentText}</Text>
       </div>
       <div
         // className={styles.buttons}
@@ -164,7 +164,7 @@ const Suggestion = (props: SuggestionPropT) => {
         </Button>
         {isChangeExist && (
           <Button appearance="primary" disabled={false} size="large" onClick={handleApplyChange}>
-            Apply Change
+            Apply change
           </Button>
         )}
         {isNoteExist && (
@@ -172,9 +172,9 @@ const Suggestion = (props: SuggestionPropT) => {
             appearance="primary"
             disabled={false}
             size="large"
-            onClick={() => handleAddNote(targetText, noteText)}
+            onClick={() => handleAddNote(targetText, commentText)}
           >
-            Add Note
+            Add comment
           </Button>
         )}
         <Button appearance="primary" disabled={false} size="large" onClick={handleDismiss}>

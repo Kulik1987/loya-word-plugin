@@ -74,9 +74,9 @@ const App = (props: AppProps) => {
 
   return (
     <div className={styles.root}>
-      <Button appearance="primary" disabled={false} size="large" onClick={handleStartReview}>
+      {/* <Button appearance="primary" disabled={false} size="large" onClick={handleStartReview}>
         Start Review
-      </Button>
+      </Button> */}
       {/* <Header logo="assets/logo-filled.png" title={title} message="Welcome" /> */}
       {/* <HeroList message="Discover what this add-in can do for you today!" items={listItems} /> */}
       {fakeResponseAPI.map((data, key) => {
