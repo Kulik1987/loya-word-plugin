@@ -3,15 +3,16 @@
 import * as React from "react";
 // import { useState } from "react";
 import { Button, Text, makeStyles } from "@fluentui/react-components";
+import { LocationArrowRegular, LocationRippleRegular } from "@fluentui/react-icons";
 // import css from "./styles";
 
 const useStyles = makeStyles({
-  wrapper: {
-    paddingTop: "25px",
-    paddingBottom: "25px",
-    paddingLeft: "25px",
-    paddingRight: "25px",
-  },
+  // wrapper: {
+  //   paddingTop: "25px",
+  //   paddingBottom: "25px",
+  //   paddingLeft: "25px",
+  //   paddingRight: "25px",
+  // },
   // buttons: {
   //   display: "flex",
   //   gap: "16px",
@@ -137,7 +138,7 @@ const Suggestion = (props: SuggestionPropT) => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div>
       <hr />
       <div>High</div>
       <div>
@@ -159,9 +160,16 @@ const Suggestion = (props: SuggestionPropT) => {
           gap: "16px",
         }}
       >
-        <Button appearance="outline" disabled={false} size="small" onClick={() => handleShowInDocument(targetText)}>
+        {/* <Button appearance="outline" disabled={false} size="small" onClick={() => handleShowInDocument(targetText)}>
           Show
-        </Button>
+        </Button> */}
+        <Button
+          appearance="outline"
+          size="large"
+          onClick={() => handleShowInDocument(targetText)}
+          icon={<LocationRippleRegular color="#0f6cbd" />}
+          style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
+        />
         {isChangeExist && (
           <Button appearance="primary" disabled={false} size="large" onClick={handleApplyChange}>
             Apply change

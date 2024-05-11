@@ -1,9 +1,12 @@
 import React from "react";
 import { Main } from "../../pages/main";
+import { TemplateMain } from "../../shared/templates";
 
 const Navigation: React.FC = () => {
   return (
-    <Main />
+    <TemplateMain>
+      <Main />
+    </TemplateMain>
     // <ThemeProvider theme={theme}>
     //   <HashRouter>
     //     <Routes>
