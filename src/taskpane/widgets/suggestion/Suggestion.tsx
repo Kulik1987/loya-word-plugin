@@ -143,7 +143,17 @@ const Suggestion = (props: SuggestionPropT) => {
   };
 
   return (
-    <div style={{ border: "1px solid grey", borderRadius: "8px", padding: "8px 16px" }}>
+    <div
+      style={{
+        border: "1px solid rgba(0, 0, 0, 0.1)",
+        borderRadius: "8px",
+        padding: "16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+        boxShadow: "0 3px 5px rgba(0, 0, 0, 0.25)",
+      }}
+    >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <PriorityFlag flag={data.levelOfCriticality} />
         <Button
@@ -157,23 +167,23 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      <div>
+      {/* <div>
         <Text weight="bold">Target: </Text>
         <Text>{targetText}</Text>
-      </div>
+      </div> */}
       <div>
-        <Text weight="bold">ChangeText: </Text>
+        <Text weight="bold">Change: </Text>
         <Text>{changeText}</Text>
       </div>
       <div>
-        <Text weight="bold">NoteText: </Text>
+        <Text weight="bold">Comment: </Text>
         <Text>{commentText}</Text>
       </div>
       <div
         style={{
           display: "flex",
           flex: 1,
-          gap: "16px",
+          gap: "12px",
           alignItems: "flex-start",
           justifyContent: "space-between",
         }}
@@ -181,7 +191,6 @@ const Suggestion = (props: SuggestionPropT) => {
         <div
           style={{
             display: "flex",
-            gap: "16px",
             alignItems: "flex-start",
             flexWrap: "wrap",
           }}
@@ -197,7 +206,7 @@ const Suggestion = (props: SuggestionPropT) => {
         <div
           style={{
             display: "flex",
-            gap: "16px",
+            gap: "12px",
             alignItems: "flex-start",
             flexWrap: "wrap",
             flex: 1,
@@ -226,18 +235,6 @@ const Suggestion = (props: SuggestionPropT) => {
             </Button>
           )}
         </div>
-        {/* <div>
-          <Button
-            appearance="subtle"
-            size="small"
-            iconPosition="after"
-            onClick={handleDismiss}
-            icon={<DismissFilled fontSize={"1em"} color="grey" />}
-            // style={{ borderColor: "grey", borderWidth: "2px" }}
-          >
-            Dismiss
-          </Button>
-        </div> */}
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ const TabReview = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <div style={{ display: "flex", gap: "8px", flexDirection: "column" }}>
+      <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
         {fakeResponseAPI.map((data, key) => {
           return <Suggestion data={data} key={key} />;
         })}
