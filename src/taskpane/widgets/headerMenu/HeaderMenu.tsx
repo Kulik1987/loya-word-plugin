@@ -3,7 +3,7 @@ import { Button, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { useStores } from "../../shared/store";
 import { MenuItemsEnums } from "../../shared/store/menu";
-import { ArrowExitFilled } from "@fluentui/react-icons";
+import { ArrowExitFilled, DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 
 const HeaderMenu = () => {
   const { menuStore } = useStores();
@@ -21,19 +21,31 @@ const HeaderMenu = () => {
     <div style={{ display: "flex", gap: "8px" }}>
       {isButtonBackDisplay && (
         <Button
-          appearance="outline"
+          appearance="transparent"
           size="large"
           onClick={() => handleClick(null)}
-          style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
-          icon={<ArrowExitFilled color="#0f6cbd" style={{ transform: "rotate(180deg)" }} />}
+          // style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
+          icon={<ArrowExitFilled style={{ transform: "rotate(180deg)" }} />}
         />
       )}
       {isButtonsTabDisplay && (
         <>
-          <Button appearance="primary" disabled={false} size="large" onClick={() => handleClick(MenuItemsEnums.DRAFT)}>
+          <Button
+            appearance="primary"
+            disabled={false}
+            size="large"
+            onClick={() => handleClick(MenuItemsEnums.DRAFT)}
+            icon={<DraftsRegular color="#fff" />}
+          >
             Draft
           </Button>
-          <Button appearance="primary" disabled={false} size="large" onClick={() => handleClick(MenuItemsEnums.REVIEW)}>
+          <Button
+            appearance="primary"
+            disabled={false}
+            size="large"
+            onClick={() => handleClick(MenuItemsEnums.REVIEW)}
+            icon={<TextBulletListSquareSearchRegular color="#fff" />}
+          >
             Review
           </Button>
         </>

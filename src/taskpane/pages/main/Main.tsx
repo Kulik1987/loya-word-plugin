@@ -45,8 +45,10 @@ const Main = () => {
     <div className={styles.root}>
       <HeaderMenu />
 
-      {isTabReview && <TabReview />}
-      {isTabDraft && <TabDraft />}
+      <div style={{ padding: "24px 0" }}>
+        {isTabReview && <TabReview />}
+        {isTabDraft && <TabDraft />}
+      </div>
 
       {/* <Header logo="assets/logo-filled.png" title={title} message="Welcome" /> */}
       {/* <HeroList message="Discover what this add-in can do for you today!" items={listItems} /> */}

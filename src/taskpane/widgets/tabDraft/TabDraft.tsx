@@ -11,7 +11,7 @@ const TabDraft = () => {
   //   menuStore.setMenuItem(name);
   // };
 
-  return <div style={{ border: "1px solid red", display: "flex", gap: "8px" }}>Draft</div>;
+  return <div style={{ display: "flex", gap: "8px" }}></div>;
 };
 
 export default observer(TabDraft);
