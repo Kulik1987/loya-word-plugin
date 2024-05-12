@@ -2,13 +2,13 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Suggestion } from "../../suggestion";
 import { Button } from "@fluentui/react-components";
-// import fakeResponseAPI from "./mockResponseAPI";
 import { useStores } from "../../../shared/store";
 
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
   const { suggestions } = suggestionsStore;
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>

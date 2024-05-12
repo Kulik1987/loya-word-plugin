@@ -37,12 +37,14 @@ class SuggestionsStore {
   }
 
   startReviewGeneral = async () => {
+    this.clearSuggestions();
     this.reviewTypeActive = ReviewTypesEnums.GENERAL;
     this.reviewGeneralProcessing = true;
     this.getSuggestions();
   };
 
   startReviewCustom = async () => {
+    this.clearSuggestions();
     this.reviewCustomProcessing = true;
     this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
     this.getSuggestions();
@@ -65,6 +67,10 @@ class SuggestionsStore {
     if (Array.isArray(this.suggestions)) {
       this.suggestions = this.suggestions.filter((_element, indexElement) => index !== indexElement);
     }
+  };
+
+  clearSuggestions = () => {
+    this.suggestions = null;
   };
 
   get isSuggestionExist() {

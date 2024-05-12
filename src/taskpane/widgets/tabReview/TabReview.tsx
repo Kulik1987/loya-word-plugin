@@ -16,9 +16,9 @@ const TabReview = () => {
   // };
   const { reviewTypeActive, reviewCustomProcessing, reviewGeneralProcessing } = suggestionsStore;
 
-  const isDisplaySummary = reviewTypeActive !== null;
-
   const isProcessing = reviewCustomProcessing || reviewGeneralProcessing;
+
+  const isDisplaySummary = reviewTypeActive !== null && !isProcessing;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
