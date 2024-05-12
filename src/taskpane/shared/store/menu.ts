@@ -9,7 +9,7 @@ export enum MenuItemsEnums {
 class MenuStore {
   rootStore: RootStore;
 
-  currentMenuItem: MenuItemsEnums | null = null;
+  currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
