@@ -7,7 +7,7 @@ import { useStores } from "../../../shared/store";
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
-  const { suggestions } = suggestionsStore;
+  const { suggestions, isSuggestionExist } = suggestionsStore;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -16,17 +16,19 @@ const Summary = () => {
           return <Suggestion data={data} key={key} index={key} />;
         })}
       </div>
-      <div>
-        <Button
-          appearance="primary"
-          disabled={false}
-          size="medium"
-          // onClick={() => handleAddComment(targetText, commentText)}
-          style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-        >
-          Apply all
-        </Button>
-      </div>
+      {isSuggestionExist && (
+        <div>
+          <Button
+            appearance="primary"
+            disabled={false}
+            size="medium"
+            // onClick={() => handleAddComment(targetText, commentText)}
+            style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+          >
+            Apply all
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
