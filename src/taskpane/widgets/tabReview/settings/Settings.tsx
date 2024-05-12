@@ -4,22 +4,26 @@ import { AddCircleRegular, Fire24Regular, Settings24Regular } from "@fluentui/re
 import { ReviewVariantItem } from "../../../entities";
 import { Text, Button, Field, Select, Textarea } from "@fluentui/react-components";
 import { useStores } from "../../../shared/store";
-import { ReviewVariantsEnums } from "../../../shared/enums/suggestion";
+import { ReviewTypesEnums } from "../../../shared/enums/suggestion";
 
 const Settings = () => {
   const { suggestionsStore } = useStores();
 
-  const handleStartReview = (name: ReviewVariantsEnums) => {
-    suggestionsStore.setReviewStarted(name);
+  const handleStartReviewGeneral = () => {
+    suggestionsStore.startReviewGeneral();
   };
 
-  const { reviewStarted } = suggestionsStore;
+  const handleStartReviewCustom = () => {
+    suggestionsStore.startReviewCustom();
+  };
 
-  const isGeneralStarted = reviewStarted === ReviewVariantsEnums.GENERAL;
-  const isCustomStarted = reviewStarted === ReviewVariantsEnums.CUSTOM;
+  const { reviewTypeActive } = suggestionsStore;
 
-  const isDisplayGeneral = isGeneralStarted || reviewStarted === null;
-  const isDisplayCustom = isCustomStarted || reviewStarted === null;
+  const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
+  const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
+
+  const isDisplayGeneral = isGeneralStarted || reviewTypeActive === null;
+  const isDisplayCustom = isCustomStarted || reviewTypeActive === null;
 
   const isDisplayCommonInfo = isDisplayGeneral && isDisplayCustom;
   return (
@@ -49,7 +53,7 @@ const Settings = () => {
           <Button
             appearance="primary"
             size="medium"
-            onClick={() => handleStartReview(ReviewVariantsEnums.GENERAL)}
+            onClick={handleStartReviewGeneral}
             style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
           >
             Start review
@@ -63,13 +67,28 @@ const Settings = () => {
           icon={<Settings24Regular color="grey" />}
           subtitle="Focus the review on any topic"
         >
+          <div>
+            <label htmlFor="selectVerification">Select the type verification</label>
+            <Select id="selectVerification">
+              <option>Comments and Readlines</option>
+              <option>Comments Only</option>
+              <option>Redlines Only</option>
+            </Select>
+          </div>
+          <div>
+            <label htmlFor="selectParty">Select a party</label>
+            <Select id="selectParty">
+              <option>Арендодатель</option>
+              <option>Арендатор</option>
+            </Select>
+          </div>
           <Field label="Custom instructions">
             <Textarea placeholder="Enter a description of the condition..." rows={5} />
           </Field>
           <Button
             appearance="primary"
             size="medium"
-            onClick={() => handleStartReview(ReviewVariantsEnums.CUSTOM)}
+            onClick={handleStartReviewCustom}
             style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
           >
             Start review
@@ -86,7 +105,6 @@ const Settings = () => {
             <Button
               appearance="primary"
               size="medium"
-              // onClick={handleStartReview}
               style={{ whiteSpace: "nowrap" }}
               icon={<AddCircleRegular />}
               disabled

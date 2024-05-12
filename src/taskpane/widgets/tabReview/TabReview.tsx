@@ -5,7 +5,8 @@ import { Summary } from "./summary";
 import { Settings } from "./settings";
 // import { Button } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
-// import { ReviewVariantsEnums } from "../../shared/store/menu";
+import { Skeleton, SkeletonItem } from "@fluentui/react-components";
+// import { ReviewTypesEnums } from "../../shared/store/menu";
 
 const TabReview = () => {
   const { suggestionsStore } = useStores();
@@ -13,12 +14,23 @@ const TabReview = () => {
   // const handleClick = (name: MenuItemsEnums) => {
   //   menuStore.setMenuItem(name);
   // };
-  const { reviewStarted } = suggestionsStore;
+  const { reviewTypeActive, reviewCustomProcessing, reviewGeneralProcessing } = suggestionsStore;
 
-  const isDisplaySummary = reviewStarted !== null;
+  const isDisplaySummary = reviewTypeActive !== null;
+
+  const isProcessing = reviewCustomProcessing || reviewGeneralProcessing;
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <Settings />
+      {isProcessing && (
+        <Skeleton style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <SkeletonItem />
+          <SkeletonItem />
+          <SkeletonItem />
+          <SkeletonItem />
+        </Skeleton>
+      )}
       {isDisplaySummary && <Summary />}
     </div>
   );

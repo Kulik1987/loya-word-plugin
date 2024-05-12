@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
 import fakeResponseAPI from "./mockResponseAPI";
-import { InsertPlaceEnum, LevelOfCriticalEnum, ReviewVariantsEnums } from "../../shared/enums/suggestion";
+import { InsertPlaceEnum, LevelOfCriticalEnum, ReviewTypesEnums } from "../../shared/enums/suggestion";
 
 type SuggestionT = {
   levelOfCriticality: LevelOfCriticalEnum;
@@ -20,9 +20,11 @@ class SuggestionsStore {
 
   suggestions: SuggestionT[] | null = null;
 
-  reviewStarted: ReviewVariantsEnums | null = null;
+  reviewTypeActive: ReviewTypesEnums | null = null;
 
-  reviewProcessing: ReviewVariantsEnums | null = null;
+  reviewGeneralProcessing: boolean = false;
+
+  reviewCustomProcessing: boolean = false;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -34,17 +36,29 @@ class SuggestionsStore {
     // });
   }
 
-  setReviewStarted = (name: ReviewVariantsEnums | null) => {
-    this.reviewStarted = name;
-    this.rootStore.suggestionsStore.getSuggestions();
+  startReviewGeneral = async () => {
+    this.reviewTypeActive = ReviewTypesEnums.GENERAL;
+    this.reviewGeneralProcessing = true;
+    this.getSuggestions();
   };
 
-  setIsReviewProcessing = (name: ReviewVariantsEnums | null) => {
-    this.reviewProcessing = name;
+  startReviewCustom = async () => {
+    this.reviewCustomProcessing = true;
+    this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
+    this.getSuggestions();
   };
+
+  // setIsReviewProcessing = (name: ReviewTypesEnums | null) => {
+  //   this.reviewProcessing = name;
+  // };
 
   getSuggestions = () => {
-    this.suggestions = fakeResponseAPI;
+    // eslint-disable-next-line no-undef
+    setTimeout(() => {
+      this.suggestions = fakeResponseAPI;
+      this.reviewGeneralProcessing = false;
+      this.reviewCustomProcessing = false;
+    }, 3000);
   };
 
   dismissSuggestion = (index: number) => {
@@ -52,6 +66,11 @@ class SuggestionsStore {
       this.suggestions = this.suggestions.filter((_element, indexElement) => index !== indexElement);
     }
   };
+
+  get isSuggestionExist() {
+    const suggestions = this.suggestions;
+    return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
+  }
 }
 
 export default SuggestionsStore;

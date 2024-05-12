@@ -11,7 +11,7 @@ export enum InsertPlaceEnum {
   "REPLACE" = "Replace",
 }
 
-export enum ReviewVariantsEnums {
+export enum ReviewTypesEnums {
   "GENERAL" = "GENERAL",
   "CUSTOM" = "CUSTOM",
 }
