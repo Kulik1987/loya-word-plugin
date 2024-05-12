@@ -10,3 +10,8 @@ export enum InsertPlaceEnum {
   "BEFORE" = "Before",
   "REPLACE" = "Replace",
 }
+
+export enum ReviewVariantsEnums {
+  "GENERAL" = "GENERAL",
+  "CUSTOM" = "CUSTOM",
+}

@@ -2,7 +2,6 @@ import React from "react";
 // import { Button } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 // import { useStores } from "../../shared/store";
-// import { MenuItemsEnums } from "../../shared/store/menu";
 
 const TabDraft = () => {
   // const { menuStore } = useStores();

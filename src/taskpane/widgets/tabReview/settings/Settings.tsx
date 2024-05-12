@@ -4,16 +4,16 @@ import { AddCircleRegular, Fire24Regular, Settings24Regular } from "@fluentui/re
 import { ReviewVariantItem } from "../../../entities";
 import { Text, Button, Field, Select, Textarea } from "@fluentui/react-components";
 import { useStores } from "../../../shared/store";
-import { ReviewVariantsEnums } from "../../../shared/store/menu";
+import { ReviewVariantsEnums } from "../../../shared/enums/suggestion";
 
 const Settings = () => {
-  const { menuStore } = useStores();
+  const { suggestionsStore } = useStores();
 
   const handleStartReview = (name: ReviewVariantsEnums) => {
-    menuStore.setReviewStarted(name);
+    suggestionsStore.setReviewStarted(name);
   };
 
-  const { reviewStarted } = menuStore;
+  const { reviewStarted } = suggestionsStore;
 
   const isGeneralStarted = reviewStarted === ReviewVariantsEnums.GENERAL;
   const isCustomStarted = reviewStarted === ReviewVariantsEnums.CUSTOM;

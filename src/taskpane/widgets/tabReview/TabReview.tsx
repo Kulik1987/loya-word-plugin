@@ -5,16 +5,15 @@ import { Summary } from "./summary";
 import { Settings } from "./settings";
 // import { Button } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
-// import { MenuItemsEnums } from "../../shared/store/menu";
 // import { ReviewVariantsEnums } from "../../shared/store/menu";
 
 const TabReview = () => {
-  const { menuStore } = useStores();
+  const { suggestionsStore } = useStores();
 
   // const handleClick = (name: MenuItemsEnums) => {
   //   menuStore.setMenuItem(name);
   // };
-  const { reviewStarted } = menuStore;
+  const { reviewStarted } = suggestionsStore;
 
   const isDisplaySummary = reviewStarted !== null;
   return (

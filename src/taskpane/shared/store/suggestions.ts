@@ -1,18 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
 import fakeResponseAPI from "./mockResponseAPI";
-// import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../widgets/suggestion/Suggestion";
-import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
-
-// export enum MenuItemsEnums {
-//   "DRAFT" = "DRAFT",
-//   "REVIEW" = "REVIEW",
-// }
-
-// export enum ReviewVariantsEnums {
-//   "GENERAL" = "GENERAL",
-//   "CUSTOM" = "CUSTOM",
-// }
+import { InsertPlaceEnum, LevelOfCriticalEnum, ReviewVariantsEnums } from "../../shared/enums/suggestion";
 
 type SuggestionT = {
   levelOfCriticality: LevelOfCriticalEnum;
@@ -31,17 +20,30 @@ class SuggestionsStore {
 
   suggestions: SuggestionT[] | null = null;
 
+  reviewStarted: ReviewVariantsEnums | null = null;
+
+  reviewProcessing: ReviewVariantsEnums | null = null;
+
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
 
     // autorun(() => {
-    //   this.getSuggestion();
+    //   this.getSuggestions();
     //   // this.suggestions = fakeResponseAPI;
     // });
   }
 
-  getSuggestion = () => {
+  setReviewStarted = (name: ReviewVariantsEnums | null) => {
+    this.reviewStarted = name;
+    this.rootStore.suggestionsStore.getSuggestions();
+  };
+
+  setIsReviewProcessing = (name: ReviewVariantsEnums | null) => {
+    this.reviewProcessing = name;
+  };
+
+  getSuggestions = () => {
     this.suggestions = fakeResponseAPI;
   };
 
