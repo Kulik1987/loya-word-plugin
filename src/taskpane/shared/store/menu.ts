@@ -6,10 +6,18 @@ export enum MenuItemsEnums {
   "REVIEW" = "REVIEW",
 }
 
+export enum ReviewVariantsEnums {
+  "GENERAL" = "GENERAL",
+  "CUSTOM" = "CUSTOM",
+}
+
 class MenuStore {
   rootStore: RootStore;
 
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
+
+  reviewStarted: ReviewVariantsEnums | null = null;
+  reviewProcessing: ReviewVariantsEnums | null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -19,6 +27,14 @@ class MenuStore {
     //   this.loadSessionAuth();
     // });
   }
+
+  setReviewStarted = (name: ReviewVariantsEnums | null) => {
+    this.reviewStarted = name;
+  };
+
+  setIsReviewProcessing = (name: ReviewVariantsEnums | null) => {
+    this.reviewProcessing = name;
+  };
 
   setMenuItem = (menuItem: MenuItemsEnums | null) => {
     this.currentMenuItem = menuItem;
