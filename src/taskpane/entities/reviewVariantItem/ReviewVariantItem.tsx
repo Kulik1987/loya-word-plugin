@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { Text, Button } from "@fluentui/react-components";
+import React, { ReactNode, useState } from "react";
+import { Text } from "@fluentui/react-components";
 
 type ReviewVarianPropsType = {
-  icon: React.ReactNode;
+  children: ReactNode;
+  icon: ReactNode;
   title: string;
   subtitle: string;
-  buttonTitle: string;
-  onClickButton: () => void;
+  // buttonTitle: string;
+  // onClickButton: () => void;
 };
 
 const ReviewVariantItem = (props: ReviewVarianPropsType) => {
-  const { title, subtitle, icon, onClickButton, buttonTitle } = props;
+  const { children, title, subtitle, icon } = props;
   const [isOpenItem, setIsOpenItem] = useState(false);
 
   const handleOpenGeneral = () => {
@@ -41,18 +42,19 @@ const ReviewVariantItem = (props: ReviewVarianPropsType) => {
           <Text size={300}>{subtitle}</Text>
         </div>
       </header>
-      <section style={{ transition: "1s" }}>
-        {isOpenItem && (
-          <Button
-            appearance="primary"
-            disabled={false}
-            size="medium"
-            onClick={onClickButton}
-            style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-          >
-            {buttonTitle}
-          </Button>
-        )}
+      <section style={{ transition: "1s", display: "flex", flexDirection: "column", gap: "12px" }}>
+        {
+          isOpenItem && children
+          // <Button
+          //   appearance="primary"
+          //   disabled={false}
+          //   size="medium"
+          //   onClick={onClickButton}
+          //   style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+          // >
+          //   {buttonTitle}
+          // </Button>
+        }
       </section>
     </div>
   );
