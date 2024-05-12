@@ -3,7 +3,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Summary } from "./summary";
 import { Settings } from "./settings";
-// import { InsertPlaceEnum, LevelOfCriticalEnum } from "../suggestion/Suggestion";
 // import { Button } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
 // import { MenuItemsEnums } from "../../shared/store/menu";

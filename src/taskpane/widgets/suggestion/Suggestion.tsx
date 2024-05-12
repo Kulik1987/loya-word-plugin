@@ -2,6 +2,8 @@
 /// <reference types="office-js" />
 import * as React from "react";
 // import { useState } from "react";
+import { useStores } from "../../shared/store";
+
 import {
   Button,
   Text,
@@ -9,6 +11,7 @@ import {
 } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
+import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
 
 // const useStyles = makeStyles({
 // wrapper: {
@@ -23,20 +26,8 @@ import { PriorityFlag } from "../../entities";
 // },
 // });
 
-export enum LevelOfCriticalEnum {
-  "CRITICAL" = "Critical",
-  "HIGH" = "High",
-  "MEDIUM" = "Medium",
-  "LOW" = "Low",
-}
-
-export enum InsertPlaceEnum {
-  "AFTER" = "After",
-  "BEFORE" = "Before",
-  "REPLACE" = "Replace",
-}
-
 type SuggestionPropT = {
+  index: number;
   data: {
     levelOfCriticality: LevelOfCriticalEnum;
     targetText: string;
@@ -51,9 +42,10 @@ type SuggestionPropT = {
 };
 
 const Suggestion = (props: SuggestionPropT) => {
-  // const [text, setText] = useState<string>("Some text.");
+  const { suggestionsStore } = useStores();
+
   const { targetText, note, change } = props.data;
-  const { data } = props;
+  const { data, index } = props;
 
   const changeText = change?.text;
   const commentText = note?.text;
@@ -140,6 +132,7 @@ const Suggestion = (props: SuggestionPropT) => {
 
   const handleDismiss = () => {
     console.log("dismiss");
+    suggestionsStore.dismissSuggestion(index);
   };
 
   return (

@@ -30,6 +30,7 @@ class MenuStore {
 
   setReviewStarted = (name: ReviewVariantsEnums | null) => {
     this.reviewStarted = name;
+    this.rootStore.suggestionsStore.getSuggestion();
   };
 
   setIsReviewProcessing = (name: ReviewVariantsEnums | null) => {

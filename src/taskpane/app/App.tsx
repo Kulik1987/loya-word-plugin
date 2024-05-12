@@ -5,7 +5,6 @@ import React from "react";
 // import { Suggestion } from "./widgets";
 // import { Button, makeStyles } from "@fluentui/react-components";
 // import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
-// import { LevelOfCriticalEnum, InsertPlaceEnum } from "../widgets/suggestion/Suggestion";
 // import { BrowserRouter } from "react-router-dom";
 import { Navigation } from "./navigation";
 

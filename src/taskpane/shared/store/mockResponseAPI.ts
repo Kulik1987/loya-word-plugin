@@ -1,4 +1,4 @@
-import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../suggestion/Suggestion";
+import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
 
 const fakeResponseAPI = [
   {

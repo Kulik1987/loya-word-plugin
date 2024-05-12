@@ -4,7 +4,6 @@ import React from "react";
 import { HeaderMenu, TabDraft, TabReview } from "../../widgets";
 import { makeStyles } from "@fluentui/react-components";
 // import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
-// import { LevelOfCriticalEnum, InsertPlaceEnum } from "../../widgets/suggestion/Suggestion";
 
 // interface AppProps {
 //   title?: string;

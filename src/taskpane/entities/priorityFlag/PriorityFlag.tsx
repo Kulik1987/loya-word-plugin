@@ -1,9 +1,7 @@
 import * as React from "react";
-import { LevelOfCriticalEnum } from "../../widgets/suggestion/Suggestion";
+import { LevelOfCriticalEnum } from "../../shared/enums/suggestion";
 
 const PriorityFlag = ({ flag }: { flag: LevelOfCriticalEnum }) => {
-  // const isHigh = flag === LevelOfCriticalEnum.HIGH;
-
   const state = {
     [LevelOfCriticalEnum.CRITICAL]: {
       color: "rgba(233, 20, 116, 1)",
