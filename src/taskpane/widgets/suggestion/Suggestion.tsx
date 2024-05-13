@@ -62,12 +62,6 @@ const Suggestion = (props: SuggestionPropT) => {
       const searchResults = body.search(
         targetText
         // { matchCase: false, matchWholeWord: true }
-        // {
-        //   ignorePunct: true,
-        //   ignoreSpace: true,
-        //   matchCase: false,
-        //   matchWholeWord: true,
-        // }
       );
 
       context.load(searchResults, "text, font");
@@ -87,7 +81,10 @@ const Suggestion = (props: SuggestionPropT) => {
   const handleAddComment = async (targetText: string, commentText: string) => {
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(targetText, { matchCase: false, matchWholeWord: true });
+      const searchResults = body.search(
+        targetText
+        // { matchCase: false, matchWholeWord: true }
+      );
 
       context.load(searchResults, "text, font");
 
@@ -97,7 +94,7 @@ const Suggestion = (props: SuggestionPropT) => {
         const foundItem = searchResults.items[0];
         foundItem.insertComment(commentText ?? "");
       } else {
-        console.log("Фрагмент текста не найден.");
+        console.log("[handleAddComment]: Фрагмент текста не найден.");
       }
     }).catch((error) => {
       console.log("Error: " + error);
@@ -129,7 +126,10 @@ const Suggestion = (props: SuggestionPropT) => {
     // const
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(targetText, { matchWholeWord: true });
+      const searchResults = body.search(
+        targetText
+        // { matchWholeWord: true }
+      );
 
       context.load(searchResults, "text");
 
@@ -137,6 +137,8 @@ const Suggestion = (props: SuggestionPropT) => {
 
       if (searchResults.items.length > 0) {
         searchResults.items[0].insertText(changeText, place);
+      } else {
+        console.log("[handleApplyChange]: Фрагмент текста не найден.");
       }
     });
   };
