@@ -60,14 +60,14 @@ const Suggestion = (props: SuggestionPropT) => {
     await Word.run(async (context) => {
       const body = context.document.body;
       const searchResults = body.search(
-        targetText,
+        targetText
         // { matchCase: false, matchWholeWord: true }
-        {
-          ignorePunct: true,
-          ignoreSpace: true,
-          matchCase: false,
-          matchWholeWord: true,
-        }
+        // {
+        //   ignorePunct: true,
+        //   ignoreSpace: true,
+        //   matchCase: false,
+        //   matchWholeWord: true,
+        // }
       );
 
       context.load(searchResults, "text, font");
@@ -78,6 +78,8 @@ const Suggestion = (props: SuggestionPropT) => {
         const firstResult = searchResults.items[0];
         // firstResult.font.highlightColor = "yellow";
         firstResult.select();
+      } else {
+        console.log("[handleShowInDocument]: Фрагмент текста не найден.");
       }
     });
   };
