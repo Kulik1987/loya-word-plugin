@@ -59,7 +59,16 @@ const Suggestion = (props: SuggestionPropT) => {
     // Does a basic text search and highlights matches in the document.
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(targetText, { matchCase: false, matchWholeWord: true });
+      const searchResults = body.search(
+        targetText,
+        // { matchCase: false, matchWholeWord: true }
+        {
+          ignorePunct: true,
+          ignoreSpace: true,
+          matchCase: false,
+          matchWholeWord: true,
+        }
+      );
 
       context.load(searchResults, "text, font");
 
