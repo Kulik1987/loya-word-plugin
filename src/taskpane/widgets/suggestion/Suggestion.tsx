@@ -17,7 +17,7 @@ type SuggestionPropT = {
 const Suggestion = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
 
-  const { targetText, note, change } = props.data;
+  const { note, change } = props.data;
   const { data, index } = props;
 
   const changeText = change?.text;
@@ -26,16 +26,10 @@ const Suggestion = (props: SuggestionPropT) => {
   const isChangeExist = !!changeText;
   const isNoteExist = !!commentText;
 
-  // const styles = useStyles();
-
-  const handleShowInDocument = async (targetText: string) => {
-    // Does a basic text search and highlights matches in the document.
+  const handleShowInDocument = async () => {
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(
-        targetText
-        // { matchCase: false, matchWholeWord: true }
-      );
+      const searchResults = body.search(note.target);
 
       context.load(searchResults, "text, font");
 
@@ -43,7 +37,6 @@ const Suggestion = (props: SuggestionPropT) => {
 
       if (searchResults.items.length > 0) {
         const firstResult = searchResults.items[0];
-        // firstResult.font.highlightColor = "yellow";
         firstResult.select();
       } else {
         console.log("[handleShowInDocument]: Фрагмент текста не найден.");
@@ -54,10 +47,7 @@ const Suggestion = (props: SuggestionPropT) => {
   const handleAddComment = async () => {
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(
-        targetText
-        // { matchCase: false, matchWholeWord: true }
-      );
+      const searchResults = body.search(note.target);
 
       context.load(searchResults, "text, font");
 
@@ -94,22 +84,17 @@ const Suggestion = (props: SuggestionPropT) => {
   // };
 
   const handleApplyChange = async () => {
-    const { targetText, change } = data;
-    const { text: changeText, place } = change;
-    // const
+    const { change } = data;
     await Word.run(async (context) => {
       const body = context.document.body;
-      const searchResults = body.search(
-        targetText
-        // { matchWholeWord: true }
-      );
+      const searchResults = body.search(change.target);
 
       context.load(searchResults, "text");
 
       await context.sync();
 
       if (searchResults.items.length > 0) {
-        searchResults.items[0].insertText(changeText, place);
+        searchResults.items[0].insertText(change.text, change.place);
       } else {
         console.log("[handleApplyChange]: Фрагмент текста не найден.");
       }
@@ -146,10 +131,6 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      {/* <div>
-        <Text weight="bold">Target: </Text>
-        <Text>{targetText}</Text>
-      </div> */}
       <div>
         <Text weight="bold">Change: </Text>
         <Text>{changeText}</Text>
@@ -177,7 +158,7 @@ const Suggestion = (props: SuggestionPropT) => {
           <Button
             appearance="outline"
             size="medium"
-            onClick={() => handleShowInDocument(targetText)}
+            onClick={handleShowInDocument}
             icon={<LocationRippleRegular color="#0f6cbd" />}
             style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
           />

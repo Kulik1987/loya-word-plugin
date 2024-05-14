@@ -3,12 +3,14 @@ import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggest
 export type SuggestionT = {
   id: string;
   levelOfCriticality: LevelOfCriticalEnum;
-  targetText: string;
+  // targetText: string;
   change?: {
-    text: string;
+    target?: string;
+    text?: string;
     place?: InsertPlaceEnum;
   };
   note?: {
-    text: string;
+    target?: string;
+    text?: string;
   };
 };
