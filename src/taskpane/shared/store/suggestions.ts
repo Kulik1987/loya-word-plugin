@@ -1,19 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
 import fakeResponseAPI from "./mockResponseAPI";
-import { InsertPlaceEnum, LevelOfCriticalEnum, ReviewTypesEnums } from "../../shared/enums/suggestion";
-
-type SuggestionT = {
-  levelOfCriticality: LevelOfCriticalEnum;
-  targetText: string;
-  change?: {
-    text: string;
-    place?: InsertPlaceEnum;
-  };
-  note?: {
-    text: string;
-  };
-};
+import { ReviewTypesEnums } from "../../shared/enums";
+import { SuggestionT } from "../../shared/types";
 
 class SuggestionsStore {
   rootStore: RootStore;

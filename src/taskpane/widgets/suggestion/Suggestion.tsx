@@ -3,42 +3,15 @@
 import * as React from "react";
 // import { useState } from "react";
 import { useStores } from "../../shared/store";
+import { SuggestionT } from "../../shared/types";
 
-import {
-  Button,
-  Text,
-  // makeStyles
-} from "@fluentui/react-components";
+import { Button, Text } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
-import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
-
-// const useStyles = makeStyles({
-// wrapper: {
-//   paddingTop: "25px",
-//   paddingBottom: "25px",
-//   paddingLeft: "25px",
-//   paddingRight: "25px",
-// },
-// buttons: {
-//   display: "flex",
-//   gap: "16px",
-// },
-// });
 
 type SuggestionPropT = {
   index: number;
-  data: {
-    levelOfCriticality: LevelOfCriticalEnum;
-    targetText: string;
-    change?: {
-      text: string;
-      place?: InsertPlaceEnum;
-    };
-    note?: {
-      text: string;
-    };
-  };
+  data: SuggestionT;
 };
 
 const Suggestion = (props: SuggestionPropT) => {
@@ -242,6 +215,7 @@ const Suggestion = (props: SuggestionPropT) => {
           )}
         </div>
       </div>
+      {data.id}
     </div>
   );
 };
