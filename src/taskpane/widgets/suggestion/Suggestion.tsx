@@ -51,7 +51,7 @@ const Suggestion = (props: SuggestionPropT) => {
     });
   };
 
-  const handleAddComment = async (targetText: string, commentText: string) => {
+  const handleAddComment = async () => {
     await Word.run(async (context) => {
       const body = context.document.body;
       const searchResults = body.search(
@@ -207,7 +207,7 @@ const Suggestion = (props: SuggestionPropT) => {
               appearance="primary"
               disabled={false}
               size="medium"
-              onClick={() => handleAddComment(targetText, commentText)}
+              onClick={handleAddComment}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
             >
               Add comment

@@ -12,7 +12,7 @@ const PriorityFlag = ({ flag }: { flag: LevelOfCriticalEnum }) => {
       backgroundColor: "rgba(234, 151, 21, 0.25)",
     },
     [LevelOfCriticalEnum.MEDIUM]: {
-      color: "rgba(234, 237, 91, 1)",
+      color: "rgba(172, 192, 53, 0.8)",
       backgroundColor: "rgba(234, 237, 91, .251)",
     },
     [LevelOfCriticalEnum.LOW]: {
