@@ -6,10 +6,11 @@ import { MenuItemsEnums } from "../../shared/store/menu";
 import { ArrowExitFilled, DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 
 const HeaderMenu = () => {
-  const { menuStore } = useStores();
+  const { menuStore, suggestionsStore } = useStores();
 
   const handleClick = (name: MenuItemsEnums) => {
     menuStore.setMenuItem(name);
+    suggestionsStore.resetStore();
   };
 
   const isTabReview = menuStore.currentMenuItem === MenuItemsEnums.REVIEW;

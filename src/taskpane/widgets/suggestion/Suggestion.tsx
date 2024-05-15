@@ -28,8 +28,10 @@ const Suggestion = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
+      const searchText = note?.target || change?.target;
+
       const body = context.document.body;
-      const searchResults = body.search(note.target);
+      const searchResults = body.search(searchText);
 
       context.load(searchResults, "text, font");
 
@@ -131,14 +133,18 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      <div>
-        <Text weight="bold">Change: </Text>
-        <Text>{changeText}</Text>
-      </div>
-      <div>
-        <Text weight="bold">Comment: </Text>
-        <Text>{commentText}</Text>
-      </div>
+      {changeText && (
+        <div>
+          <Text weight="bold">Change: </Text>
+          <Text>{changeText}</Text>
+        </div>
+      )}
+      {commentText && (
+        <div>
+          <Text weight="bold">Comment: </Text>
+          <Text>{commentText}</Text>
+        </div>
+      )}
       <div
         style={{
           display: "flex",

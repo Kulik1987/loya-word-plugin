@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
-import fakeResponseAPI from "./mockResponseAPI";
+import fakeResponseGeneral from "./mockResponseGeneral";
+import fakeResponseCustom from "./mockResponseCustom";
 import { ReviewTypesEnums } from "../../shared/enums";
 import { SuggestionT } from "../../shared/types";
 
@@ -21,32 +22,37 @@ class SuggestionsStore {
 
     // autorun(() => {
     //   this.getSuggestions();
-    //   // this.suggestions = fakeResponseAPI;
     // });
   }
+
+  resetStore = () => {
+    this.suggestions = null;
+    this.reviewTypeActive = null;
+    // this.
+  };
 
   startReviewGeneral = async () => {
     this.clearSuggestions();
     this.reviewTypeActive = ReviewTypesEnums.GENERAL;
     this.reviewGeneralProcessing = true;
-    this.getSuggestions();
+    this.getSuggestions(fakeResponseGeneral);
   };
 
   startReviewCustom = async () => {
     this.clearSuggestions();
     this.reviewCustomProcessing = true;
     this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
-    this.getSuggestions();
+    this.getSuggestions(fakeResponseCustom);
   };
 
   // setIsReviewProcessing = (name: ReviewTypesEnums | null) => {
   //   this.reviewProcessing = name;
   // };
 
-  getSuggestions = () => {
+  getSuggestions = (response: SuggestionT[]) => {
     // eslint-disable-next-line no-undef
     setTimeout(() => {
-      this.suggestions = fakeResponseAPI;
+      this.suggestions = response;
       this.reviewGeneralProcessing = false;
       this.reviewCustomProcessing = false;
     }, 5000);

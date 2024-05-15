@@ -1,5 +1,5 @@
-import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
-import { SuggestionT } from "../../shared/types";
+import { InsertPlaceEnum, LevelOfCriticalEnum } from "../enums/suggestion";
+import { SuggestionT } from "../types";
 
 const fakeResponseAPI: SuggestionT[] = [
   {
