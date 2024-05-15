@@ -49,7 +49,7 @@ class SuggestionsStore {
       this.suggestions = fakeResponseAPI;
       this.reviewGeneralProcessing = false;
       this.reviewCustomProcessing = false;
-    }, 1000);
+    }, 5000);
   };
 
   dismissSuggestion = (index: number) => {

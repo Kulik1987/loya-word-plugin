@@ -196,7 +196,6 @@ const Suggestion = (props: SuggestionPropT) => {
           )}
         </div>
       </div>
-      {data.id}
     </div>
   );
 };
