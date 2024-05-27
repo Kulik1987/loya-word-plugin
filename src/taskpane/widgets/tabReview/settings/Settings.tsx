@@ -78,8 +78,8 @@ const Settings = () => {
           <div>
             <label htmlFor="selectParty">Select a party</label>
             <Select id="selectParty">
-              <option>Арендодатель</option>
-              <option>Арендатор</option>
+              <option>Заказчик</option>
+              <option>Исполнитель</option>
             </Select>
           </div>
           <Field label="Custom instructions">
