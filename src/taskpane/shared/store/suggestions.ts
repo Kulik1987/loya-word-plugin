@@ -4,11 +4,14 @@ import fakeResponseGeneral from "./mockResponseGeneral";
 import fakeResponseCustom from "./mockResponseCustom";
 import { ReviewTypesEnums } from "../../shared/enums";
 import { SuggestionT } from "../../shared/types";
+import api from "../api/v1";
 
 class SuggestionsStore {
   rootStore: RootStore;
 
   suggestions: SuggestionT[] | null = null;
+
+  parties: string[] | null = null;
 
   reviewTypeActive: ReviewTypesEnums | null = null;
 
@@ -64,14 +67,29 @@ class SuggestionsStore {
     }
   };
 
-  clearSuggestions = () => {
-    this.suggestions = null;
+  requestParties = async () => {
+    try {
+      console.log("requestParties...");
+      const documentText = this.rootStore.documentStore.documentText;
+      if (documentText) {
+        const response = await api.contract.parties({ textContract: documentText });
+        const { parties } = response.data;
+        this.parties = parties || null;
+      }
+      return "";
+    } catch (error) {
+      return "error";
+    }
   };
 
   get isSuggestionExist() {
     const suggestions = this.suggestions;
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
   }
+
+  clearSuggestions = () => {
+    this.suggestions = null;
+  };
 }
 
 export default SuggestionsStore;

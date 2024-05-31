@@ -1,5 +1,9 @@
 import { InsertPlaceEnum, LevelOfCriticalEnum } from "../../shared/enums/suggestion";
 
+// export type PartiesT = {
+//   parties: string[];
+// };
+
 export type SuggestionT = {
   id: string;
   levelOfCriticality: LevelOfCriticalEnum;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { AddCircleRegular, Fire24Regular, Settings24Regular } from "@fluentui/react-icons";
 import { ReviewVariantItem } from "../../../entities";
@@ -7,8 +7,12 @@ import { useStores } from "../../../shared/store";
 import { ReviewTypesEnums } from "../../../shared/enums/suggestion";
 
 const Settings = () => {
-  const { suggestionsStore } = useStores();
+  const { documentStore, suggestionsStore } = useStores();
 
+  const { parties } = suggestionsStore;
+  console.log("parties", parties);
+
+  const isPartiesExist = Array.isArray(parties) && parties?.length > 0;
   const handleStartReviewGeneral = () => {
     suggestionsStore.startReviewGeneral();
   };
@@ -26,6 +30,11 @@ const Settings = () => {
   const isDisplayCustom = isCustomStarted || reviewTypeActive === null;
 
   const isDisplayCommonInfo = isDisplayGeneral && isDisplayCustom;
+
+  useEffect(() => {
+    documentStore.copyToStoreDocumentText();
+  }, []);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {isDisplayCommonInfo && (
@@ -45,9 +54,11 @@ const Settings = () => {
           </div>
           <div>
             <label htmlFor="selectParty">Select a party</label>
-            <Select id="selectParty">
-              <option>Арендодатель</option>
-              <option>Арендатор</option>
+            <Select id="selectParty" disabled={!isPartiesExist}>
+              {isPartiesExist &&
+                parties.map((part, index) => {
+                  return <option key={index}>{part}</option>;
+                })}
             </Select>
           </div>
           <Button
@@ -77,9 +88,11 @@ const Settings = () => {
           </div>
           <div>
             <label htmlFor="selectParty">Select a party</label>
-            <Select id="selectParty">
-              <option>Заказчик</option>
-              <option>Исполнитель</option>
+            <Select id="selectParty" disabled={!isPartiesExist}>
+              {isPartiesExist &&
+                parties.map((part, index) => {
+                  return <option key={index}>{part}</option>;
+                })}
             </Select>
           </div>
           <Field label="Custom instructions">

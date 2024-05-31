@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Text } from "@fluentui/react-components";
+// import { useStores } from "../../shared/store";
 
 type ReviewVarianPropsType = {
   children: ReactNode;
@@ -14,7 +15,7 @@ const ReviewVariantItem = (props: ReviewVarianPropsType) => {
   const { children, title, subtitle, icon } = props;
   const [isOpenItem, setIsOpenItem] = useState(false);
 
-  const handleOpenGeneral = () => {
+  const handleOpenGeneral = async () => {
     setIsOpenItem((bool) => !bool);
   };
 
