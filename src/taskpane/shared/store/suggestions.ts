@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
 // import fakeResponseGeneral from "./mockResponseGeneral";
 // import fakeResponseCustom from "./mockResponseCustom";
@@ -61,8 +61,12 @@ class SuggestionsStore {
   getSuggestionGeneral = async () => {
     try {
       const textDocument = this.rootStore.documentStore.documentText;
+      const party = this.partySelected;
+      console.log("======", { textDocument, party });
       const response = await api.contract.recommendation({ textContract: textDocument, party: this.partySelected });
-      this.suggestionsNew = response.data;
+      runInAction(() => {
+        this.suggestionsNew = response.data;
+      });
     } catch (error) {
       this.suggestions = null;
 
@@ -97,7 +101,10 @@ class SuggestionsStore {
       if (documentText) {
         const response = await api.contract.parties({ textContract: documentText });
         const { parties } = response.data;
-        this.parties = parties || null;
+        runInAction(() => {
+          this.parties = parties || null;
+          this.partySelected = parties?.[0] ?? null;
+        });
       }
       return "";
     } catch (error) {

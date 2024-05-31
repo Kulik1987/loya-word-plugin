@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Text } from "@fluentui/react-components";
+import { observer } from "mobx-react";
 // import { useStores } from "../../shared/store";
 
 type ReviewVarianPropsType = {
@@ -11,7 +12,7 @@ type ReviewVarianPropsType = {
   // onClickButton: () => void;
 };
 
-const ReviewVariantItem = (props: ReviewVarianPropsType) => {
+const ReviewSettingPanel = (props: ReviewVarianPropsType) => {
   const { children, title, subtitle, icon } = props;
   const [isOpenItem, setIsOpenItem] = useState(false);
 
@@ -44,21 +45,10 @@ const ReviewVariantItem = (props: ReviewVarianPropsType) => {
         </div>
       </header>
       <section style={{ transition: "1s", display: "flex", flexDirection: "column", gap: "12px" }}>
-        {
-          isOpenItem && children
-          // <Button
-          //   appearance="primary"
-          //   disabled={false}
-          //   size="medium"
-          //   onClick={onClickButton}
-          //   style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-          // >
-          //   {buttonTitle}
-          // </Button>
-        }
+        {isOpenItem && children}
       </section>
     </div>
   );
 };
 
-export default ReviewVariantItem;
+export default observer(ReviewSettingPanel);

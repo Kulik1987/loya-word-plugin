@@ -33,7 +33,7 @@ const HeaderMenu = () => {
         <>
           <Button
             appearance="primary"
-            disabled={false}
+            disabled
             size="large"
             onClick={() => handleClick(MenuItemsEnums.DRAFT)}
             icon={<DraftsRegular color="#fff" />}

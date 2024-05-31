@@ -1,2 +1,2 @@
 export * from "./priorityFlag";
-export * from "./reviewVariantItem";
+export * from "./reviewSettingPanel";

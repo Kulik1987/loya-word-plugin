@@ -9,7 +9,7 @@ import { SuggestionT } from "../../../shared/types";
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
-  const { suggestions, isSuggestionExist, suggestionsNew } = suggestionsStore;
+  const { isSuggestionExist, suggestionsNew } = suggestionsStore;
 
   const handleApplyAll = () => {
     const { suggestions } = suggestionsStore;

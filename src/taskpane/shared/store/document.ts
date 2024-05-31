@@ -1,6 +1,6 @@
 /* global Word console */
 
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
 // import { ReviewTypesEnums } from "../enums";
 // import { SuggestionT } from "../types";
@@ -37,8 +37,10 @@ class DocumentStore {
       // Выполняем запрос
       return context.sync().then(() => {
         const bodyText = body.text;
-        this.documentText = JSON.stringify(bodyText);
-        console.log("Содержимое тела документа: " + JSON.stringify(bodyText));
+        runInAction(() => {
+          this.documentText = JSON.stringify(bodyText);
+          console.log("Содержимое тела документа: " + JSON.stringify(bodyText));
+        });
       });
     }).catch((error) => {
       console.error("Произошла ошибка: " + error);
