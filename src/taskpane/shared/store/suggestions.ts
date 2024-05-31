@@ -68,11 +68,15 @@ class SuggestionsStore {
         this.suggestionsNew = response.data;
       });
     } catch (error) {
-      this.suggestions = null;
+      runInAction(() => {
+        this.suggestions = null;
+      });
 
       console.log("error");
     } finally {
-      this.reviewGeneralProcessing = false;
+      runInAction(() => {
+        this.reviewGeneralProcessing = false;
+      });
     }
   };
   // setIsReviewProcessing = (name: ReviewTypesEnums | null) => {
