@@ -9,7 +9,7 @@ import { SuggestionT } from "../../../shared/types";
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
-  const { suggestions, isSuggestionExist } = suggestionsStore;
+  const { suggestions, isSuggestionExist, suggestionsNew } = suggestionsStore;
 
   const handleApplyAll = () => {
     const { suggestions } = suggestionsStore;
@@ -64,7 +64,7 @@ const Summary = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
-        {suggestions?.map((data, key) => {
+        {suggestionsNew?.map((data, key) => {
           return <Suggestion data={data} key={key} index={key} />;
         })}
       </div>

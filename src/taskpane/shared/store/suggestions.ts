@@ -1,17 +1,22 @@
 import { makeAutoObservable } from "mobx";
 import type RootStore from ".";
-import fakeResponseGeneral from "./mockResponseGeneral";
-import fakeResponseCustom from "./mockResponseCustom";
+// import fakeResponseGeneral from "./mockResponseGeneral";
+// import fakeResponseCustom from "./mockResponseCustom";
 import { ReviewTypesEnums } from "../../shared/enums";
 import { SuggestionT } from "../../shared/types";
 import api from "../api/v1";
+import { ContractRecommendationResponseT } from "../api/v1/contract";
 
 class SuggestionsStore {
   rootStore: RootStore;
 
-  suggestions: SuggestionT[] | null = null;
+  suggestions: SuggestionT[] | null = null; //deprecated
+
+  suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
   parties: string[] | null = null;
+
+  partySelected: string | null = null;
 
   reviewTypeActive: ReviewTypesEnums | null = null;
 
@@ -28,6 +33,10 @@ class SuggestionsStore {
     // });
   }
 
+  setPartySelected = (value: string | null) => {
+    this.partySelected = value;
+  };
+
   resetStore = () => {
     this.suggestions = null;
     this.reviewTypeActive = null;
@@ -38,28 +47,42 @@ class SuggestionsStore {
     this.clearSuggestions();
     this.reviewTypeActive = ReviewTypesEnums.GENERAL;
     this.reviewGeneralProcessing = true;
-    this.getSuggestions(fakeResponseGeneral);
+    // this.getSuggestions(fakeResponseGeneral);
+    this.getSuggestionGeneral();
   };
 
   startReviewCustom = async () => {
     this.clearSuggestions();
     this.reviewCustomProcessing = true;
     this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
-    this.getSuggestions(fakeResponseCustom);
+    // this.getSuggestions(fakeResponseCustom);
   };
 
+  getSuggestionGeneral = async () => {
+    try {
+      const textDocument = this.rootStore.documentStore.documentText;
+      const response = await api.contract.recommendation({ textContract: textDocument, party: this.partySelected });
+      this.suggestionsNew = response.data;
+    } catch (error) {
+      this.suggestions = null;
+
+      console.log("error");
+    } finally {
+      this.reviewGeneralProcessing = false;
+    }
+  };
   // setIsReviewProcessing = (name: ReviewTypesEnums | null) => {
   //   this.reviewProcessing = name;
   // };
 
-  getSuggestions = (response: SuggestionT[]) => {
-    // eslint-disable-next-line no-undef
-    setTimeout(() => {
-      this.suggestions = response;
-      this.reviewGeneralProcessing = false;
-      this.reviewCustomProcessing = false;
-    }, 5000);
-  };
+  // getSuggestions = (response: SuggestionT[]) => {
+  //   // eslint-disable-next-line no-undef
+  //   setTimeout(() => {
+  //     this.suggestions = response;
+  //     this.reviewGeneralProcessing = false;
+  //     this.reviewCustomProcessing = false;
+  //   }, 5000);
+  // };
 
   dismissSuggestion = (index: number) => {
     if (Array.isArray(this.suggestions)) {

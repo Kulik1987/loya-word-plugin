@@ -22,7 +22,7 @@ const PriorityFlag = ({ flag }: { flag: LevelOfCriticalEnum }) => {
   };
 
   const stateStyle = state[flag];
-  const { color, backgroundColor } = stateStyle;
+  const { color, backgroundColor } = stateStyle ?? {};
   return (
     <div
       style={{

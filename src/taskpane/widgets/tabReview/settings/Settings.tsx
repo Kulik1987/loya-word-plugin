@@ -13,6 +13,7 @@ const Settings = () => {
   console.log("parties", parties);
 
   const isPartiesExist = Array.isArray(parties) && parties?.length > 0;
+
   const handleStartReviewGeneral = () => {
     suggestionsStore.startReviewGeneral();
   };
@@ -35,6 +36,11 @@ const Settings = () => {
     documentStore.copyToStoreDocumentText();
   }, []);
 
+  const onChange = (event: React.SyntheticEvent, item: any) => {
+    console.log(event, item);
+    suggestionsStore.setPartySelected(item.value);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {isDisplayCommonInfo && (
@@ -54,7 +60,7 @@ const Settings = () => {
           </div>
           <div>
             <label htmlFor="selectParty">Select a party</label>
-            <Select id="selectParty" disabled={!isPartiesExist}>
+            <Select id="selectParty" disabled={!isPartiesExist} onChange={onChange}>
               {isPartiesExist &&
                 parties.map((part, index) => {
                   return <option key={index}>{part}</option>;

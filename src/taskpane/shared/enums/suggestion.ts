@@ -1,8 +1,8 @@
 export enum LevelOfCriticalEnum {
-  "CRITICAL" = "Critical",
-  "HIGH" = "High",
-  "MEDIUM" = "Medium",
-  "LOW" = "Low",
+  "CRITICAL" = "critical",
+  "HIGH" = "high",
+  "MEDIUM" = "middle",
+  "LOW" = "low",
 }
 
 export enum InsertPlaceEnum {

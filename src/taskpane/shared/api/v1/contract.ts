@@ -1,3 +1,4 @@
+import { LevelOfCriticalEnum } from "../../enums";
 import axios from "../instanceAxios";
 import { PLUGIN_CONTRACT_PARTIES, PLUGIN_CONTRACT_RECOMMENDATION } from "../routes";
 
@@ -5,16 +6,16 @@ export type ContractPartiesPayloadT = {
   textContract: string;
 };
 
-export type ContractPartiesResponseT = {
-  parties: string[];
-};
-
 export type ContractRecommendationPayloadT = {
+  party: string;
   textContract: string;
 };
 
+export type ContractPartiesResponseT = {
+  parties: string[];
+};
 export type ContractRecommendationResponseT = {
-  levelRisk: string;
+  levelRisk: LevelOfCriticalEnum;
   partContract: string;
   partModified: string;
   comment: string;

@@ -2,110 +2,83 @@
 /// <reference types="office-js" />
 import * as React from "react";
 // import { useState } from "react";
-import { useStores } from "../../shared/store";
-import { SuggestionT } from "../../shared/types";
+// import { useStores } from "../../shared/store";
+// import { SuggestionT } from "../../shared/types";
 
 import { Button, Text } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
+import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
 type SuggestionPropT = {
   index: number;
-  data: SuggestionT;
+  data: ContractRecommendationResponseT;
 };
 
 const Suggestion = (props: SuggestionPropT) => {
-  const { suggestionsStore } = useStores();
+  // const { suggestionsStore } = useStores();
 
-  const { note, change } = props.data;
-  const { data, index } = props;
+  // const { note, change } = props.data;
+  const { data } = props;
 
-  const changeText = change?.text;
-  const commentText = note?.text;
+  const { levelRisk, comment, partModified } = data;
+  const changeText = partModified;
+  const commentText = comment;
 
   const isChangeExist = !!changeText;
   const isNoteExist = !!commentText;
 
   const handleShowInDocument = async () => {
-    await Word.run(async (context) => {
-      const searchText = note?.target || change?.target;
-
-      const body = context.document.body;
-      const searchResults = body.search(searchText);
-
-      context.load(searchResults, "text, font");
-
-      await context.sync();
-
-      if (searchResults.items.length > 0) {
-        const firstResult = searchResults.items[0];
-        firstResult.select();
-      } else {
-        console.log("[handleShowInDocument]: Фрагмент текста не найден.");
-      }
+    await Word.run(async () => {
+      // const searchText = note?.target || change?.target;
+      // const body = context.document.body;
+      // const searchResults = body.search(searchText);
+      // context.load(searchResults, "text, font");
+      // await context.sync();
+      // if (searchResults.items.length > 0) {
+      //   const firstResult = searchResults.items[0];
+      //   firstResult.select();
+      // } else {
+      //   console.log("[handleShowInDocument]: Фрагмент текста не найден.");
+      // }
     });
   };
 
   const handleAddComment = async () => {
-    await Word.run(async (context) => {
-      const body = context.document.body;
-      const searchResults = body.search(note.target);
-
-      context.load(searchResults, "text, font");
-
-      await context.sync();
-
-      if (searchResults.items.length > 0) {
-        const foundItem = searchResults.items[0];
-        foundItem.insertComment(commentText ?? "");
-      } else {
-        console.log("[handleAddComment]: Фрагмент текста не найден.");
-      }
-    }).catch((error) => {
-      console.log("Error: " + error);
-    });
+    // await Word.run(async (context) => {
+    //   const body = context.document.body;
+    //   const searchResults = body.search(note.target);
+    //   context.load(searchResults, "text, font");
+    //   await context.sync();
+    //   if (searchResults.items.length > 0) {
+    //     const foundItem = searchResults.items[0];
+    //     foundItem.insertComment(commentText ?? "");
+    //   } else {
+    //     console.log("[handleAddComment]: Фрагмент текста не найден.");
+    //   }
+    // }).catch((error) => {
+    //   console.log("Error: " + error);
+    // });
   };
 
-  // const handleAddComment = async () => {
-  //   // Sets a comment on the selected content.
-  //   await Word.run(async (context) => {
-  //     const range = context.document.getSelection();
-  //     const contentControl = range.insertContentControl();
-  //     contentControl.tag = "note";
-  //     contentControl.title = "Comment Title";
-  //     // contentControl.appearance = "comment";
-  //     contentControl.insertText("Your comment text goes here.", "End");
-  //     contentControl.cannotEdit = true;
-  //     // contentControl.color = "green";
-  //     contentControl.insertHtml(
-  //       '<div style="border-top: 1px solid red; background-color: yellow;">Your comment text goes here.</div>',
-  //       "End"
-  //     );
-  //     await context.sync();
-  //   });
-  // };
-
   const handleApplyChange = async () => {
-    const { change } = data;
-    await Word.run(async (context) => {
-      const body = context.document.body;
-      const searchResults = body.search(change.target);
-
-      context.load(searchResults, "text");
-
-      await context.sync();
-
-      if (searchResults.items.length > 0) {
-        searchResults.items[0].insertText(change.text, change.place);
-      } else {
-        console.log("[handleApplyChange]: Фрагмент текста не найден.");
-      }
-    });
+    // const { change } = data;
+    // await Word.run(async (context) => {
+    //   const body = context.document.body;
+    //   const searchResults = body.search(change.target);
+    //   context.load(searchResults, "text");
+    //   await context.sync();
+    //   if (searchResults.items.length > 0) {
+    //     searchResults.items[0].insertText(change.text, change.place);
+    //   } else {
+    //     console.log("[handleApplyChange]: Фрагмент текста не найден.");
+    //   }
+    // });
   };
 
   const handleDismiss = () => {
-    console.log("dismiss");
-    suggestionsStore.dismissSuggestion(index);
+    // console.log("dismiss");
+    // suggestionsStore.dismissSuggestion(index);
   };
 
   return (
@@ -121,7 +94,7 @@ const Suggestion = (props: SuggestionPropT) => {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <PriorityFlag flag={data.levelOfCriticality} />
+        <PriorityFlag flag={levelRisk} />
         <Button
           appearance="subtle"
           size="small"
@@ -133,16 +106,16 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      {changeText && (
+      {partModified && (
         <div>
           <Text weight="bold">Change: </Text>
-          <Text>{changeText}</Text>
+          <Text>{partModified}</Text>
         </div>
       )}
-      {commentText && (
+      {comment && (
         <div>
           <Text weight="bold">Comment: </Text>
-          <Text>{commentText}</Text>
+          <Text>{comment}</Text>
         </div>
       )}
       <div
