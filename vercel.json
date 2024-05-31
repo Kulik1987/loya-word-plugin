@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/v1/:path*",
+      "destination": "http://ec2-13-53-249-255.eu-north-1.compute.amazonaws.com:8080/v1/:path*"
+    },
+    {
+      "source": "/v1/:path*/",
+      "destination": "http://ec2-13-53-249-255.eu-north-1.compute.amazonaws.com:8080/v1/:path*/"
+    }
+  ]
+}
