@@ -64,8 +64,8 @@ const Summary = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
-        {suggestionsNew?.map((data, key) => {
-          return <Suggestion data={data} key={key} index={key} />;
+        {suggestionsNew?.map((data, index) => {
+          return <Suggestion data={data} key={index} index={index} />;
         })}
       </div>
       {isSuggestionExist && (

@@ -1,8 +1,8 @@
 /* global Word console */
 /// <reference types="office-js" />
-import * as React from "react";
+import React from "react";
 // import { useState } from "react";
-// import { useStores } from "../../shared/store";
+import { useStores } from "../../shared/store";
 // import { SuggestionT } from "../../shared/types";
 
 import { Button, Text } from "@fluentui/react-components";
@@ -16,10 +16,10 @@ type SuggestionPropT = {
 };
 
 const Suggestion = (props: SuggestionPropT) => {
-  // const { suggestionsStore } = useStores();
+  const { suggestionsStore } = useStores();
 
   // const { note, change } = props.data;
-  const { data } = props;
+  const { data, index: indexSuggestion } = props;
 
   const { levelRisk, comment, partModified, partContract } = data;
   const changeText = partModified;
@@ -78,8 +78,7 @@ const Suggestion = (props: SuggestionPropT) => {
   };
 
   const handleDismiss = () => {
-    // console.log("dismiss");
-    // suggestionsStore.dismissSuggestion(index);
+    suggestionsStore.dismissSuggestion(indexSuggestion);
   };
 
   return (
