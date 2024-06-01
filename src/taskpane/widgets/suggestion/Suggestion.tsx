@@ -46,35 +46,35 @@ const Suggestion = (props: SuggestionPropT) => {
   };
 
   const handleAddComment = async () => {
-    // await Word.run(async (context) => {
-    //   const body = context.document.body;
-    //   const searchResults = body.search(note.target);
-    //   context.load(searchResults, "text, font");
-    //   await context.sync();
-    //   if (searchResults.items.length > 0) {
-    //     const foundItem = searchResults.items[0];
-    //     foundItem.insertComment(commentText ?? "");
-    //   } else {
-    //     console.log("[handleAddComment]: Фрагмент текста не найден.");
-    //   }
-    // }).catch((error) => {
-    //   console.log("Error: " + error);
-    // });
+    await Word.run(async (context) => {
+      const body = context.document.body;
+      const searchResults = body.search(partContract);
+      context.load(searchResults, "text, font");
+      await context.sync();
+      if (searchResults.items.length > 0) {
+        const foundItem = searchResults.items[0];
+        foundItem.insertComment(commentText ?? "");
+      } else {
+        console.log("[handleAddComment]: Фрагмент текста не найден.");
+      }
+    }).catch((error) => {
+      console.log("Error: " + error);
+    });
   };
 
   const handleApplyChange = async () => {
-    // const { change } = data;
-    // await Word.run(async (context) => {
-    //   const body = context.document.body;
-    //   const searchResults = body.search(change.target);
-    //   context.load(searchResults, "text");
-    //   await context.sync();
-    //   if (searchResults.items.length > 0) {
-    //     searchResults.items[0].insertText(change.text, change.place);
-    //   } else {
-    //     console.log("[handleApplyChange]: Фрагмент текста не найден.");
-    //   }
-    // });
+    await Word.run(async (context) => {
+      const body = context.document.body;
+      const searchResults = body.search(partContract);
+      context.load(searchResults, "text");
+      await context.sync();
+      if (searchResults.items.length > 0) {
+        searchResults.items[0].insertText(partModified, "Replace");
+        // searchResults.items[0].insertText(change.text, change.place);
+      } else {
+        console.log("[handleApplyChange]: Фрагмент текста не найден.");
+      }
+    });
   };
 
   const handleDismiss = () => {
