@@ -5,7 +5,7 @@ import { ReviewSettingPanel } from "../../../../entities";
 import { Button, Select } from "@fluentui/react-components";
 import { useStores } from "../../../../shared/store";
 
-const General = () => {
+const GeneralConfig = () => {
   const { suggestionsStore } = useStores();
 
   const { parties } = suggestionsStore;
@@ -16,8 +16,8 @@ const General = () => {
     suggestionsStore.startReviewGeneral();
   };
 
-  const onChange = (_event: React.SyntheticEvent, item: any) => {
-    suggestionsStore.setPartySelected(item.value);
+  const handleChangeParty = (_event: React.SyntheticEvent, item: any) => {
+    suggestionsStore.setFormPartySelected(item.value);
   };
 
   return (
@@ -32,7 +32,7 @@ const General = () => {
       </div>
       <div>
         <label htmlFor="selectParty">Select a party</label>
-        <Select id="selectParty" disabled={!isPartiesExist} onChange={onChange}>
+        <Select id="selectParty" disabled={!isPartiesExist} onChange={handleChangeParty}>
           {isPartiesExist &&
             parties.map((part, index) => {
               return <option key={index}>{part}</option>;
@@ -52,4 +52,4 @@ const General = () => {
   );
 };
 
-export default observer(General);
+export default observer(GeneralConfig);

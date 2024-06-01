@@ -16,7 +16,9 @@ class SuggestionsStore {
 
   parties: string[] | null = null;
 
-  partySelected: string | null = null;
+  formPartySelected: string | null = null;
+
+  formCustomInstructions: string | null = null;
 
   reviewTypeActive: ReviewTypesEnums | null = null;
 
@@ -33,8 +35,12 @@ class SuggestionsStore {
     // });
   }
 
-  setPartySelected = (value: string | null) => {
-    this.partySelected = value;
+  setFormPartySelected = (value: string | null) => {
+    this.formPartySelected = value;
+  };
+
+  setFormCustomInstructions = (value: string | null) => {
+    this.formCustomInstructions = value;
   };
 
   resetStore = () => {
@@ -47,7 +53,6 @@ class SuggestionsStore {
     this.clearSuggestions();
     this.reviewTypeActive = ReviewTypesEnums.GENERAL;
     this.reviewGeneralProcessing = true;
-    // this.getSuggestions(fakeResponseGeneral);
     this.getSuggestionGeneral();
   };
 
@@ -55,27 +60,55 @@ class SuggestionsStore {
     this.clearSuggestions();
     this.reviewCustomProcessing = true;
     this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
-    // this.getSuggestions(fakeResponseCustom);
+    this.getSuggestionsCustom();
   };
 
   getSuggestionGeneral = async () => {
     try {
       const textDocument = this.rootStore.documentStore.documentText;
-      const party = this.partySelected;
-      console.log("======", { textDocument, party });
-      const response = await api.contract.recommendation({ textContract: textDocument, party: this.partySelected });
+      const party = this.formPartySelected;
+      console.log("====== General", { textDocument, party });
+      const response = await api.contract.recommendationGeneral({
+        textContract: textDocument,
+        party: this.formPartySelected,
+      });
       runInAction(() => {
         this.suggestionsNew = response.data;
       });
     } catch (error) {
       runInAction(() => {
         this.suggestions = null;
+        console.log("error");
       });
-
-      console.log("error");
     } finally {
       runInAction(() => {
         this.reviewGeneralProcessing = false;
+      });
+    }
+  };
+
+  getSuggestionsCustom = async () => {
+    try {
+      const party = this.formPartySelected;
+      const manualRequrement = this.formCustomInstructions;
+      const textContract = this.rootStore.documentStore.documentText;
+      console.log("====== Custom", { textContract, party, manualRequrement });
+      const response = await api.contract.recommendationCustom({
+        manualRequrement,
+        textContract,
+        party: this.formPartySelected,
+      });
+      runInAction(() => {
+        this.suggestionsNew = response.data;
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.suggestions = null;
+        console.log("error");
+      });
+    } finally {
+      runInAction(() => {
+        this.reviewCustomProcessing = false;
       });
     }
   };
@@ -107,7 +140,7 @@ class SuggestionsStore {
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;
-          this.partySelected = parties?.[0] ?? null;
+          this.formPartySelected = parties?.[0] ?? null;
         });
       }
       return "";
