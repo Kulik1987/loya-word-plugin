@@ -21,7 +21,7 @@ const Suggestion = (props: SuggestionPropT) => {
   // const { note, change } = props.data;
   const { data } = props;
 
-  const { levelRisk, comment, partModified } = data;
+  const { levelRisk, comment, partModified, partContract } = data;
   const changeText = partModified;
   const commentText = comment;
 
@@ -29,18 +29,19 @@ const Suggestion = (props: SuggestionPropT) => {
   const isNoteExist = !!commentText;
 
   const handleShowInDocument = async () => {
-    await Word.run(async () => {
+    await Word.run(async (context) => {
       // const searchText = note?.target || change?.target;
-      // const body = context.document.body;
-      // const searchResults = body.search(searchText);
-      // context.load(searchResults, "text, font");
-      // await context.sync();
-      // if (searchResults.items.length > 0) {
-      //   const firstResult = searchResults.items[0];
-      //   firstResult.select();
-      // } else {
-      //   console.log("[handleShowInDocument]: Фрагмент текста не найден.");
-      // }
+      const searchText = partContract;
+      const body = context.document.body;
+      const searchResults = body.search(searchText);
+      context.load(searchResults, "text, font");
+      await context.sync();
+      if (searchResults.items.length > 0) {
+        const firstResult = searchResults.items[0];
+        firstResult.select();
+      } else {
+        console.log("[handleShowInDocument]: Фрагмент текста не найден.");
+      }
     });
   };
 
@@ -106,6 +107,12 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
+      {partContract && (
+        <div>
+          <Text weight="bold">PartContract (для теста): </Text>
+          <Text>{partContract}</Text>
+        </div>
+      )}
       {partModified && (
         <div>
           <Text weight="bold">Change: </Text>

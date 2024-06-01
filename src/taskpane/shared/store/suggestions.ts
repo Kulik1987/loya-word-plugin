@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
 // import fakeResponseGeneral from "./mockResponseGeneral";
-// import fakeResponseCustom from "./mockResponseCustom";
+import fakeResponseCustom from "./mockResponseGeneralAPI";
 import { ReviewTypesEnums } from "../../shared/enums";
 import { SuggestionT } from "../../shared/types";
 import api from "../api/v1";
@@ -14,6 +14,7 @@ class SuggestionsStore {
 
   suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
+  // parties: string[] | null = ["1", "2"];
   parties: string[] | null = null;
 
   formPartySelected: string | null = null;
@@ -73,6 +74,7 @@ class SuggestionsStore {
         party: this.formPartySelected,
       });
       runInAction(() => {
+        // this.suggestionsNew = fakeResponseCustom;
         this.suggestionsNew = response.data;
       });
     } catch (error) {
