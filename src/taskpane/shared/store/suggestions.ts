@@ -14,8 +14,8 @@ class SuggestionsStore {
 
   suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
-  parties: string[] | null = ["1", "2"];
-  // parties: string[] | null = null;
+  // parties: string[] | null = ["1", "2"];
+  parties: string[] | null = null;
 
   formPartySelected: string | null = null;
 
@@ -69,13 +69,13 @@ class SuggestionsStore {
       const textDocument = this.rootStore.documentStore.documentText;
       const party = this.formPartySelected;
       console.log("====== General", { textDocument, party });
-      // const response = await api.contract.recommendationGeneral({
-      //   textContract: textDocument,
-      //   party: this.formPartySelected,
-      // });
+      const response = await api.contract.recommendationGeneral({
+        textContract: textDocument,
+        party: this.formPartySelected,
+      });
       runInAction(() => {
-        this.suggestionsNew = fakeResponseCustom;
-        // this.suggestionsNew = response.data;
+        // this.suggestionsNew = fakeResponseCustom;
+        this.suggestionsNew = response.data;
       });
     } catch (error) {
       runInAction(() => {

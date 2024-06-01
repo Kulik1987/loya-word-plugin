@@ -10,6 +10,8 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
 import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
+import { convert } from "../../shared/helpers";
+
 type SuggestionPropT = {
   index: number;
   data: ContractRecommendationResponseT;
@@ -17,8 +19,6 @@ type SuggestionPropT = {
 
 const Suggestion = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
-
-  // const { note, change } = props.data;
   const { data, index: indexSuggestion } = props;
 
   const { levelRisk, comment, partModified, partContract } = data;
@@ -30,18 +30,15 @@ const Suggestion = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      // const searchText = note?.target || change?.target;
       const searchText = partContract;
+      const searchTextByParts = convert.splitStringIntoChunks(searchText);
       const body = context.document.body;
-      const searchResults = body.search(searchText);
-      context.load(searchResults, "text, font");
-      await context.sync();
-      if (searchResults.items.length > 0) {
-        const firstResult = searchResults.items[0];
-        firstResult.select();
-      } else {
-        console.log("[handleShowInDocument]: Фрагмент текста не найден.");
-      }
+
+      searchTextByParts.forEach(async (text) => {
+        const searchResults = body.search(text);
+        //TODO: придумать как выделить фрагмент текста более 255 символов
+        searchResults.getFirstOrNullObject().select();
+      });
     });
   };
 
