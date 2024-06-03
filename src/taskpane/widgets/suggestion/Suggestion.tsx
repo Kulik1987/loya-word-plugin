@@ -35,7 +35,16 @@ const Suggestion = (props: SuggestionPropT) => {
       const body = context.document.body;
 
       searchTextByParts.forEach(async (text) => {
-        const searchResults = body.search(text);
+        const searchResults = body.search(text, {
+          ignoreSpace: true,
+          // 1. ignorePunct: Если установлено в true, игнорирует знаки препинания при поиске.
+          // 2. ignoreSpace: Если установлено в true, игнорирует пробелы при поиске.
+          // 3. matchCase: Если установлено в true, учитывает регистр букв при поиске.
+          // 4. matchPrefix: Если установлено в true, ищет совпадения только в начале слов.
+          // 5. matchSuffix: Если установлено в true, ищет совпадения только в конце слов.
+          // 6. matchWholeWord: Если установлено в true, ищет только целые слова, а не части слова.
+          // 7. matchWildcards: Если установлено в true, позволяет использовать шаблоны для поиска (например, символы замены).
+        });
         //TODO: придумать как выделить фрагмент текста более 255 символов
         searchResults.getFirstOrNullObject().select();
       });
@@ -64,9 +73,17 @@ const Suggestion = (props: SuggestionPropT) => {
       const body = context.document.body;
       const searchResults = body.search(partContract);
       context.load(searchResults, "text");
+      // context.load(searchResults, "text, comments, authorEmail");
+      // context.load(body, "items, authorEmail"); // Загружаем комментарии и свойство authorEmail
       await context.sync();
       if (searchResults.items.length > 0) {
-        searchResults.items[0].insertText(partModified, "Replace");
+        const item = searchResults.items[0];
+
+        // const isCommentExist = item.getComments().getFirst();
+        // console.log("isCommentExist", isCommentExist);
+
+        // if (item.){}
+        item.insertText(partModified, "Replace");
         // searchResults.items[0].insertText(change.text, change.place);
       } else {
         console.log("[handleApplyChange]: Фрагмент текста не найден.");

@@ -7,7 +7,8 @@ const webpack = require("webpack");
 const path = require("path");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://loya-word-plugin.vercel.app/";
+const urlProd = "https://app.loya.legal/plugin/";
+// const urlProd = "https://loya-word-plugin.vercel.app/";
 // const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
@@ -26,7 +27,7 @@ module.exports = async (env, options) => {
       commands: "./src/commands/commands.ts",
     },
     output: {
-      path: path.resolve(__dirname, "public"),
+      path: path.resolve(__dirname, "build"),
       clean: true,
     },
     resolve: {
