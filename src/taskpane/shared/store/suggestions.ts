@@ -64,19 +64,30 @@ class SuggestionsStore {
     this.getSuggestionsCustom();
   };
 
-  getSuggestionGeneral = async () => {
+  getSuggestionGeneral = async (idQuery: string = undefined, repeatCount = 0) => {
+    const REPEAT_LIMIT = 10;
     try {
       const textDocument = this.rootStore.documentStore.documentText;
       const party = this.formPartySelected;
       console.log("====== General", { textDocument, party });
       const response = await api.contract.recommendationGeneral({
+        id: idQuery,
         textContract: textDocument,
         party: this.formPartySelected,
       });
-      runInAction(() => {
-        // this.suggestionsNew = fakeResponseCustom;
-        this.suggestionsNew = response.data;
-      });
+      const { levelRisk, partContract, comment, id } = response.data[0];
+      const isNeedRepeatQuery = levelRisk === null || partContract === null || comment === null;
+      if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
+        // eslint-disable-next-line no-undef
+        setTimeout(() => {
+          this.getSuggestionGeneral(id, repeatCount + 1);
+        }, 20000);
+      } else {
+        runInAction(() => {
+          // this.suggestionsNew = fakeResponseCustom;
+          this.suggestionsNew = response.data;
+        });
+      }
     } catch (error) {
       runInAction(() => {
         this.suggestions = null;

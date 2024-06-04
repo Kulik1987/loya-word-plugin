@@ -11,6 +11,7 @@ export type ContractPartiesPayloadT = {
 };
 
 export type ContractRecommendationGeneralPayloadT = {
+  id?: string | undefined;
   party: string;
   textContract: string;
 };
@@ -26,6 +27,7 @@ export type ContractPartiesResponseT = {
 };
 
 export type ContractRecommendationResponseT = {
+  id?: string;
   levelRisk: LevelOfCriticalEnum;
   partContract: string;
   partModified: string;
