@@ -17,6 +17,7 @@ export type ContractRecommendationGeneralPayloadT = {
 };
 
 export type ContractRecommendationCustomPayloadT = {
+  id?: string | undefined;
   party: string;
   textContract: string;
   manualRequrement: string;
