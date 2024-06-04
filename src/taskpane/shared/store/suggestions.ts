@@ -86,18 +86,21 @@ class SuggestionsStore {
         runInAction(() => {
           // this.suggestionsNew = fakeResponseCustom;
           this.suggestionsNew = response.data;
+          this.reviewGeneralProcessing = false;
         });
       }
     } catch (error) {
       runInAction(() => {
         this.suggestions = null;
+        this.reviewGeneralProcessing = false;
         console.log("error");
       });
-    } finally {
-      runInAction(() => {
-        this.reviewGeneralProcessing = false;
-      });
     }
+    // finally {
+    //   runInAction(() => {
+    //     this.reviewGeneralProcessing = false;
+    //   });
+    // }
   };
 
   getSuggestionsCustom = async () => {
