@@ -2,9 +2,6 @@
 
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
-// import { ReviewTypesEnums } from "../enums";
-// import { SuggestionT } from "../types";
-// import api from "../api/v1";
 
 class DocumentStore {
   rootStore: RootStore;
@@ -14,9 +11,6 @@ class DocumentStore {
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
-    // autorun(() => {
-    //   this.getSuggestions();
-    // });
     reaction(
       () => this.documentText,
       () => {
@@ -46,11 +40,6 @@ class DocumentStore {
       console.error("Произошла ошибка: " + error);
     });
   };
-
-  // get isSuggestionExist() {
-  //   const suggestions = this.suggestions;
-  //   return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
-  // }
 }
 
 export default DocumentStore;

@@ -3,14 +3,11 @@ import type RootStore from ".";
 // import fakeResponseGeneral from "./mockResponseGeneral";
 // import fakeResponseCustom from "./mockResponseGeneralAPI";
 import { ReviewTypesEnums } from "../../shared/enums";
-import { SuggestionT } from "../../shared/types";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 
 class SuggestionsStore {
   rootStore: RootStore;
-
-  suggestions: SuggestionT[] | null = null; //deprecated
 
   suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
@@ -30,7 +27,6 @@ class SuggestionsStore {
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
-
     // autorun(() => {
     //   this.getSuggestions();
     // });
@@ -45,9 +41,8 @@ class SuggestionsStore {
   };
 
   resetStore = () => {
-    this.suggestions = null;
+    this.suggestionsNew = null;
     this.reviewTypeActive = null;
-    // this.
   };
 
   startReviewGeneral = async () => {
@@ -67,14 +62,16 @@ class SuggestionsStore {
   getSuggestionGeneral = async (idQuery: string = undefined, repeatCount = 0) => {
     const REPEAT_LIMIT = 10;
     try {
-      const textDocument = this.rootStore.documentStore.documentText;
+      const textContract = this.rootStore.documentStore.documentText;
+      const party = this.formPartySelected;
+
       const response = await api.contract.recommendationGeneral({
         id: idQuery,
-        textContract: textDocument,
-        party: this.formPartySelected,
+        textContract,
+        party,
       });
-      const { levelRisk, partContract, comment, id } = response.data[0];
-      const isNeedRepeatQuery = levelRisk === null || partContract === null || comment === null;
+      const { partContract, partModified, id } = response.data[0];
+      const isNeedRepeatQuery = partContract === null || partModified === null;
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
         // eslint-disable-next-line no-undef
         setTimeout(() => {
@@ -99,16 +96,16 @@ class SuggestionsStore {
     const REPEAT_LIMIT = 10;
     try {
       const manualRequrement = this.formCustomInstructions;
+      const party = this.formPartySelected;
       const textContract = this.rootStore.documentStore.documentText;
-      // console.log("====== Custom", { textContract, party, manualRequrement });
       const response = await api.contract.recommendationCustom({
         id: idQuery,
         manualRequrement,
         textContract,
-        party: this.formPartySelected,
+        party,
       });
-      const { levelRisk, partContract, comment, id } = response.data[0];
-      const isNeedRepeatQuery = levelRisk === null || partContract === null || comment === null;
+      const { partContract, partModified, id } = response.data[0];
+      const isNeedRepeatQuery = partContract === null || partModified === null;
 
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
         // eslint-disable-next-line no-undef
@@ -129,18 +126,6 @@ class SuggestionsStore {
       });
     }
   };
-  // setIsReviewProcessing = (name: ReviewTypesEnums | null) => {
-  //   this.reviewProcessing = name;
-  // };
-
-  // getSuggestions = (response: SuggestionT[]) => {
-  //   // eslint-disable-next-line no-undef
-  //   setTimeout(() => {
-  //     this.suggestions = response;
-  //     this.reviewGeneralProcessing = false;
-  //     this.reviewCustomProcessing = false;
-  //   }, 5000);
-  // };
 
   dismissSuggestion = (index: number) => {
     if (Array.isArray(this.suggestionsNew)) {
@@ -166,12 +151,12 @@ class SuggestionsStore {
   };
 
   get isSuggestionExist() {
-    const suggestions = this.suggestions;
+    const suggestions = this.suggestionsNew;
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
   }
 
   clearSuggestions = () => {
-    this.suggestions = null;
+    this.suggestionsNew = null;
   };
 }
 

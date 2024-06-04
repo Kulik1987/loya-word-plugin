@@ -40,7 +40,6 @@ const CustomConfig = () => {
       </div>
       <div>
         <label htmlFor="selectParty">Select a party</label>
-
         <Select id="selectParty" disabled={!isPartiesExist} onChange={handleChangeParty}>
           {isPartiesExist &&
             parties.map((part, index) => {
@@ -61,6 +60,7 @@ const CustomConfig = () => {
         size="medium"
         onClick={handleStartReviewCustom}
         style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+        disabled={!isPartiesExist}
       >
         Start review
       </Button>

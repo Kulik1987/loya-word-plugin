@@ -120,12 +120,12 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      {partContract && (
+      {/* {partContract && (
         <div>
           <Text weight="bold">PartContract (для теста): </Text>
           <Text>{partContract}</Text>
         </div>
-      )}
+      )} */}
       {partModified && (
         <div>
           <Text weight="bold">Change: </Text>
