@@ -10,7 +10,7 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
 import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
-import { convert } from "../../shared/helpers";
+import { convert, DocumentHelpers } from "../../shared/helpers";
 
 type SuggestionPropT = {
   index: number;
@@ -30,24 +30,7 @@ const Suggestion = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      const searchText = partContract;
-      const searchTextByParts = convert.splitStringIntoChunks(searchText);
-      const body = context.document.body;
-
-      searchTextByParts.forEach(async (text) => {
-        const searchResults = body.search(text, {
-          ignoreSpace: true,
-          // 1. ignorePunct: Если установлено в true, игнорирует знаки препинания при поиске.
-          // 2. ignoreSpace: Если установлено в true, игнорирует пробелы при поиске.
-          // 3. matchCase: Если установлено в true, учитывает регистр букв при поиске.
-          // 4. matchPrefix: Если установлено в true, ищет совпадения только в начале слов.
-          // 5. matchSuffix: Если установлено в true, ищет совпадения только в конце слов.
-          // 6. matchWholeWord: Если установлено в true, ищет только целые слова, а не части слова.
-          // 7. matchWildcards: Если установлено в true, позволяет использовать шаблоны для поиска (например, символы замены).
-        });
-        //TODO: придумать как выделить фрагмент текста более 255 символов
-        searchResults.getFirstOrNullObject().select();
-      });
+      DocumentHelpers.findRangeAndSelect(context, partContract);
     });
   };
 
