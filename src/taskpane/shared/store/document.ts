@@ -14,7 +14,7 @@ class DocumentStore {
     reaction(
       () => this.documentText,
       () => {
-        // this.rootStore.suggestionsStore.requestParties();
+        this.rootStore.suggestionsStore.requestParties();
       }
     );
   }

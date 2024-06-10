@@ -47,6 +47,8 @@ const SuggestionCard = (props: SuggestionPropT) => {
   const handleApplyChange = async () => {
     await Word.run(async (context) => {
       DocumentHelpers.applyChange(context, partContract, partModified);
+    }).catch((error) => {
+      console.log("Error [handleApplyChange]: " + error);
     });
   };
 
@@ -79,12 +81,12 @@ const SuggestionCard = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      {partContract && (
+      {/* {partContract && (
         <div>
           <Text weight="bold">PartContract (для теста): </Text>
           <Text>{partContract}</Text>
         </div>
-      )}
+      )} */}
       {partModified && (
         <div>
           <Text weight="bold">Change: </Text>

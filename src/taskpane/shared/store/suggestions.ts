@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-import fakeResponse from "./mockResponseGeneralAPI";
+// import fakeResponse from "./mockResponseGeneralAPI";
 import { ReviewTypesEnums } from "../../shared/enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
@@ -10,8 +10,8 @@ class SuggestionsStore {
 
   suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
-  parties: string[] | null = ["1", "2"];
-  // parties: string[] | null = null;
+  // parties: string[] | null = ["1", "2"];
+  parties: string[] | null = null;
 
   formPartySelected: string | null = null;
 
@@ -61,14 +61,14 @@ class SuggestionsStore {
   getSuggestionGeneral = async (idQuery: string = undefined, repeatCount = 0) => {
     const REPEAT_LIMIT = 10;
     try {
-      const response = { data: fakeResponse, idQuery }; // mock
-      // const textContract = this.rootStore.documentStore.documentText;
-      // const party = this.formPartySelected;
-      // const response = await api.contract.recommendationGeneral({
-      //   id: idQuery,
-      //   textContract,
-      //   party,
-      // });
+      // const response = { data: fakeResponse, idQuery }; // mock
+      const textContract = this.rootStore.documentStore.documentText;
+      const party = this.formPartySelected;
+      const response = await api.contract.recommendationGeneral({
+        id: idQuery,
+        textContract,
+        party,
+      });
       const { partContract, partModified, id } = response.data[0];
       const isNeedRepeatQuery = partContract === null || partModified === null;
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {

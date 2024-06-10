@@ -1,7 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 
-const MAX_LENGTH_SEARCH_STRING = 200;
+const MAX_LENGTH_SEARCH_STRING = 230;
 
 export class DocumentHelpers {
   /**
