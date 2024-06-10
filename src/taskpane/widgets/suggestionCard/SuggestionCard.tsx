@@ -10,14 +10,14 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
 import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
-import { convert, DocumentHelpers } from "../../shared/helpers";
+import { DocumentHelpers } from "../../shared/helpers";
 
 type SuggestionPropT = {
   index: number;
   data: ContractRecommendationResponseT;
 };
 
-const Suggestion = (props: SuggestionPropT) => {
+const SuggestionCard = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
   const { data, index: indexSuggestion } = props;
 
@@ -31,46 +31,22 @@ const Suggestion = (props: SuggestionPropT) => {
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
       DocumentHelpers.findRangeAndSelect(context, partContract);
+    }).catch((error) => {
+      console.log("Error [handleShowInDocument]: " + error);
     });
   };
 
   const handleAddComment = async () => {
     await Word.run(async (context) => {
-      const body = context.document.body;
-      const searchResults = body.search(partContract);
-      context.load(searchResults, "text, font");
-      await context.sync();
-      if (searchResults.items.length > 0) {
-        const foundItem = searchResults.items[0];
-        foundItem.insertComment(commentText ?? "");
-      } else {
-        console.log("[handleAddComment]: Фрагмент текста не найден.");
-      }
+      DocumentHelpers.applyComment(context, partContract, commentText);
     }).catch((error) => {
-      console.log("Error: " + error);
+      console.log("Error [handleAddComment]: " + error);
     });
   };
 
   const handleApplyChange = async () => {
     await Word.run(async (context) => {
-      const body = context.document.body;
-      const searchResults = body.search(partContract);
-      context.load(searchResults, "text");
-      // context.load(searchResults, "text, comments, authorEmail");
-      // context.load(body, "items, authorEmail"); // Загружаем комментарии и свойство authorEmail
-      await context.sync();
-      if (searchResults.items.length > 0) {
-        const item = searchResults.items[0];
-
-        // const isCommentExist = item.getComments().getFirst();
-        // console.log("isCommentExist", isCommentExist);
-
-        // if (item.){}
-        item.insertText(partModified, "Replace");
-        // searchResults.items[0].insertText(change.text, change.place);
-      } else {
-        console.log("[handleApplyChange]: Фрагмент текста не найден.");
-      }
+      DocumentHelpers.applyChange(context, partContract, partModified);
     });
   };
 
@@ -103,12 +79,12 @@ const Suggestion = (props: SuggestionPropT) => {
           Dismiss
         </Button>
       </div>
-      {/* {partContract && (
+      {partContract && (
         <div>
           <Text weight="bold">PartContract (для теста): </Text>
           <Text>{partContract}</Text>
         </div>
-      )} */}
+      )}
       {partModified && (
         <div>
           <Text weight="bold">Change: </Text>
@@ -182,4 +158,4 @@ const Suggestion = (props: SuggestionPropT) => {
   );
 };
 
-export default Suggestion;
+export default SuggestionCard;

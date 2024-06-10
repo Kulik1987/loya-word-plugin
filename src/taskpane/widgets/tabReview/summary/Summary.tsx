@@ -1,7 +1,7 @@
 // /* global Word console */
 import React from "react";
 import { observer } from "mobx-react";
-import { Suggestion } from "../../suggestion";
+import { SuggestionCard } from "../../suggestionCard";
 // import { Button } from "@fluentui/react-components";
 import { useStores } from "../../../shared/store";
 // import { ContractRecommendationResponseT } from "../../../shared/api/v1/contract";
@@ -68,7 +68,7 @@ const Summary = () => {
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
         {suggestionsNew?.map((data, index) => {
-          return <Suggestion data={data} key={index} index={index} />;
+          return <SuggestionCard data={data} key={index} index={index} />;
         })}
       </div>
       {/* {isSuggestionExist && (
