@@ -14,7 +14,13 @@ class DocumentStore {
     reaction(
       () => this.documentText,
       () => {
-        this.rootStore.suggestionsStore.requestParties();
+        // eslint-disable-next-line no-undef
+        const isMockMode = process.env.isMockMode === "true";
+        if (isMockMode) {
+          console.log("Started MOCK_MODE", isMockMode);
+        } else {
+          this.rootStore.suggestionsStore.requestParties();
+        }
       }
     );
   }

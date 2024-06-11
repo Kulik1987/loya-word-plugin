@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-
+const packageJson = require("./package.json");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -8,13 +8,14 @@ const path = require("path");
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://app.loya.legal/plugin/";
-// const urlProd = "https://loya-word-plugin.vercel.app/";
-// const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
+
+const appBuildDate = new Date();
+const appBuildVersion = `Build ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -96,6 +97,11 @@ module.exports = async (env, options) => {
       }),
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
+      }),
+      new webpack.DefinePlugin({
+        "process.env.isMockMode": JSON.stringify(process.env.isMockMode),
+        "process.env.appVersion": JSON.stringify(packageJson.version),
+        "process.env.appBuildDate": JSON.stringify(appBuildVersion),
       }),
     ],
     devServer: {

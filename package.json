@@ -1,6 +1,6 @@
 {
   "name": "office-addin-taskpane-react",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/OfficeDev/Office-Addin-TaskPane-React.git"
@@ -15,6 +15,7 @@
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "dev-server": "webpack serve --mode development",
+    "dev-server-mock": "cross-env isMockMode=true webpack serve --mode development",
     "lint": "office-addin-lint check",
     "lint:fix": "office-addin-lint fix",
     "prettier": "office-addin-lint prettier",
@@ -48,6 +49,7 @@
     "acorn": "^8.5.0",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
     "eslint-plugin-office-addins": "^2.1.5",
     "eslint-plugin-react": "^7.28.0",
     "file-loader": "^6.2.0",

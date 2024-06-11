@@ -1,12 +1,15 @@
+/* eslint-disable no-undef */
 import React from "react";
-// import { Outlet } from "react-router";
-// import { Box, Container } from "@mui/material";
-// import { HeaderMenu } from "../molecule";
+
+const appVersion = process.env.appVersion;
+const appBuildDate = process.env.appBuildDate;
 
 const TemplateMain: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <>
     <div style={{ display: "flex", flexDirection: "column", padding: "24px" }}>{children}</div>
-    <div>v.0.2.2</div>
+    <div>
+      v.{appVersion} {appBuildDate}
+    </div>
   </>
 );
 

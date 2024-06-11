@@ -1,4 +1,14 @@
 {
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
-  "cSpell.words": ["Сhoosing", "Customizer", "fluentui", "Griffel", "Punct", "Readlines", "Requrement", "taskpane"]
+  "cSpell.words": [
+    "Сhoosing",
+    "autorun",
+    "Customizer",
+    "fluentui",
+    "Griffel",
+    "Punct",
+    "Readlines",
+    "Requrement",
+    "taskpane"
+  ]
 }

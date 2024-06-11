@@ -1,17 +1,19 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-// import fakeResponse from "./mockResponseGeneralAPI";
+import fakeResponse from "./mockResponseGeneralAPI";
 import { ReviewTypesEnums } from "../../shared/enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
+
+// eslint-disable-next-line no-undef
+const isMockMode = process.env.isMockMode === "true";
 
 class SuggestionsStore {
   rootStore: RootStore;
 
   suggestionsNew: ContractRecommendationResponseT[] | null = null;
 
-  // parties: string[] | null = ["1", "2"];
-  parties: string[] | null = null;
+  parties: string[] | null = isMockMode ? ["1", "2"] : null;
 
   formPartySelected: string | null = null;
 
@@ -64,11 +66,13 @@ class SuggestionsStore {
       // const response = { data: fakeResponse, idQuery }; // mock
       const textContract = this.rootStore.documentStore.documentText;
       const party = this.formPartySelected;
-      const response = await api.contract.recommendationGeneral({
-        id: idQuery,
-        textContract,
-        party,
-      });
+      const response = isMockMode
+        ? { data: fakeResponse, idQuery }
+        : await api.contract.recommendationGeneral({
+            id: idQuery,
+            textContract,
+            party,
+          });
       const { partContract, partModified, id } = response.data[0];
       const isNeedRepeatQuery = partContract === null || partModified === null;
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
