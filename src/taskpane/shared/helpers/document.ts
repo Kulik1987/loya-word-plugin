@@ -48,16 +48,6 @@ export class DocumentHelpers {
     }
   }
 
-  static async applyComment(context: Word.RequestContext, searchText: string, commentText: string) {
-    try {
-      const range = await this.findRange(context, searchText);
-      range.insertComment(commentText);
-    } catch (error) {
-      console.log("error", error);
-      return null;
-    }
-  }
-
   static async applyChange(context: Word.RequestContext, searchText: string, editText: string) {
     try {
       const range = await this.findRange(context, searchText);
@@ -65,6 +55,16 @@ export class DocumentHelpers {
     } catch (error) {
       console.log("error", error);
       return null;
+    }
+  }
+
+  static async applyComment(context: Word.RequestContext, searchText: string, commentText: string) {
+    try {
+      const range = await this.findRange(context, searchText);
+      range.insertComment(commentText);
+    } catch (error) {
+      console.log("error", error);
+      throw error;
     }
   }
 

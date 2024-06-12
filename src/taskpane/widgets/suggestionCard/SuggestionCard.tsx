@@ -1,6 +1,6 @@
 /* global Word console */
 /// <reference types="office-js" />
-import React from "react";
+import React, { useState } from "react";
 // import { useState } from "react";
 import { useStores } from "../../shared/store";
 // import { SuggestionT } from "../../shared/types";
@@ -19,6 +19,8 @@ type SuggestionPropT = {
 
 const SuggestionCard = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
+  const [isChangeAdded, setIsChangeAdded] = useState(false);
+  const [isCommentAdded, setIsCommentAdded] = useState(false);
   const { data, index: indexSuggestion } = props;
 
   const { levelRisk, comment, partModified, partContract } = data;
@@ -30,27 +32,38 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      const findRange = await DocumentHelpers.findRange(context, partContract);
+      const searchText = !isChangeAdded ? partContract : partModified;
+      const findRange = await DocumentHelpers.findRange(context, searchText);
       findRange.select();
     }).catch((error) => {
       console.log("Error [handleShowInDocument]: " + error);
     });
   };
 
-  const handleAddComment = async () => {
-    await Word.run(async (context) => {
-      DocumentHelpers.applyComment(context, partContract, commentText);
-    }).catch((error) => {
-      console.log("Error [handleAddComment]: " + error);
-    });
-  };
-
   const handleApplyChange = async () => {
     await Word.run(async (context) => {
       DocumentHelpers.applyChange(context, partContract, partModified);
-    }).catch((error) => {
-      console.log("Error [handleApplyChange]: " + error);
-    });
+      context.sync();
+    })
+      .then(() => {
+        setIsChangeAdded(true);
+      })
+      .catch((error) => {
+        console.log("Error [handleApplyChange]: " + error);
+      });
+  };
+
+  const handleAddComment = async () => {
+    await Word.run(async (context) => {
+      const searchText = !isChangeAdded ? partContract : partModified;
+      DocumentHelpers.applyComment(context, searchText, commentText);
+    })
+      .then(() => {
+        setIsCommentAdded(true);
+      })
+      .catch((error) => {
+        console.log("Error [handleAddComment]: " + error);
+      });
   };
 
   const handleDismiss = () => {
@@ -136,7 +149,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
           {isChangeExist && (
             <Button
               appearance="primary"
-              disabled={false}
+              disabled={isChangeAdded}
               size="medium"
               onClick={handleApplyChange}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
@@ -147,7 +160,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
           {isNoteExist && (
             <Button
               appearance="primary"
-              disabled={false}
+              disabled={isCommentAdded}
               size="medium"
               onClick={handleAddComment}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}

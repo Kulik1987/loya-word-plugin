@@ -8,10 +8,16 @@ import { ContractRecommendationResponseT } from "../api/v1/contract";
 // eslint-disable-next-line no-undef
 const isMockMode = process.env.isMockMode === "true";
 
+type SuggestionT = ContractRecommendationResponseT & {
+  isDismiss?: boolean;
+  isApplyChange?: boolean;
+  isApplyComment?: boolean;
+};
+
 class SuggestionsStore {
   rootStore: RootStore;
 
-  suggestionsNew: ContractRecommendationResponseT[] | null = null;
+  suggestionsNew: SuggestionT[] | null = null;
 
   parties: string[] | null = isMockMode ? ["1", "2"] : null;
 
