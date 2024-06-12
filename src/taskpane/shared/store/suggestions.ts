@@ -8,11 +8,13 @@ import { ContractRecommendationResponseT } from "../api/v1/contract";
 // eslint-disable-next-line no-undef
 const isMockMode = process.env.isMockMode === "true";
 
-type SuggestionT = ContractRecommendationResponseT & {
+type SuggestionPropertyT = {
   isDismiss?: boolean;
   isApplyChange?: boolean;
   isApplyComment?: boolean;
 };
+
+export type SuggestionT = ContractRecommendationResponseT & SuggestionPropertyT;
 
 class SuggestionsStore {
   rootStore: RootStore;
@@ -45,6 +47,15 @@ class SuggestionsStore {
 
   setFormCustomInstructions = (value: string | null) => {
     this.formCustomInstructions = value;
+  };
+
+  setSuggestionProperty = (indexSuggestion: number, values: SuggestionPropertyT) => {
+    // console.log("setSuggestionProperty", { indexSuggestion, values });
+    const expand = this.suggestionsNew.map((item, index) => {
+      if (index === indexSuggestion) return { ...item, ...values };
+      return item;
+    });
+    this.suggestionsNew = expand;
   };
 
   resetStore = () => {

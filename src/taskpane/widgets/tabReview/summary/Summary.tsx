@@ -14,14 +14,23 @@ const Summary = () => {
   const { isSuggestionExist, suggestionsNew } = suggestionsStore;
 
   const handleApplyAll = async () => {
-    suggestionsNew.forEach(async (itemSuggestion) => {
+    suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
       console.log("itemSuggestion", itemSuggestion);
       const { partContract, partModified, comment } = itemSuggestion;
       await Word.run(async (context) => {
         const range = await DocumentHelpers.findRange(context, partContract);
         range.insertText(partModified, "Replace");
         range.insertComment(comment);
-      });
+      })
+        .then(() => {
+          suggestionsStore.setSuggestionProperty(indexSuggestion, {
+            isApplyChange: true,
+            isApplyComment: true,
+          });
+        })
+        .catch((error) => {
+          console.log("Error [handleApplyAll]: " + error);
+        });
     });
     // const { levelRisk, comment, partModified, partContract } = suggestionsNew;
     // const { target, text, place } = change;

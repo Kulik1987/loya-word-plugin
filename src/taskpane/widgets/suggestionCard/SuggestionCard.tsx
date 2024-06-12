@@ -1,6 +1,6 @@
 /* global Word console */
 /// <reference types="office-js" />
-import React, { useState } from "react";
+import React from "react";
 // import { useState } from "react";
 import { useStores } from "../../shared/store";
 // import { SuggestionT } from "../../shared/types";
@@ -8,22 +8,28 @@ import { useStores } from "../../shared/store";
 import { Button, Text } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
-import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
+// import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
 import { DocumentHelpers } from "../../shared/helpers";
+import { SuggestionT } from "../../shared/store/suggestions";
+import { observer } from "mobx-react";
+// import { SuggestionT } from "../../shared/types";
 
 type SuggestionPropT = {
   index: number;
-  data: ContractRecommendationResponseT;
+  data: SuggestionT;
 };
 
 const SuggestionCard = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
-  const [isChangeAdded, setIsChangeAdded] = useState(false);
-  const [isCommentAdded, setIsCommentAdded] = useState(false);
+  // const { suggestionsNew } = suggestionsStore;
+  // const { is } = suggestionsNew;
+
   const { data, index: indexSuggestion } = props;
 
-  const { levelRisk, comment, partModified, partContract } = data;
+  const { levelRisk, comment, partModified, partContract, isApplyChange, isApplyComment } = data;
+  console.log("isApplyChange", isApplyChange);
+
   const changeText = partModified;
   const commentText = comment;
 
@@ -32,7 +38,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      const searchText = !isChangeAdded ? partContract : partModified;
+      const searchText = !isApplyChange ? partContract : partModified;
       const findRange = await DocumentHelpers.findRange(context, searchText);
       findRange.select();
     }).catch((error) => {
@@ -46,7 +52,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
       context.sync();
     })
       .then(() => {
-        setIsChangeAdded(true);
+        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
       .catch((error) => {
         console.log("Error [handleApplyChange]: " + error);
@@ -55,11 +61,12 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleAddComment = async () => {
     await Word.run(async (context) => {
-      const searchText = !isChangeAdded ? partContract : partModified;
+      const searchText = !isApplyChange ? partContract : partModified;
       DocumentHelpers.applyComment(context, searchText, commentText);
+      context.sync();
     })
       .then(() => {
-        setIsCommentAdded(true);
+        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })
       .catch((error) => {
         console.log("Error [handleAddComment]: " + error);
@@ -146,10 +153,10 @@ const SuggestionCard = (props: SuggestionPropT) => {
             flex: 1,
           }}
         >
-          {isChangeExist && (
+          {!isApplyChange && isChangeExist && (
             <Button
               appearance="primary"
-              disabled={isChangeAdded}
+              // disabled={!!isApplyChange}
               size="medium"
               onClick={handleApplyChange}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
@@ -157,10 +164,10 @@ const SuggestionCard = (props: SuggestionPropT) => {
               Apply change
             </Button>
           )}
-          {isNoteExist && (
+          {!isApplyComment && isNoteExist && (
             <Button
               appearance="primary"
-              disabled={isCommentAdded}
+              // disabled={isApplyComment}
               size="medium"
               onClick={handleAddComment}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
@@ -174,4 +181,4 @@ const SuggestionCard = (props: SuggestionPropT) => {
   );
 };
 
-export default SuggestionCard;
+export default observer(SuggestionCard);
