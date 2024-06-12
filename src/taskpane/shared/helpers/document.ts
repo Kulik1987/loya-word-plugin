@@ -19,6 +19,7 @@ export class DocumentHelpers {
   ) {
     try {
       console.log("searchText", searchText);
+      const isSearchTextLessMaxLength = searchText.length <= MAX_LENGTH_SEARCH_STRING;
 
       const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
       const endText = searchText.slice(searchText.length - MAX_LENGTH_SEARCH_STRING, searchText.length);
@@ -29,7 +30,7 @@ export class DocumentHelpers {
       const endRange = await this.searchText(context, endText);
 
       const start = startRange.getFirst();
-      const end = endRange.getFirst();
+      const end = isSearchTextLessMaxLength ? start : endRange.getFirst();
 
       return start.expandTo(end);
     } catch (error) {
@@ -68,21 +69,21 @@ export class DocumentHelpers {
     }
   }
 
-  static async applyChangeAndComment(
-    context: Word.RequestContext,
-    searchText: string,
-    editText: string,
-    commentText: string
-  ) {
-    try {
-      const range = await this.findRange(context, searchText);
-      range.insertText(editText, "Replace");
-      range.insertComment(commentText);
-    } catch (error) {
-      console.log("error", error);
-      return null;
-    }
-  }
+  // static async applyChangeAndComment(
+  //   context: Word.RequestContext,
+  //   searchText: string,
+  //   editText: string,
+  //   commentText: string
+  // ) {
+  //   try {
+  //     const range = await this.findRange(context, searchText);
+  //     range.insertText(editText, "Replace");
+  //     range.insertComment(commentText);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     return null;
+  //   }
+  // }
 
   static async searchText(context: Word.RequestContext, searchText: string) {
     try {

@@ -16,11 +16,11 @@ const Summary = () => {
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
       console.log("itemSuggestion", itemSuggestion);
-      const { partContract, partModified, comment } = itemSuggestion;
+      const { partContract, partModified, comment, isApplyChange, isApplyComment } = itemSuggestion;
       await Word.run(async (context) => {
         const range = await DocumentHelpers.findRange(context, partContract);
-        range.insertText(partModified, "Replace");
-        range.insertComment(comment);
+        if (!isApplyChange) range.insertText(partModified, "Replace");
+        if (!isApplyComment) range.insertComment(comment);
       })
         .then(() => {
           suggestionsStore.setSuggestionProperty(indexSuggestion, {
