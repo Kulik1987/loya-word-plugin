@@ -68,6 +68,22 @@ export class DocumentHelpers {
     }
   }
 
+  static async applyChangeAndComment(
+    context: Word.RequestContext,
+    searchText: string,
+    editText: string,
+    commentText: string
+  ) {
+    try {
+      const range = await this.findRange(context, searchText);
+      range.insertText(editText, "Replace");
+      range.insertComment(commentText);
+    } catch (error) {
+      console.log("error", error);
+      return null;
+    }
+  }
+
   static async searchText(context: Word.RequestContext, searchText: string) {
     try {
       const body = context.document.body;

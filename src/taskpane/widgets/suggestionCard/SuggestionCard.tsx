@@ -30,7 +30,8 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      DocumentHelpers.findRangeAndSelect(context, partContract);
+      const findRange = await DocumentHelpers.findRange(context, partContract);
+      findRange.select();
     }).catch((error) => {
       console.log("Error [handleShowInDocument]: " + error);
     });
