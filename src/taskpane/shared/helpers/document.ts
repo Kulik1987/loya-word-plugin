@@ -18,13 +18,11 @@ export class DocumentHelpers {
     // }
   ) {
     try {
-      console.log("searchText", searchText);
+      // console.log("searchText", searchText);
       const isSearchTextLessMaxLength = searchText.length <= MAX_LENGTH_SEARCH_STRING;
 
       const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
       const endText = searchText.slice(searchText.length - MAX_LENGTH_SEARCH_STRING, searchText.length);
-
-      console.log({ startText, endText });
 
       const startRange = await this.searchText(context, startText);
       const endRange = await this.searchText(context, endText);

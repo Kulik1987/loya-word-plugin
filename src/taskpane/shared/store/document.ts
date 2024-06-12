@@ -26,20 +26,16 @@ class DocumentStore {
   }
 
   copyToStoreDocumentText = async () => {
-    console.log("copyToStoreDocumentText...");
     await Word.run((context) => {
       // Получаем активное тело документа
       var body = context.document.body;
-
       // Загружаем содержимое тела документа
       context.load(body, "text");
-
       // Выполняем запрос
       return context.sync().then(() => {
         const bodyText = body.text;
         runInAction(() => {
           this.documentText = JSON.stringify(bodyText);
-          console.log("Содержимое тела документа: " + JSON.stringify(bodyText));
         });
       });
     }).catch((error) => {

@@ -146,11 +146,11 @@ class SuggestionsStore {
     }
   };
 
-  dismissSuggestion = (index: number) => {
-    if (Array.isArray(this.suggestionsNew)) {
-      this.suggestionsNew = this.suggestionsNew.filter((_element, indexElement) => index !== indexElement);
-    }
-  };
+  // dismissSuggestion = (index: number) => {
+  //   if (Array.isArray(this.suggestionsNew)) {
+  //     this.suggestionsNew = this.suggestionsNew.filter((_element, indexElement) => index !== indexElement);
+  //   }
+  // };
 
   requestParties = async () => {
     try {
@@ -172,6 +172,12 @@ class SuggestionsStore {
   get isSuggestionExist() {
     const suggestions = this.suggestionsNew;
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
+  }
+
+  get isExistUntouchedSuggestions() {
+    return this.suggestionsNew?.some(
+      (item) => (item.isApplyChange !== true || item.isApplyComment !== true) && item.isDismiss !== true
+    );
   }
 
   clearSuggestions = () => {

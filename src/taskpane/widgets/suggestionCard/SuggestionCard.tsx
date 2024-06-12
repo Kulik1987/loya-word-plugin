@@ -23,12 +23,10 @@ type SuggestionPropT = {
 const SuggestionCard = (props: SuggestionPropT) => {
   const { suggestionsStore } = useStores();
   // const { suggestionsNew } = suggestionsStore;
-  // const { is } = suggestionsNew;
 
   const { data, index: indexSuggestion } = props;
 
-  const { levelRisk, comment, partModified, partContract, isApplyChange, isApplyComment } = data;
-  console.log("isApplyChange", isApplyChange);
+  const { levelRisk, comment, partModified, partContract, isApplyChange, isApplyComment, isDismiss } = data;
 
   const changeText = partModified;
   const commentText = comment;
@@ -74,9 +72,11 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleDismiss = () => {
-    suggestionsStore.dismissSuggestion(indexSuggestion);
+    suggestionsStore.setSuggestionProperty(indexSuggestion, { isDismiss: true });
+    // suggestionsStore.dismissSuggestion(indexSuggestion);
   };
 
+  if (isDismiss) return null;
   return (
     <div
       style={{

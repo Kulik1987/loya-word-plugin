@@ -11,7 +11,7 @@ import { DocumentHelpers } from "../../../shared/helpers";
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
-  const { isSuggestionExist, suggestionsNew } = suggestionsStore;
+  const { isExistUntouchedSuggestions, suggestionsNew } = suggestionsStore;
 
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
@@ -32,22 +32,6 @@ const Summary = () => {
           console.log("Error [handleApplyAll]: " + error);
         });
     });
-    // const { levelRisk, comment, partModified, partContract } = suggestionsNew;
-    // const { target, text, place } = change;
-    // await Word.run(async (context) => {
-    //   const body = context.document.body;
-    //   const searchResults = body.search(target);
-
-    //   context.load(searchResults, "text");
-
-    //   await context.sync();
-
-    //   if (searchResults.items.length > 0) {
-    //     searchResults.items[0].insertText(text, place);
-    //   } else {
-    //     console.log("[handleApplyChange]: Фрагмент текста не найден.");
-    //   }
-    // });
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -56,7 +40,7 @@ const Summary = () => {
           return <SuggestionCard data={data} key={index} index={index} />;
         })}
       </div>
-      {isSuggestionExist && (
+      {isExistUntouchedSuggestions && (
         <div>
           <Button
             appearance="primary"
