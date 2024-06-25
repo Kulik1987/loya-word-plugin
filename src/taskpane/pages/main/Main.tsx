@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 
 const Main = () => {
   const { menuStore } = useStores();
-
   const styles = useStyles();
   // The list items are static and won't change at runtime,
   // so this should be an ordinary const, not a part of state.
@@ -38,8 +37,10 @@ const Main = () => {
   //     primaryText: "Create and visualize like a pro",
   //   },
   // ];
+
   const isTabReview = menuStore.currentMenuItem === MenuItemsEnums.REVIEW;
   const isTabDraft = menuStore.currentMenuItem === MenuItemsEnums.DRAFT;
+
   return (
     <div className={styles.root}>
       <HeaderMenu />

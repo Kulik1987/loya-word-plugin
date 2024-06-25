@@ -1,18 +1,26 @@
 import React from "react";
-import { Button, Text } from "@fluentui/react-components";
+import { Button, Text, Tooltip } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { useStores } from "../../shared/store";
 import { MenuItemsEnums } from "../../shared/store/menu";
-import { ArrowExitFilled, DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
+import {
+  ArrowExitFilled,
+  ArrowExportLtrFilled,
+  ArrowResetFilled,
+  DraftsRegular,
+  SignOutRegular,
+  TextBulletListSquareSearchRegular,
+} from "@fluentui/react-icons";
 
 const HeaderMenu = () => {
-  const { menuStore, suggestionsStore } = useStores();
+  const { menuStore, suggestionsStore, authStore } = useStores();
 
   const handleClick = (name: MenuItemsEnums) => {
     menuStore.setMenuItem(name);
     suggestionsStore.resetStore();
   };
 
+  const handleLogout = () => authStore.logout();
   const isTabReview = menuStore.currentMenuItem === MenuItemsEnums.REVIEW;
   const isTabDraft = menuStore.currentMenuItem === MenuItemsEnums.DRAFT;
 
@@ -21,13 +29,16 @@ const HeaderMenu = () => {
   return (
     <div style={{ display: "flex", gap: "8px" }}>
       {isButtonBackDisplay && (
-        <Button
-          appearance="transparent"
-          size="large"
-          onClick={() => handleClick(null)}
-          // style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
-          icon={<ArrowExitFilled style={{ transform: "rotate(180deg)" }} />}
-        />
+        <Tooltip content="Back" relationship="label">
+          <Button
+            appearance="transparent"
+            size="large"
+            onClick={() => handleClick(null)}
+            icon={
+              <ArrowExitFilled style={{ transform: "rotate(180deg)", borderColor: "#0f6cbd", borderWidth: "2px" }} />
+            }
+          />
+        </Tooltip>
       )}
       {isButtonsTabDisplay && (
         <>
@@ -64,6 +75,15 @@ const HeaderMenu = () => {
           </Text>
         )}
       </div>
+      <Tooltip content="Logout" relationship="label">
+        <Button
+          appearance="transparent"
+          size="large"
+          onClick={handleLogout}
+          // style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
+          icon={<ArrowExportLtrFilled style={{ transform: "rotate(360deg)" }} />}
+        />
+      </Tooltip>
     </div>
   );
 };

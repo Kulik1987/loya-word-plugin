@@ -7,9 +7,14 @@ import React from "react";
 // import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
 // import { BrowserRouter } from "react-router-dom";
 import { Navigation } from "./navigation";
+import { AuthProvider } from "./AuthProvider";
 
 const App = () => {
-  return <Navigation />;
+  return (
+    <AuthProvider>
+      <Navigation />
+    </AuthProvider>
+  );
 };
 
 export default App;
