@@ -2,6 +2,7 @@
 
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
+import { removeContract, removePersonData } from "../services/anonymizer";
 
 class DocumentStore {
   rootStore: RootStore;
@@ -20,6 +21,14 @@ class DocumentStore {
           console.log("Started MOCK_MODE", isMockMode);
         } else {
           this.rootStore.suggestionsStore.requestParties();
+        }
+
+        const text = this.documentText;
+        if (text) {
+          console.log("text", text);
+          const resp = removePersonData(text);
+          // const resp = removeContract(text);
+          console.log("resp", resp);
         }
       }
     );
