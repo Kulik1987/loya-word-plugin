@@ -1,5 +1,3 @@
-import { replacer } from "./common";
-
 const removePayment = (inputString: string): string => {
   let text = inputString;
 
