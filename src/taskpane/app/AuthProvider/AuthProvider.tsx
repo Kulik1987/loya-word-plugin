@@ -14,7 +14,7 @@ const AuthProvider = (props: AuthProviderT) => {
   const { authStore } = useStores();
   const { authStatus } = authStore;
 
-  const [login, setLogin] = useState("seo.resait@ya.ru");
+  const [login, setLogin] = useState("");
   const [isFetchingRequestLogin, setIsFetchingRequestLogin] = useState(false);
 
   const onChange: InputProps["onChange"] = (_ev, data) => {

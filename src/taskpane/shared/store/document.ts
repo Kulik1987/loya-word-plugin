@@ -2,7 +2,13 @@
 
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
-import { removeContract, removePersonData } from "../services/anonymizer";
+import {
+  removeAddressesByPart,
+  removeAmountByPart,
+  removeContract,
+  removePayment,
+  removePersonData,
+} from "../services/anonymizer";
 
 class DocumentStore {
   rootStore: RootStore;
@@ -23,12 +29,16 @@ class DocumentStore {
           this.rootStore.suggestionsStore.requestParties();
         }
 
-        const text = this.documentText;
-        if (text) {
-          console.log("text", text);
-          const resp = removePersonData(text);
-          // const resp = removeContract(text);
-          console.log("resp", resp);
+        const docText = this.documentText;
+        let modText = "";
+        if (docText) {
+          console.log("docText", docText);
+          modText = removeAddressesByPart(modText);
+          modText = removeAmountByPart(docText);
+          modText = removeContract(modText);
+          modText = removePayment(modText);
+          modText = removePersonData(docText);
+          console.log("modText", modText);
         }
       }
     );

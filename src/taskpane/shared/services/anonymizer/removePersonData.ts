@@ -1,12 +1,12 @@
-const removePersonData = (inputString: string): string => {
-  const replacer = (text: string, pattern: RegExp, replacement: string, flag: "g" = "g") => {
-    const regex = new RegExp(pattern, flag);
-    return text.replaceAll(regex, replacement);
-  };
+import { replacer } from "./common";
 
+const removePersonData = (inputString: string): string => {
   let text = inputString;
   // Name
-  // text = text.replaceAll(regex, "ФИО");
+  const patternName =
+    /(?:[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?|[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я]\.\s+[А-Я]\.|[А-Я]\.[А-Я]\.\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?|[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я]\.\s+[А-Я]\.|[А-Я]\.\s+[А-Я]\.\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?|[А-Я]\.\s+[А-Я]\.\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я]\.\s+[А-Я]\.|[А-Я]\.[А-Я]\.\s+[А-Я][а-я]+(?:-[А-Я][а-я]+)?|[А-Я][а-я]+(?:-[А-Я][а-я]+)?[А-Я]\.\s+[А-Я]\.|[А-Я][а-я]+(?:-[А-Я][а-я]+)?\s+[А-Я]\.[А-Я]\.)/;
+  const replacementName = "**** ****";
+  text = replacer(text, patternName, replacementName);
 
   //Passport
   const patternPassport = /\b\d{4}\s\d{6}\b/;
@@ -14,7 +14,7 @@ const removePersonData = (inputString: string): string => {
   text = replacer(text, patternPassport, replacementPassport);
 
   // Email
-  /** @error */
+  /** @error - не работает регулярка*/
   const patternEmail = /[a-zA-Z0-9._%+-]+(?=@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?=\s|\p{Punct}))/;
   const replacementEmail = "email@example.com";
   text = replacer(text, patternEmail, replacementEmail);
@@ -26,8 +26,10 @@ const removePersonData = (inputString: string): string => {
   text = replacer(text, patternPhone, replacementPhone);
 
   // Postal code 6 цифп
-  text = text.replaceAll(/\b\d{6}\b/, "******");
-  // text = text.replaceAll("\\b\\d{6}\\b", "******");
+  const patternPostalCode = /\b\d{6}\b/;
+  const replacementPostalCode = "******";
+  text = replacer(text, patternPostalCode, replacementPostalCode);
+
   return text;
 };
 
