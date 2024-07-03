@@ -4,7 +4,7 @@
 docker-compose -f docker-compose.prod.yml build
 
 # Let's start our production container on port 80 with the name "loya-react"
-docker run -p 80:80 --name loya-app avs85/loya-plugin-anonymazer-local:latest
+docker run -d -p 80:80 -p 443:443 --name loya-app avs85/loya-plugin-anonymazer-local:latest
 
 # Push 
 docker push avs85/loya-plugin-anonymazer-local:latest
