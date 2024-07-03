@@ -15,7 +15,7 @@ async function getHttpsOptions() {
 }
 
 const appBuildDate = new Date();
-const appBuildVersion = `Build ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
+const appBuildVersion = `Build:  ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";

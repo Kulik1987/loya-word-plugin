@@ -38,8 +38,8 @@ const Settings = () => {
 
       {isDisplayCommonInfo && (
         <>
-          <Anonymizer />
           <PlayBook />
+          <Anonymizer />
         </>
       )}
     </div>
