@@ -15,30 +15,37 @@ class DocumentStore {
 
   documentText: string | null = null;
 
+  documentTextCleaned: string | null = null;
+
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
     reaction(
       () => this.documentText,
       () => {
+        const docText = this.documentText;
+        let modText = "";
+        if (docText) {
+          modText = removeAddressesByPart(docText);
+          modText = removeAmountByPart(modText);
+          modText = removeContract(modText);
+          modText = removePayment(modText);
+          modText = removePersonData(modText);
+        }
+        this.documentTextCleaned = modText;
+      }
+    );
+    reaction(
+      () => this.documentTextCleaned,
+      () => {
+        console.log("this.documentTextCleaned", this.documentTextCleaned);
+
         // eslint-disable-next-line no-undef
         const isMockMode = process.env.isMockMode === "true";
         if (isMockMode) {
           console.log("Started MOCK_MODE", isMockMode);
         } else {
           this.rootStore.suggestionsStore.requestParties();
-        }
-
-        const docText = this.documentText;
-        let modText = "";
-        if (docText) {
-          console.log("docText", docText);
-          modText = removeAddressesByPart(modText);
-          modText = removeAmountByPart(docText);
-          modText = removeContract(modText);
-          modText = removePayment(modText);
-          modText = removePersonData(docText);
-          console.log("modText", modText);
         }
       }
     );

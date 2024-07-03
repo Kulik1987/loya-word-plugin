@@ -81,7 +81,7 @@ class SuggestionsStore {
     const REPEAT_LIMIT = 10;
     try {
       // const response = { data: fakeResponse, idQuery }; // mock
-      const textContract = this.rootStore.documentStore.documentText;
+      const textContract = this.rootStore.documentStore.documentTextCleaned;
       const party = this.formPartySelected;
       const response = isMockMode
         ? { data: fakeResponse, idQuery }
@@ -116,7 +116,7 @@ class SuggestionsStore {
     try {
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
-      const textContract = this.rootStore.documentStore.documentText;
+      const textContract = this.rootStore.documentStore.documentTextCleaned;
       const response = await api.contract.recommendationCustom({
         id: idQuery,
         manualRequrement,
@@ -154,9 +154,12 @@ class SuggestionsStore {
 
   requestParties = async () => {
     try {
-      const documentText = this.rootStore.documentStore.documentText;
-      if (documentText) {
-        const response = await api.contract.parties({ textContract: documentText });
+      const MAX_LENGTH = 3000;
+      const textCleaned = this.rootStore.documentStore.documentTextCleaned;
+      const textClipped = textCleaned.substring(0, MAX_LENGTH);
+
+      if (textClipped) {
+        const response = await api.contract.parties({ textContract: textClipped });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;
