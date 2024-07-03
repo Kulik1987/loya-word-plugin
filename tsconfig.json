@@ -13,10 +13,7 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
-    "lib": [
-      "es7",
-      "dom"
-    ],
+    "lib": ["es2021", "dom"],
     "pretty": true,
     "typeRoots": [
       "node_modules/@types"

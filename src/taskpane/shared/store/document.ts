@@ -2,11 +2,20 @@
 
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
+import {
+  removeAddressesByPart,
+  removeAmountByPart,
+  removeContract,
+  removePayment,
+  removePersonData,
+} from "../services/anonymizer";
 
 class DocumentStore {
   rootStore: RootStore;
 
   documentText: string | null = null;
+
+  documentTextCleaned: string | null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -14,6 +23,23 @@ class DocumentStore {
     reaction(
       () => this.documentText,
       () => {
+        const docText = this.documentText;
+        let modText = "";
+        if (docText) {
+          modText = removeAddressesByPart(docText);
+          modText = removeAmountByPart(modText);
+          modText = removeContract(modText);
+          modText = removePayment(modText);
+          modText = removePersonData(modText);
+        }
+        this.documentTextCleaned = modText;
+      }
+    );
+    reaction(
+      () => this.documentTextCleaned,
+      () => {
+        console.log("this.documentTextCleaned", this.documentTextCleaned);
+
         // eslint-disable-next-line no-undef
         const isMockMode = process.env.isMockMode === "true";
         if (isMockMode) {

@@ -6,6 +6,7 @@ import { ReviewTypesEnums } from "../../../shared/enums/suggestion";
 import { GeneralConfig } from "./generalConfig";
 import { CustomConfig } from "./customConfig";
 import { PlayBook } from "./playBook";
+import { Anonymizer } from "./anonymizer";
 
 const Settings = () => {
   const { documentStore, suggestionsStore } = useStores();
@@ -35,7 +36,12 @@ const Settings = () => {
 
       {isDisplayCustom && <CustomConfig />}
 
-      {isDisplayCommonInfo && <PlayBook />}
+      {isDisplayCommonInfo && (
+        <>
+          <PlayBook />
+          <Anonymizer />
+        </>
+      )}
     </div>
   );
 };

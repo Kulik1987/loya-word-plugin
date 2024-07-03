@@ -2,10 +2,12 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
   "cSpell.words": [
     "Сhoosing",
+    "anmzr",
     "autorun",
     "Customizer",
     "fluentui",
     "Griffel",
+    "loya",
     "Punct",
     "Readlines",
     "Requrement",
