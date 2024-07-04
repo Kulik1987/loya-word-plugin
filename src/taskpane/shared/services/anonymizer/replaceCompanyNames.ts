@@ -61,19 +61,33 @@ const replaceCompanyNames = (inputString: string): string => {
 
   let text: string;
 
-  // OOO
+  //
+  //! OOO
   const regexOOOFull =
-    /(?<=Общество с ограниченной ответственностью\s*(?:\(ООО\)\s*)?|Общества с ограниченной ответственностью\s*(?:\(ООО\)\s*)?)«.*?»|Общество с ограниченной ответственностью\s*«.*?»|Общества с ограниченной ответственностью\s*«.*?»/;
-  const regexOOOShort = /(?:ООО\s*)«(.*?)»/;
+    /(?<=Общество с ограниченной ответственностью\s*(?:\(ООО\)\s*)?|Общества с ограниченной ответственностью\s*(?:\(ООО\)\s*)?)«.*?»|Общество с ограниченной ответственностью\s*«.*?»|Общества с ограниченной ответственностью\s*(?:СЗ\s*)?«.*?»/;
+  const regexOOOShort = /ООО\s*(?:СЗ\s*)?«.*?»/;
 
-  // AO
-  const regexAOFull = /(?<=Акционерное общество\s*(?:\(АО\))?\s*|Акционерного общества\s*(?:\(АО\))?\s*)«.*?»/;
-  const regexAOShort = /АО\s*«.*?»/;
-
-  // PAO
+  //! PAO
   const regexPAOFull =
     /(?<=Публичное акционерное общество\s*(?:\(ПАО\))?\s*|Публичного акционерного общества\s*(?:\(ПАО\))?\s*)«.*?»/;
-  const regexPAOShort = /(?<=ПАО\s*)«.*?»/;
+  const regexPAOShort = /ПАО\s*(?:СЗ\s*)?«.*?»/;
+
+  //! ZAO
+  const regexZAOFull =
+    /(?<=Закрытое акционерное общество\s*(?:\(ЗАО\))?\s*|Закрытого акционерного общества\s*(?:\(ЗАО\))?\s*)«.*?»/;
+  // const regexZAOShort = /(?<=ЗАО\s*)«.*?»/;
+  const regexZAOShort = /ЗАО\s*(?:СЗ\s*)?«.*?»/;
+
+  //! OAO
+  const regexOAOFull =
+    /(?<=Открытое акционерное общество\s*(?:\(ОАО\))?\s*|Открытого акционерного общества\s*(?:\(ОАО\))?\s*)«.*?»/;
+  // const regexOAOShort = /(?<=ОАО\s*)«.*?»/;
+  const regexOAOShort = /ОАО\s*(?:СЗ\s*)?«.*?»/;
+
+  //! AO
+  const regexAOFull = /(?<=Акционерное общество\s*(?:\(АО\))?\s*|Акционерного общества\s*(?:\(АО\))?\s*)«.*?»/;
+  //// const regexAOShort = /АО\s*«.*?»/;
+  const regexAOShort = /АО\s*(?:СЗ\s*)?«.*?»/;
 
   // GUP
   const regexGUPFull =
@@ -84,16 +98,6 @@ const replaceCompanyNames = (inputString: string): string => {
   const regexFGUPFull =
     /(?<=Федеральное государственное унитарное предприятие\s*(?:\(ФГУП\))?\s*|Федерального государственного унитарного предприятия\s*(?:\(ФГУП\))?\s*)«.*?»/;
   const regexFGUPShort = /(?<=ФГУП\s*)«.*?»/;
-
-  // ZAO
-  const regexZAOFull =
-    /(?<=Закрытое акционерное общество\s*(?:\(ЗАО\))?\s*|Закрытого акционерного общества\s*(?:\(ЗАО\))?\s*)«.*?»/;
-  const regexZAOShort = /(?<=ЗАО\s*)«.*?»/;
-
-  // OAO
-  const regexOAOFull =
-    /(?<=Открытое акционерное общество\s*(?:\(ОАО\))?\s*|Открытого акционерного общества\s*(?:\(ОАО\))?\s*)«.*?»/;
-  const regexOAOShort = /(?<=ОАО\s*)«.*?»/;
 
   // KB
   const regexKBFull = /(?<=Коммерческий банк\s*(?:\(КБ\))?\s*|Коммерческого банка\s*(?:\(КБ\))?\s*)«.*?»/;
@@ -145,18 +149,18 @@ const replaceCompanyNames = (inputString: string): string => {
 
   text = findAndReplaceParties(inputString, companyMap, normilizedMap, regexOOOFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexOOOShort);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexAOFull);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexAOShort);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexPAOFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexPAOShort);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexGUPFull);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexGUPShort);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexFGUPFull);
-  text = findAndReplaceParties(text, companyMap, normilizedMap, regexFGUPShort);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexZAOFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexZAOShort);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexOAOFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexOAOShort);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexAOFull);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexAOShort);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexGUPFull);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexGUPShort);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexFGUPFull);
+  text = findAndReplaceParties(text, companyMap, normilizedMap, regexFGUPShort);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexKBFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexKBShort);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexNPFull);
