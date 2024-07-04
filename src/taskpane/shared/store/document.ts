@@ -3,6 +3,7 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type RootStore from ".";
 import {
+  replaceCompanyNames,
   removeAddressesByPart,
   removeAmountByPart,
   removeContract,
@@ -28,9 +29,10 @@ class DocumentStore {
         if (docText) {
           modText = removeAddressesByPart(docText);
           modText = removeAmountByPart(modText);
+          modText = removePersonData(modText);
           modText = removeContract(modText);
           modText = removePayment(modText);
-          modText = removePersonData(modText);
+          modText = replaceCompanyNames(modText);
         }
         this.documentTextCleaned = modText;
       }
@@ -38,7 +40,7 @@ class DocumentStore {
     reaction(
       () => this.documentTextCleaned,
       () => {
-        console.log("this.documentTextCleaned", this.documentTextCleaned);
+        // console.log("this.documentTextCleaned", this.documentTextCleaned);
 
         // eslint-disable-next-line no-undef
         const isMockMode = process.env.isMockMode === "true";

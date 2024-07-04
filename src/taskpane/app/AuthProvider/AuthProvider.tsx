@@ -28,7 +28,7 @@ const AuthProvider = (props: AuthProviderT) => {
     const locStoreAuthStatus = localStorage.getItem("authStatus");
     const enumKey = Object.keys(AuthStepperEnum).find((key) => AuthStepperEnum[key] === locStoreAuthStatus);
 
-    console.log({ locStoreAuthStatus, enumKey });
+    // console.log({ locStoreAuthStatus, enumKey });
 
     if (enumKey) {
       const authStatus = AuthStepperEnum[enumKey as keyof typeof AuthStepperEnum];
