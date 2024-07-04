@@ -11,8 +11,7 @@ const removePersonData = (inputString: string): string => {
   text = text.replace(/\b\d{4}\s\d{6}\b/g, "**** ****");
 
   // Email
-  /** @error - не работает регулярка*/
-  text = text.replace(/[a-zA-Z0-9._%+-]+(?=@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?=\s|\p{Punct}))/g, "email@example.com");
+  text = text.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, "email@example.com");
 
   // Phone
   text = text.replace(
