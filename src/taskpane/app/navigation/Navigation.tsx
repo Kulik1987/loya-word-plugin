@@ -1,7 +1,7 @@
 import React from "react";
 import { Main, Draft, Review } from "../../pages";
 import { LayerBase } from "../../shared/templates";
-import { MemoryRouter, Route, Routes, Link } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../AuthProvider";
 
 const Navigation: React.FC = () => {
