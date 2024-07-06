@@ -27,7 +27,7 @@ const HeaderMenu = () => {
   const isButtonBackDisplay = menuStore.currentMenuItem !== null;
   const isButtonsTabDisplay = !isButtonBackDisplay;
   return (
-    <div style={{ display: "flex", gap: "8px" }}>
+    <div style={{ display: "flex", gap: "8px", border: "1px solid red" }}>
       {isButtonBackDisplay && (
         <Tooltip content="Back" relationship="label">
           <Button

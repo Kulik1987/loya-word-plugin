@@ -3,14 +3,14 @@ import React from "react";
 import { observer } from "mobx-react";
 // import { useStores } from "../../shared/store";
 
-const Draft = () => {
+const Review = () => {
   // const { menuStore } = useStores();
 
   // const handleClick = (name: MenuItemsEnums) => {
   //   menuStore.setMenuItem(name);
   // };
 
-  return <div style={{ display: "flex", gap: "8px" }}>Draft Page</div>;
+  return <div style={{ display: "flex", gap: "8px" }}>Review Page</div>;
 };
 
-export default observer(Draft);
+export default observer(Review);

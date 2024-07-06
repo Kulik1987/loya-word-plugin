@@ -1,1 +1,1 @@
-export { default as TemplateMain } from "./TemplateMain";
+export { default as LayerBase } from "./LayerBase";
