@@ -14,7 +14,7 @@ export enum LocalEnums {
 class MenuStore {
   rootStore: RootStore;
 
-  local: LocalEnums = LocalEnums.RU;
+  local: LocalEnums = LocalEnums.EN;
 
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 

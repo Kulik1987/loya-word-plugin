@@ -1,5 +1,5 @@
 import React from "react";
-import { Main, Draft, Review } from "../../pages";
+import { Main, Draft, Review, Summary } from "../../pages";
 import { LayerBase } from "../../shared/templates";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../AuthProvider";
@@ -7,6 +7,7 @@ import { AuthProvider } from "../AuthProvider";
 export enum RoutePathEnum {
   DRAFT = "/draft",
   REVIEW = "/review",
+  SUMMARY = "/summary",
 }
 
 const Navigation: React.FC = () => {
@@ -18,6 +19,7 @@ const Navigation: React.FC = () => {
             <Route index element={<Main />} />
             <Route path={RoutePathEnum.DRAFT} element={<Draft />} />
             <Route path={RoutePathEnum.REVIEW} element={<Review />} />
+            <Route path={RoutePathEnum.SUMMARY} element={<Summary />} />
           </Route>
         </Route>
       </Routes>

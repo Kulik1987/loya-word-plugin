@@ -1,18 +1,43 @@
-import React from "react";
-import { Button } from "@fluentui/react-components";
-// import { useStores } from "../../shared/store";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useNavigate } from "react-router-dom";
-import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
+import { Text } from "@fluentui/react-components";
+import { useStores } from "../../shared/store";
+import { ReviewTypesEnums } from "../../shared/enums/suggestion";
+import { GeneralConfig } from "./generalConfig";
+import { CustomConfig } from "./customConfig";
+import { PlayBook } from "./playBook";
 
 const Review = () => {
-  // const { menuStore } = useStores();
-  const navigate = useNavigate();
+  const { documentStore, suggestionsStore } = useStores();
 
-  const handleNavigateToDraft = () => navigate("/draft");
-  const handleNavigateToReview = () => navigate("/review");
+  const { reviewTypeActive } = suggestionsStore;
 
-  return <div style={{ border: "1px solid red", flex: 1 }}>Review</div>;
+  const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
+  const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
+
+  const isDisplayGeneral = isGeneralStarted || reviewTypeActive === null;
+  const isDisplayCustom = isCustomStarted || reviewTypeActive === null;
+
+  const isDisplayCommonInfo = isDisplayGeneral && isDisplayCustom;
+
+  useEffect(() => {
+    documentStore.copyToStoreDocumentText();
+  }, []);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {isDisplayCommonInfo && (
+        <Text size={400} weight="bold">
+          Select a review
+        </Text>
+      )}
+      {isDisplayGeneral && <GeneralConfig />}
+
+      {isDisplayCustom && <CustomConfig />}
+
+      {isDisplayCommonInfo && <PlayBook />}
+    </div>
+  );
 };
 
 export default observer(Review);
