@@ -6,8 +6,15 @@ export enum MenuItemsEnums {
   "REVIEW" = "REVIEW",
 }
 
+export enum LocalEnums {
+  "RU" = "ru",
+  "EN" = "en",
+}
+
 class MenuStore {
   rootStore: RootStore;
+
+  local: LocalEnums = LocalEnums.RU;
 
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 
@@ -23,17 +30,6 @@ class MenuStore {
   setMenuItem = (menuItem: MenuItemsEnums | null) => {
     this.currentMenuItem = menuItem;
   };
-
-  // loadSessionAuth = () => {
-  //   const sessionAuth = sessionStorage.getItem("loya_auth");
-  //   if (sessionAuth) {
-  //     const { login, authStep } = JSON.parse(sessionAuth);
-  //     runInAction(() => {
-  //       this.login = login;
-  //       this.authStep = authStep;
-  //     });
-  //   }
-  // };
 }
 
 export default MenuStore;

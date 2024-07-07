@@ -13,11 +13,7 @@ const Draft = () => {
   const handleNavigateToDraft = () => navigate("/draft");
   const handleNavigateToReview = () => navigate("/review");
 
-  return (
-    <div style={{ border: "1px solid red", flex: 1 }}>
-      <HeaderMenu title="Draft" />
-    </div>
-  );
+  return <div style={{ border: "1px solid red", flex: 1 }}>Draft</div>;
 };
 
 export default observer(Draft);

@@ -4,6 +4,11 @@ import { LayerBase } from "../../shared/templates";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../AuthProvider";
 
+export enum RoutePathEnum {
+  DRAFT = "/draft",
+  REVIEW = "/review",
+}
+
 const Navigation: React.FC = () => {
   return (
     <MemoryRouter initialEntries={["/"]} initialIndex={0}>
@@ -11,8 +16,8 @@ const Navigation: React.FC = () => {
         <Route element={<LayerBase />}>
           <Route element={<AuthProvider />}>
             <Route index element={<Main />} />
-            <Route path="/draft" element={<Draft />} />
-            <Route path="/review" element={<Review />} />
+            <Route path={RoutePathEnum.DRAFT} element={<Draft />} />
+            <Route path={RoutePathEnum.REVIEW} element={<Review />} />
           </Route>
         </Route>
       </Routes>

@@ -13,26 +13,37 @@ const Main = () => {
   const handleNavigateToDraft = () => navigate("./draft");
   const handleNavigateToReview = () => navigate("./review");
 
+  const local = "ru";
+  const T = {
+    btnDraft: {
+      ru: "Написание",
+      en: "Draft",
+    },
+    btnReview: {
+      ru: "Проверка",
+      en: "Review",
+    },
+  };
   return (
-    <div style={{ border: "1px solid red", flex: 1 }}>
-      <HeaderMenu title="Speransky AI" />
+    <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
       <Button
+        style={{ width: "100%" }}
         appearance="primary"
-        // disabled
         size="large"
         onClick={handleNavigateToDraft}
         icon={<DraftsRegular color="#fff" />}
+        // disabled
       >
-        Draft
+        {T.btnDraft[local]}
       </Button>
       <Button
+        style={{ width: "100%" }}
         appearance="primary"
-        // disabled={false}
         size="large"
         onClick={handleNavigateToReview}
         icon={<TextBulletListSquareSearchRegular color="#fff" />}
       >
-        Review
+        {T.btnReview[local]}
       </Button>
     </div>
   );

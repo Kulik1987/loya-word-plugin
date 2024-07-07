@@ -1,5 +1,4 @@
 import React from "react";
-import { HeaderMenu } from "../../widgets";
 import { Button } from "@fluentui/react-components";
 // import { useStores } from "../../shared/store";
 import { observer } from "mobx-react";
@@ -13,11 +12,7 @@ const Review = () => {
   const handleNavigateToDraft = () => navigate("/draft");
   const handleNavigateToReview = () => navigate("/review");
 
-  return (
-    <div style={{ border: "1px solid red", flex: 1 }}>
-      <HeaderMenu title="Review" />
-    </div>
-  );
+  return <div style={{ border: "1px solid red", flex: 1 }}>Review</div>;
 };
 
 export default observer(Review);
