@@ -63,7 +63,8 @@ class DocumentStore {
       return context.sync().then(() => {
         const bodyText = body.text;
         runInAction(() => {
-          this.documentText = JSON.stringify(bodyText);
+          // this.documentText = JSON.stringify(bodyText); //! Зачем?
+          this.documentText = bodyText;
         });
       });
     }).catch((error) => {

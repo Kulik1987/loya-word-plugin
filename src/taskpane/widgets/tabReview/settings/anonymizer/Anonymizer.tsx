@@ -9,7 +9,14 @@ const Anonymizer = () => {
   const { documentStore } = useStores();
   const { documentTextCleaned } = documentStore;
 
-  const documentTextCleanedFormat = JSON.parse(documentTextCleaned);
+  let documentTextCleanedFormat = "";
+  try {
+    // documentTextCleanedFormat = JSON.parse(documentTextCleaned);
+    documentTextCleanedFormat = documentTextCleaned;
+  } catch (error) {
+    console.log("catch err", error);
+  }
+
   const handleClick = async () => {
     await Word.run(async (context) => {
       // Получаем активное тело документа
