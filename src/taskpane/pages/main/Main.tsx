@@ -1,14 +1,15 @@
 import React from "react";
 import { HeaderMenu } from "../../widgets";
-import { Button } from "@fluentui/react-components";
+import { Button, Divider } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
+import { LocaleEnums } from "../../shared/store/menu";
 
 const Main = () => {
   const { menuStore } = useStores();
-  const { local } = menuStore;
+  const { locale, setLocale } = menuStore;
   const navigate = useNavigate();
 
   const handleNavigateToDraft = () => navigate("./draft");
@@ -23,6 +24,10 @@ const Main = () => {
       ru: "Проверка",
       en: "Review",
     },
+    divider: {
+      ru: "Общие настройки",
+      en: "Common Settings",
+    },
   };
   return (
     <>
@@ -35,7 +40,7 @@ const Main = () => {
           icon={<DraftsRegular color="#fff" />}
           // disabled
         >
-          {T.btnDraft[local]}
+          {T.btnDraft[locale]}
         </Button>
         <Button
           style={{ width: "100%" }}
@@ -44,8 +49,12 @@ const Main = () => {
           onClick={handleNavigateToReview}
           icon={<TextBulletListSquareSearchRegular color="#fff" />}
         >
-          {T.btnReview[local]}
+          {T.btnReview[locale]}
         </Button>
+
+        <Divider> {T.divider[locale]}</Divider>
+        <Button onClick={() => setLocale(LocaleEnums.RU)}>RU</Button>
+        <Button onClick={() => setLocale(LocaleEnums.EN)}>EN</Button>
       </div>
     </>
   );

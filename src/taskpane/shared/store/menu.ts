@@ -6,7 +6,7 @@ export enum MenuItemsEnums {
   "REVIEW" = "REVIEW",
 }
 
-export enum LocalEnums {
+export enum LocaleEnums {
   "RU" = "ru",
   "EN" = "en",
 }
@@ -14,7 +14,7 @@ export enum LocalEnums {
 class MenuStore {
   rootStore: RootStore;
 
-  local: LocalEnums = LocalEnums.EN;
+  locale: LocaleEnums = LocaleEnums.EN;
 
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 
@@ -29,6 +29,10 @@ class MenuStore {
 
   setMenuItem = (menuItem: MenuItemsEnums | null) => {
     this.currentMenuItem = menuItem;
+  };
+
+  setLocale = (locale: LocaleEnums) => {
+    this.locale = locale;
   };
 }
 

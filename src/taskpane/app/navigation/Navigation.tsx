@@ -12,7 +12,7 @@ export enum RoutePathEnum {
 
 const Navigation: React.FC = () => {
   return (
-    <MemoryRouter initialEntries={["/"]} initialIndex={0}>
+    <MemoryRouter initialEntries={[RoutePathEnum.REVIEW]} initialIndex={0}>
       <Routes>
         <Route element={<LayerBase />}>
           <Route element={<AuthProvider />}>

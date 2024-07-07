@@ -8,7 +8,7 @@ import { RoutePathEnum } from "../../app/navigation/Navigation";
 
 const HeaderMenu = () => {
   const { menuStore } = useStores();
-  const { local } = menuStore;
+  const { locale } = menuStore;
   const location = useLocation();
   const { pathname } = location;
   // const { title } = props;
@@ -29,17 +29,17 @@ const HeaderMenu = () => {
     },
     common: {
       ru: "Сперанский",
-      en: "Speransky",
+      en: "Speransky Add-In",
     },
   };
   const title = ((path) => {
     switch (path) {
       case RoutePathEnum.DRAFT:
-        return T.draft[local];
+        return T.draft[locale];
       case RoutePathEnum.REVIEW:
-        return T.review[local];
+        return T.review[locale];
       default:
-        return T.common[local];
+        return T.common[locale];
     }
   })(pathname);
 
