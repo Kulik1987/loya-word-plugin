@@ -21,17 +21,28 @@ const GeneralConfig = () => {
   };
 
   return (
-    <ReviewSettingPanel title="General" icon={<Fire24Regular />} subtitle="Scan for obvious risks snd issues">
+    <ReviewSettingPanel
+      // title="General"
+      title="Общая"
+      // subtitle="Scan for obvious risks and issues"
+      subtitle="Анализ на базовые риски и спорные пункты"
+      icon={<Fire24Regular />}
+    >
       <div>
-        <label htmlFor="selectVerification">Select the type verification</label>
-        <Select id="selectVerification">
-          <option>Comments and Readlines</option>
-          <option>Comments Only</option>
-          <option>Redlines Only</option>
+        {/* <label htmlFor="selectVerification">Select the type verification</label> */}
+        <label htmlFor="selectVerification">Выберите, что отображать</label>
+        <Select id="selectVerification" disabled>
+          {/* <option>Comments and Readlines</option> */}
+          <option>Примечания и правки</option>
+          {/* <option>Comments Only</option> */}
+          <option>Примечания</option>
+          {/* <option>Redlines Only</option> */}
+          <option>Правки</option>
         </Select>
       </div>
       <div>
-        <label htmlFor="selectParty">Select a party</label>
+        {/* <label htmlFor="selectParty">Select a party</label> */}
+        <label htmlFor="selectParty">Выберите сторону договора</label>
         <Select id="selectParty" disabled={!isPartiesExist} onChange={handleChangeParty}>
           {isPartiesExist &&
             parties.map((part, index) => {
@@ -46,7 +57,8 @@ const GeneralConfig = () => {
         style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
         disabled={!isPartiesExist}
       >
-        Start review
+        {/* Start review */}
+        Начать проверку
       </Button>
     </ReviewSettingPanel>
   );

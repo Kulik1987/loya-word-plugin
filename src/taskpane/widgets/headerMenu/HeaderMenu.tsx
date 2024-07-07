@@ -29,7 +29,11 @@ const HeaderMenu = () => {
   return (
     <div style={{ display: "flex", gap: "8px" }}>
       {isButtonBackDisplay && (
-        <Tooltip content="Back" relationship="label">
+        <Tooltip
+          content="Назад"
+          // content="Back"
+          relationship="label"
+        >
           <Button
             appearance="transparent"
             size="large"
@@ -41,7 +45,7 @@ const HeaderMenu = () => {
         </Tooltip>
       )}
       {isButtonsTabDisplay && (
-        <>
+        <div style={{ display: "flex", gap: "12px" }}>
           <Button
             appearance="primary"
             disabled
@@ -49,7 +53,8 @@ const HeaderMenu = () => {
             onClick={() => handleClick(MenuItemsEnums.DRAFT)}
             icon={<DraftsRegular color="#fff" />}
           >
-            Draft
+            Написание
+            {/* Draft */}
           </Button>
           <Button
             appearance="primary"
@@ -58,15 +63,16 @@ const HeaderMenu = () => {
             onClick={() => handleClick(MenuItemsEnums.REVIEW)}
             icon={<TextBulletListSquareSearchRegular color="#fff" />}
           >
-            Review
+            Проверка
+            {/* Review */}
           </Button>
-        </>
+        </div>
       )}
 
       <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center" }}>
         {isTabReview && (
           <Text as="h1" weight="bold" size={400}>
-            Review
+            Проверка
           </Text>
         )}
         {isTabDraft && (
@@ -75,7 +81,11 @@ const HeaderMenu = () => {
           </Text>
         )}
       </div>
-      <Tooltip content="Logout" relationship="label">
+      <Tooltip
+        content="Выйти"
+        // content="Logout"
+        relationship="label"
+      >
         <Button
           appearance="transparent"
           size="large"

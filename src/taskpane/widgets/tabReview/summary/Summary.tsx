@@ -49,7 +49,8 @@ const Summary = () => {
             onClick={handleApplyAll}
             style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
           >
-            Apply all
+            Применить всё
+            {/* Apply all */}
           </Button>
         </div>
       )}

@@ -38,7 +38,7 @@ const Anonymizer = () => {
   return (
     <>
       <Text size={400} weight="bold">
-        Anonymizer
+        Скрыть персональные данные
       </Text>
       <div>
         <Button
@@ -48,7 +48,8 @@ const Anonymizer = () => {
           icon={<AddCircleRegular />}
           onClick={handleClick}
         >
-          Create anonymized text
+          Добавить анонимизированный текст
+          {/* Create anonymized text */}
         </Button>
       </div>
     </>
