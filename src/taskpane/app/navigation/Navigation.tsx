@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../AuthProvider";
 
 export enum RoutePathEnum {
+  ROOT = "/",
   DRAFT = "/draft",
   REVIEW = "/review",
   SUMMARY = "/summary",
@@ -12,7 +13,7 @@ export enum RoutePathEnum {
 
 const Navigation: React.FC = () => {
   return (
-    <MemoryRouter initialEntries={[RoutePathEnum.REVIEW]} initialIndex={0}>
+    <MemoryRouter initialEntries={[RoutePathEnum.ROOT]} initialIndex={0}>
       <Routes>
         <Route element={<LayerBase />}>
           <Route element={<AuthProvider />}>

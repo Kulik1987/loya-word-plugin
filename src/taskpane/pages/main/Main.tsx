@@ -25,8 +25,8 @@ const Main = () => {
       en: "Review",
     },
     divider: {
-      ru: "Общие настройки",
-      en: "Common Settings",
+      ru: "Настройки Плагина",
+      en: "Plugin Settings",
     },
   };
   return (
@@ -38,7 +38,7 @@ const Main = () => {
           size="large"
           onClick={handleNavigateToDraft}
           icon={<DraftsRegular color="#fff" />}
-          // disabled
+          disabled
         >
           {T.btnDraft[locale]}
         </Button>

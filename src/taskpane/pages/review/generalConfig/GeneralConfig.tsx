@@ -4,16 +4,18 @@ import { Fire24Regular } from "@fluentui/react-icons";
 import { ReviewSettingPanel } from "../../../entities";
 import { Button, Select } from "@fluentui/react-components";
 import { useStores } from "../../../shared/store";
+import { useNavigate } from "react-router-dom";
 
 const GeneralConfig = () => {
   const { suggestionsStore } = useStores();
-
+  const navigate = useNavigate();
   const { parties } = suggestionsStore;
 
   const isPartiesExist = Array.isArray(parties) && parties?.length > 0;
 
   const handleStartReviewGeneral = () => {
-    suggestionsStore.startReviewGeneral();
+    navigate("/summary");
+    // suggestionsStore.startReviewGeneral();
   };
 
   const handleChangeParty = (_event: React.SyntheticEvent, item: any) => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import { Text } from "@fluentui/react-components";
+import { Divider, Text } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
 import { ReviewTypesEnums } from "../../shared/enums/suggestion";
 import { GeneralConfig } from "./generalConfig";
@@ -27,9 +27,11 @@ const Review = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {isDisplayCommonInfo && (
-        <Text size={400} weight="bold">
-          Select a review
-        </Text>
+        <Divider>Select a review</Divider>
+
+        // <Text size={400} weight="bold">
+        //   Select a review
+        // </Text>
       )}
       {isDisplayGeneral && <GeneralConfig />}
 

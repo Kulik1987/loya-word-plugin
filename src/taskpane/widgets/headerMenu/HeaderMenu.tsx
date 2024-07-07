@@ -11,12 +11,21 @@ const HeaderMenu = () => {
   const { locale } = menuStore;
   const location = useLocation();
   const { pathname } = location;
-  // const { title } = props;
+
   const navigate = useNavigate();
   const { authStore } = useStores();
 
+  const isDisableGoBack = location.key === "default";
+
   const handleLogout = () => authStore.logout();
-  const handleClickBack = () => navigate("/");
+
+  const handleClickBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
+  };
 
   const T = {
     draft: {
@@ -50,6 +59,7 @@ const HeaderMenu = () => {
           appearance="transparent"
           size="large"
           onClick={handleClickBack}
+          disabled={isDisableGoBack}
           icon={<ArrowExitFilled style={{ transform: "rotate(180deg)", borderColor: "#0f6cbd", borderWidth: "2px" }} />}
         />
       </Tooltip>

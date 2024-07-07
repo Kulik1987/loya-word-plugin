@@ -1,14 +1,16 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { AddCircleRegular } from "@fluentui/react-icons";
-import { Button, Text } from "@fluentui/react-components";
+import { Button, Divider, Text } from "@fluentui/react-components";
 
 const Playbook = () => {
   return (
     <>
-      <Text size={400} weight="bold">
+      <Divider>Playbooks</Divider>
+
+      {/* <Text size={400} weight="bold">
         Playbooks
-      </Text>
+      </Text> */}
       <div>
         <Button
           appearance="primary"

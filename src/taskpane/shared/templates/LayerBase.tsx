@@ -25,7 +25,12 @@ const LayerBase = () => {
       >
         <HeaderMenu />
 
-        <div style={{ border: "1px solid rgba(0,0,0, 0.05)", flex: 1 }}>
+        <div
+          style={{
+            // border: "1px solid rgba(0,0,0, 0.05)",
+            flex: 1,
+          }}
+        >
           <Outlet />
         </div>
 
