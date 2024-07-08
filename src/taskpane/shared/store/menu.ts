@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import type RootStore from ".";
 
 export enum MenuItemsEnums {
@@ -22,9 +22,12 @@ class MenuStore {
     makeAutoObservable(this);
     this.rootStore = rootStore;
 
-    // autorun(() => {
-    //   this.loadSessionAuth();
-    // });
+    autorun(() => {
+      const locale = localStorage.getItem("speransky_locale");
+      if (locale && Object.values(LocaleEnums).includes(locale as LocaleEnums)) {
+        this.locale = locale as LocaleEnums;
+      }
+    });
   }
 
   setMenuItem = (menuItem: MenuItemsEnums | null) => {
@@ -32,6 +35,7 @@ class MenuStore {
   };
 
   setLocale = (locale: LocaleEnums) => {
+    localStorage.setItem("speransky_locale", locale);
     this.locale = locale;
   };
 }
