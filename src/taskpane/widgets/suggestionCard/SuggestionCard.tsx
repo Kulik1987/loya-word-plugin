@@ -160,30 +160,36 @@ const SuggestionCard = (props: SuggestionPropT) => {
             flex: 1,
           }}
         >
-          {!isApplyChange && isChangeExist && (
-            <Button
-              appearance="primary"
-              // disabled={!!isApplyChange}
-              size="medium"
-              onClick={handleApplyChange}
-              style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-            >
-              Применить
-              {/* Apply change */}
-            </Button>
-          )}
-          {!isApplyComment && isNoteExist && (
-            <Button
-              appearance="primary"
-              // disabled={isApplyComment}
-              size="medium"
-              onClick={handleAddComment}
-              style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-            >
-              Добавить комментарий
-              {/* Add comment */}
-            </Button>
-          )}
+          {
+            // !isApplyChange &&
+            isChangeExist && (
+              <Button
+                appearance="primary"
+                // disabled={!!isApplyChange}
+                size="medium"
+                onClick={handleApplyChange}
+                style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+              >
+                Применить правку
+                {/* Apply change */}
+              </Button>
+            )
+          }
+          {
+            // !isApplyComment &&
+            isNoteExist && (
+              <Button
+                appearance="primary"
+                // disabled={isApplyComment}
+                size="medium"
+                onClick={handleAddComment}
+                style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+              >
+                Добавить комментарий
+                {/* Add comment */}
+              </Button>
+            )
+          }
         </div>
       </div>
     </div>
