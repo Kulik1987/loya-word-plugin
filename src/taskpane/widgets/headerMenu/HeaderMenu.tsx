@@ -36,11 +36,12 @@ const HeaderMenu = () => {
       ru: "Проверка",
       en: "Review",
     },
-    common: {
+    default: {
       ru: "Сперанский",
-      en: "Speransky Add-In",
+      en: "Speransky",
     },
   };
+
   const title = ((path) => {
     switch (path) {
       case RoutePathEnum.DRAFT:
@@ -48,7 +49,7 @@ const HeaderMenu = () => {
       case RoutePathEnum.REVIEW:
         return T.review[locale];
       default:
-        return T.common[locale];
+        return T.default[locale];
     }
   })(pathname);
 
@@ -66,7 +67,7 @@ const HeaderMenu = () => {
 
       <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center" }}>
         <Text as="h1" weight="bold" size={400}>
-          {title}
+          {title?.toLocaleUpperCase() ?? title}
         </Text>
       </div>
 

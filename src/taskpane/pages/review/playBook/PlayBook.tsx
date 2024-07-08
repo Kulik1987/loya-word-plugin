@@ -1,16 +1,22 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { AddCircleRegular } from "@fluentui/react-icons";
-import { Button, Divider, Text } from "@fluentui/react-components";
+import { Button } from "@fluentui/react-components";
+import { useStores } from "../../../shared/store";
 
 const Playbook = () => {
+  const { menuStore } = useStores();
+  const { locale } = menuStore;
+
+  const T = {
+    buttonAddPlaybook: {
+      ru: "Добавить плейбук",
+      en: "New playbook",
+    },
+  };
+
   return (
     <>
-      <Divider>Playbooks</Divider>
-
-      {/* <Text size={400} weight="bold">
-        Playbooks
-      </Text> */}
       <div>
         <Button
           appearance="primary"
@@ -19,7 +25,7 @@ const Playbook = () => {
           icon={<AddCircleRegular />}
           disabled
         >
-          New playbook
+          {T.buttonAddPlaybook[locale]}
         </Button>
       </div>
     </>

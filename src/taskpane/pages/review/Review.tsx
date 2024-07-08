@@ -3,12 +3,13 @@ import { observer } from "mobx-react";
 import { Divider, Text } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
 import { ReviewTypesEnums } from "../../shared/enums/suggestion";
-import { GeneralConfig } from "./generalConfig";
-import { CustomConfig } from "./customConfig";
+import { ReviewTypeGeneral } from "./reviewTypeGeneral";
+import { ReviewTypeCustom } from "./reviewTypeCustom";
 import { PlayBook } from "./playBook";
 
 const Review = () => {
-  const { documentStore, suggestionsStore } = useStores();
+  const { documentStore, suggestionsStore, menuStore } = useStores();
+  const { locale } = menuStore;
 
   const { reviewTypeActive } = suggestionsStore;
 
@@ -24,19 +25,25 @@ const Review = () => {
     documentStore.copyToStoreDocumentText();
   }, []);
 
+  const T = {
+    dividerSelectTypeReview: {
+      ru: "Выберите тип проверки",
+      en: "Select a review",
+    },
+    dividerPlaybooks: {
+      ru: "Плейбуки",
+      en: "Playbooks",
+    },
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      {isDisplayCommonInfo && (
-        <Divider>Select a review</Divider>
+      {isDisplayCommonInfo && <Divider>{T.dividerSelectTypeReview[locale]}</Divider>}
 
-        // <Text size={400} weight="bold">
-        //   Select a review
-        // </Text>
-      )}
-      {isDisplayGeneral && <GeneralConfig />}
+      {isDisplayGeneral && <ReviewTypeGeneral />}
+      {isDisplayCustom && <ReviewTypeCustom />}
 
-      {isDisplayCustom && <CustomConfig />}
-
+      {isDisplayCommonInfo && <Divider>{T.dividerPlaybooks[locale]}</Divider>}
       {isDisplayCommonInfo && <PlayBook />}
     </div>
   );

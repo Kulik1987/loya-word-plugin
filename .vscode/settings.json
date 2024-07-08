@@ -1,6 +1,8 @@
 {
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
   "cSpell.words": [
+    "плейбук",
+    "Плейбуки",
     "Сhoosing",
     "autorun",
     "Customizer",
