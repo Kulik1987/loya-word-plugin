@@ -36,6 +36,10 @@ const HeaderMenu = () => {
       ru: "Проверка",
       en: "Review",
     },
+    summary: {
+      ru: "Отчет",
+      en: "Summary",
+    },
     default: {
       ru: "Сперанский",
       en: "Speransky",
@@ -48,6 +52,8 @@ const HeaderMenu = () => {
         return T.draft[locale];
       case RoutePathEnum.REVIEW:
         return T.review[locale];
+      case RoutePathEnum.SUMMARY:
+        return T.summary[locale];
       default:
         return T.default[locale];
     }

@@ -26,7 +26,7 @@ const Review = () => {
   }, []);
 
   const T = {
-    dividerSelectTypeReview: {
+    dividerSelectReviewType: {
       ru: "Выберите тип проверки",
       en: "Select a review",
     },
@@ -37,14 +37,25 @@ const Review = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      {isDisplayCommonInfo && <Divider>{T.dividerSelectTypeReview[locale]}</Divider>}
+    <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {isDisplayCommonInfo && (
+          <Divider>
+            <Text size={300}>{T.dividerSelectReviewType[locale]}</Text>
+          </Divider>
+        )}
+        {isDisplayGeneral && <ReviewTypeGeneral />}
+        {isDisplayCustom && <ReviewTypeCustom />}
+      </div>
 
-      {isDisplayGeneral && <ReviewTypeGeneral />}
-      {isDisplayCustom && <ReviewTypeCustom />}
-
-      {isDisplayCommonInfo && <Divider>{T.dividerPlaybooks[locale]}</Divider>}
-      {isDisplayCommonInfo && <PlayBook />}
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {isDisplayCommonInfo && (
+          <Divider>
+            <Text size={300}>{T.dividerPlaybooks[locale]}</Text>
+          </Divider>
+        )}
+        {isDisplayCommonInfo && <PlayBook />}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { HeaderMenu } from "../../widgets";
-import { Button, Divider } from "@fluentui/react-components";
+import { Button, Divider, ToggleButton, Text } from "@fluentui/react-components";
 import { useStores } from "../../shared/store";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
@@ -31,30 +31,42 @@ const Main = () => {
   };
   return (
     <>
-      <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-        <Button
-          style={{ width: "100%" }}
-          appearance="primary"
-          size="large"
-          onClick={handleNavigateToDraft}
-          icon={<DraftsRegular color="#fff" />}
-          disabled
-        >
-          {T.btnDraft[locale]}
-        </Button>
-        <Button
-          style={{ width: "100%" }}
-          appearance="primary"
-          size="large"
-          onClick={handleNavigateToReview}
-          icon={<TextBulletListSquareSearchRegular color="#fff" />}
-        >
-          {T.btnReview[locale]}
-        </Button>
+      <div style={{ display: "flex", gap: "32px", flexDirection: "column", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <Button
+            style={{ width: "100%" }}
+            appearance="primary"
+            size="large"
+            onClick={handleNavigateToDraft}
+            icon={<DraftsRegular color="#fff" />}
+            disabled
+          >
+            {T.btnDraft[locale]}
+          </Button>
+          <Button
+            style={{ width: "100%" }}
+            appearance="primary"
+            size="large"
+            onClick={handleNavigateToReview}
+            icon={<TextBulletListSquareSearchRegular color="#fff" />}
+          >
+            {T.btnReview[locale]}
+          </Button>
+        </div>
 
-        <Divider> {T.divider[locale]}</Divider>
-        <Button onClick={() => setLocale(LocaleEnums.RU)}>RU</Button>
-        <Button onClick={() => setLocale(LocaleEnums.EN)}>EN</Button>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <Divider>
+            <Text size={300}>{T.divider[locale]}</Text>
+          </Divider>
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
+            <ToggleButton checked={locale === LocaleEnums.RU} onClick={() => setLocale(LocaleEnums.RU)}>
+              RU
+            </ToggleButton>
+            <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
+              EN
+            </ToggleButton>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -74,7 +74,7 @@ const ReviewTypeCustom = () => {
     <ReviewSettingPanel title={T.title[locale]} icon={<Settings24Regular color="grey" />} subtitle={T.subtitle[locale]}>
       <div>
         <label htmlFor="selectVerification">{T.selectVerifyLabel[locale]}</label>
-        <Select id="selectVerification">
+        <Select id="selectVerification" disabled>
           <option>{T.selectVerifyItem1[locale]}</option>
           <option>{T.selectVerifyItem2[locale]}</option>
           <option>{T.selectVerifyItem3[locale]}</option>

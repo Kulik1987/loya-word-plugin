@@ -1,6 +1,6 @@
 import React from "react";
 import { HeaderMenu } from "../../widgets";
-import { Button } from "@fluentui/react-components";
+import { Button, Skeleton, SkeletonItem } from "@fluentui/react-components";
 // import { useStores } from "../../shared/store";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,21 @@ const Summary = () => {
   const handleNavigateToDraft = () => navigate("/draft");
   const handleNavigateToReview = () => navigate("/review");
 
-  return <div style={{ border: "1px solid red", flex: 1 }}>Summary</div>;
+  const isProcessing = true;
+  const isDisplaySummary = true;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {isProcessing && (
+        <Skeleton style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <SkeletonItem />
+          <SkeletonItem />
+          <SkeletonItem />
+          <SkeletonItem />
+        </Skeleton>
+      )}
+      {/* {isDisplaySummary && <Summary />} */}
+    </div>
+  );
 };
 
 export default observer(Summary);
