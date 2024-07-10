@@ -1,6 +1,6 @@
 import React from "react";
 import { Main, Draft, Review, Summary } from "../../pages";
-import { LayerBase } from "../../shared/templates";
+import { LayerBase } from "../../components/templates";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../AuthProvider";
 

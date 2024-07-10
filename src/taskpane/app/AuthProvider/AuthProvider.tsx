@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Button, Input, InputProps, Text } from "@fluentui/react-components";
-import api from "../../shared/api/v1";
-import { AuthStepperEnum } from "../../shared/store/auth";
-import { useStores } from "../../shared/store";
+import api from "../../api/v1";
+import { AuthStepperEnum } from "../../store/auth";
+import { useStores } from "../../store";
 import { observer } from "mobx-react";
 import { Outlet } from "react-router-dom";
 

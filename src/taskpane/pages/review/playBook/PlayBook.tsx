@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { AddCircleRegular } from "@fluentui/react-icons";
 import { Button } from "@fluentui/react-components";
-import { useStores } from "../../../shared/store";
+import { useStores } from "../../../store";
 
 const Playbook = () => {
   const { menuStore } = useStores();

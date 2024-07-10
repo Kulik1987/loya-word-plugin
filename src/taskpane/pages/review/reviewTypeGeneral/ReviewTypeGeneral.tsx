@@ -2,9 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
 import { Fire24Regular } from "@fluentui/react-icons";
-import { ReviewSettingPanel } from "../../../entities";
 import { Button, Select } from "@fluentui/react-components";
-import { useStores } from "../../../shared/store";
+import { ReviewTypeItem } from "../../../components/organisms";
+import { useStores } from "../../../store";
 
 const ReviewTypeGeneral = () => {
   const { suggestionsStore, menuStore } = useStores();
@@ -59,7 +59,7 @@ const ReviewTypeGeneral = () => {
   };
 
   return (
-    <ReviewSettingPanel title={T.title[locale]} icon={<Fire24Regular />} subtitle={T.subtitle[locale]}>
+    <ReviewTypeItem title={T.title[locale]} icon={<Fire24Regular />} subtitle={T.subtitle[locale]}>
       <div>
         <label htmlFor="selectVerification">{T.selectVerifyLabel[locale]}</label>
         <Select id="selectVerification" disabled>
@@ -86,7 +86,7 @@ const ReviewTypeGeneral = () => {
       >
         {T.buttonStart[locale]}
       </Button>
-    </ReviewSettingPanel>
+    </ReviewTypeItem>
   );
 };
 

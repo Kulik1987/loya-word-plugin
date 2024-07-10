@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
+import { useStores } from "../../../store";
 import { Settings24Regular } from "@fluentui/react-icons";
-import { ReviewSettingPanel } from "../../../entities";
 import { Button, Field, Select, Textarea } from "@fluentui/react-components";
-import { useStores } from "../../../shared/store";
+import { ReviewTypeItem } from "../../../components/organisms";
 
 const ReviewTypeCustom = () => {
   const { suggestionsStore, menuStore } = useStores();
@@ -71,7 +71,7 @@ const ReviewTypeCustom = () => {
   };
 
   return (
-    <ReviewSettingPanel title={T.title[locale]} icon={<Settings24Regular color="grey" />} subtitle={T.subtitle[locale]}>
+    <ReviewTypeItem title={T.title[locale]} icon={<Settings24Regular color="grey" />} subtitle={T.subtitle[locale]}>
       <div>
         <label htmlFor="selectVerification">{T.selectVerifyLabel[locale]}</label>
         <Select id="selectVerification" disabled>
@@ -106,7 +106,7 @@ const ReviewTypeCustom = () => {
       >
         {T.buttonStart[locale]}
       </Button>
-    </ReviewSettingPanel>
+    </ReviewTypeItem>
   );
 };
 

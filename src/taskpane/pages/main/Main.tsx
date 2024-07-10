@@ -1,11 +1,10 @@
 import React from "react";
-import { HeaderMenu } from "../../widgets";
-import { Button, Divider, ToggleButton, Text } from "@fluentui/react-components";
-import { useStores } from "../../shared/store";
+import { Button, Divider, ToggleButton, Text, Image } from "@fluentui/react-components";
+import { useStores } from "../../store";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
-import { LocaleEnums } from "../../shared/store/menu";
+import { LocaleEnums } from "../../store/menu";
 
 const Main = () => {
   const { menuStore } = useStores();
@@ -35,6 +34,7 @@ const Main = () => {
   };
   return (
     <>
+      {/* <Image width="90" height="90" src={logo} alt={title} /> */}
       <div style={{ display: "flex", gap: "32px", flexDirection: "column", flexWrap: "wrap" }}>
         <div
           style={{

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Divider, Text } from "@fluentui/react-components";
-import { useStores } from "../../shared/store";
-import { ReviewTypesEnums } from "../../shared/enums/suggestion";
+import { useStores } from "../../store";
+import { ReviewTypesEnums } from "../../enums/suggestion";
 import { ReviewTypeGeneral } from "./reviewTypeGeneral";
 import { ReviewTypeCustom } from "./reviewTypeCustom";
 import { PlayBook } from "./playBook";

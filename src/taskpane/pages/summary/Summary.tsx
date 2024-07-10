@@ -1,10 +1,10 @@
 import React from "react";
-import { useStores } from "../../shared/store";
-import { SuggestionCard } from "../../widgets";
+import { useStores } from "../../store";
+import { SuggestionCard } from "../../components/widgets";
 import { Button, Divider, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
-import { DocumentHelpers } from "../../shared/helpers";
+import { DocumentHelpers } from "../../helpers";
 
 const T = {
   waitingNotification: {
