@@ -3,7 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Text, Tooltip } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
-import { ArrowExitFilled, ArrowExportLtrFilled } from "@fluentui/react-icons";
+import {
+  ArrowCircleLeftRegular,
+  ArrowExitFilled,
+  ArrowExportLtrFilled,
+  ArrowLeftRegular,
+  ListRtlRegular,
+} from "@fluentui/react-icons";
 import { RoutePathEnum } from "../../../app/navigation/Navigation";
 import { DrawerModal } from "../drawerModal";
 
@@ -12,9 +18,9 @@ const T = {
     ru: "Назад",
     en: "Back",
   },
-  tooltipLogout: {
-    ru: "Выйти",
-    en: "Logout",
+  tooltipMenu: {
+    ru: "Меню",
+    en: "Menu",
   },
   draft: {
     ru: "Написание",
@@ -46,10 +52,8 @@ const HeaderMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDisableGoBack = location.key === "default";
 
-  const handleLogout = () => {
-    setIsOpen(true);
-    // authStore.logout();
-  };
+  const handleOpenModal = () => setIsOpen(true);
+  const handleCloseModal = () => setIsOpen(false);
 
   const handleClickBack = () => {
     if (window.history.length > 1) {
@@ -74,7 +78,7 @@ const HeaderMenu = () => {
 
   return (
     <>
-      <DrawerModal />
+      <DrawerModal isOpen={isOpen} onClose={handleCloseModal} />
 
       <div style={{ display: "flex", gap: "8px" }}>
         <Tooltip content={T.tooltipBack[locale]} withArrow relationship="label">
@@ -84,7 +88,9 @@ const HeaderMenu = () => {
             onClick={handleClickBack}
             disabled={isDisableGoBack}
             icon={
-              <ArrowExitFilled style={{ transform: "rotate(180deg)", borderColor: "#0f6cbd", borderWidth: "2px" }} />
+              <ArrowLeftRegular
+              // style={{ transform: "rotate(180deg)", borderColor: "#0f6cbd", borderWidth: "2px" }}
+              />
             }
           />
         </Tooltip>
@@ -95,12 +101,12 @@ const HeaderMenu = () => {
           </Text>
         </div>
 
-        <Tooltip content={T.tooltipLogout[locale]} withArrow relationship="label">
+        <Tooltip content={T.tooltipMenu[locale]} withArrow relationship="label">
           <Button
             appearance="transparent"
             size="large"
-            onClick={handleLogout}
-            icon={<ArrowExportLtrFilled style={{ transform: "rotate(360deg)" }} />}
+            onClick={handleOpenModal}
+            icon={<ListRtlRegular style={{ transform: "rotate(360deg)" }} />}
           />
         </Tooltip>
       </div>

@@ -1,12 +1,32 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Drawer, DrawerBody, DrawerHeader, DrawerHeaderTitle, Text, Tooltip } from "@fluentui/react-components";
+import React from "react";
+import { useLocation } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerHeaderTitle,
+  Text,
+  ToggleButton,
+} from "@fluentui/react-components";
 import { observer } from "mobx-react";
+import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { useStores } from "../../../store";
-import { ArrowExitFilled, ArrowExportLtrFilled, Dismiss24Regular } from "@fluentui/react-icons";
 import { RoutePathEnum } from "../../../app/navigation/Navigation";
+import { LocaleEnums } from "../../../store/menu";
+import { AuthStepperEnum } from "../../../store/auth";
+
+type DrawerModalT = {
+  isOpen: boolean;
+  onClose: () => void;
+};
 
 const T = {
+  title: {
+    ru: "Настройки",
+    en: "Settings",
+  },
   tooltipBack: {
     ru: "Назад",
     en: "Back",
@@ -31,71 +51,93 @@ const T = {
     ru: "Сперанский",
     en: "Speransky",
   },
+  dividerLang: {
+    ru: "Язык интерфейса",
+    en: "Interface language",
+  },
+  btnLogout: {
+    ru: "Выйти",
+    en: "Logout",
+  },
 };
-
-const DrawerModal = () => {
-  const { menuStore } = useStores();
-  const { locale } = menuStore;
+const appVersion = process.env.appVersion;
+const appBuildDate = process.env.appBuildDate;
+const DrawerModal = (props: DrawerModalT) => {
+  const { isOpen, onClose } = props;
+  const { menuStore, authStore } = useStores();
+  const { locale, setLocale } = menuStore;
   const location = useLocation();
   const { pathname } = location;
 
-  const navigate = useNavigate();
-  const { authStore } = useStores();
+  // const navigate = useNavigate();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const isDisableGoBack = location.key === "default";
-
+  const handleClose = () => {
+    onClose();
+  };
   const handleLogout = () => {
-    setIsOpen(true);
-    // authStore.logout();
+    authStore.logout();
+    onClose();
   };
 
-  const handleClickBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
-  };
-
-  const title = ((path) => {
-    switch (path) {
-      case RoutePathEnum.DRAFT:
-        return T.draft[locale];
-      case RoutePathEnum.REVIEW:
-        return T.review[locale];
-      case RoutePathEnum.SUMMARY:
-        return T.summary[locale];
-      default:
-        return T.default[locale];
-    }
-  })(pathname);
-
+  const isDisplayButtonLogout = authStore.authStatus === AuthStepperEnum.LOGGED;
   return (
     <Drawer
       // {...restoreFocusSourceAttributes}
       // type={type}
       separator
       open={isOpen}
-      onOpenChange={(_, { open }) => setIsOpen(open)}
+      // onOpenChange={(_, { open }) => setIsOpen(open)}
+      onOpenChange={() => onClose()}
     >
       <DrawerHeader>
         <DrawerHeaderTitle
-          action={
-            <Button
-              appearance="subtle"
-              aria-label="Close"
-              icon={<Dismiss24Regular />}
-              onClick={() => setIsOpen(false)}
-            />
-          }
+          action={<Button appearance="subtle" aria-label="Close" icon={<Dismiss24Regular />} onClick={handleClose} />}
         >
-          Default Drawer
+          {T.title[locale]}
         </DrawerHeaderTitle>
       </DrawerHeader>
 
-      <DrawerBody>
-        <p>Drawer content</p>
+      <DrawerBody
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+          justifyContent: "space-between",
+          padding: "24px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
+          <Divider alignContent="center">
+            <Text size={300} weight="medium">
+              {T.dividerLang[locale]}
+            </Text>
+          </Divider>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
+            <ToggleButton checked={locale === LocaleEnums.RU} onClick={() => setLocale(LocaleEnums.RU)}>
+              RU
+            </ToggleButton>
+            <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
+              EN
+            </ToggleButton>
+          </div>
+        </div>
+        <div>
+          <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
+            {isDisplayButtonLogout && (
+              <Button
+                appearance="outline"
+                onClick={handleLogout}
+                icon={<TextBulletListSquareSearchRegular color="#fff" />}
+              >
+                {T.btnLogout[locale]}
+              </Button>
+            )}
+          </div>
+          <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
+            v.{appVersion} {appBuildDate}
+          </div>
+        </div>
       </DrawerBody>
     </Drawer>
   );

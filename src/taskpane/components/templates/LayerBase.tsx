@@ -2,8 +2,8 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { HeaderMenu } from "../widgets";
 
-const appVersion = process.env.appVersion;
-const appBuildDate = process.env.appBuildDate;
+// const appVersion = process.env.appVersion;
+// const appBuildDate = process.env.appBuildDate;
 
 const LayerBase = () => {
   return (
@@ -35,9 +35,9 @@ const LayerBase = () => {
           <Outlet />
         </div>
 
-        <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
+        {/* <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
           v.{appVersion} {appBuildDate}
-        </div>
+        </div> */}
       </div>
     </>
   );

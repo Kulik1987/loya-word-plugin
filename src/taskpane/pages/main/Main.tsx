@@ -27,9 +27,9 @@ const Main = () => {
       ru: "Проверка",
       en: "Review",
     },
-    divider: {
-      ru: "Настройки Плагина",
-      en: "Plugin Settings",
+    dividerLang: {
+      ru: "Язык интерфейса",
+      en: "Interface language",
     },
   };
   return (
@@ -85,12 +85,8 @@ const Main = () => {
           }}
         >
           <Divider alignContent="center" inset style={{ paddingBottom: "6px" }}>
-            <Text
-              size={300}
-              weight="medium"
-              // color={"rgba(0, 0, 0, 0.025)"}
-            >
-              {T.divider[locale]}
+            <Text size={300} weight="medium">
+              {T.dividerLang[locale]}
             </Text>
           </Divider>
 
