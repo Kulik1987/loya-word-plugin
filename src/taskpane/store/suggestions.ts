@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-import fakeResponse from "./mockResponseGeneralAPI";
+import fakeResponse from "./mockResponseAPI";
 import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
