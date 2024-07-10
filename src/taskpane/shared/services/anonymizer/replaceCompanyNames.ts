@@ -12,7 +12,8 @@ function findAndReplaceParties(
     const originalName: string = matcher[0];
     const normalizedName: string = normalizeCompanyName(originalName);
     const abbreviation: string = getAbbreviation(normalizedName);
-    let replacement: string = "Сторона " + counter;
+    // let replacement: string = "Сторона " + counter;
+    let replacement: string = "*******";
 
     if (normilizedMap[normalizedName]) {
       replacement = normilizedMap[normalizedName];
