@@ -1,28 +1,51 @@
 /* global Word console */
 /// <reference types="office-js" />
 import React from "react";
-// import { useState } from "react";
 import { useStores } from "../../shared/store";
-// import { SuggestionT } from "../../shared/types";
 
-import { Button, Text } from "@fluentui/react-components";
+import { Button, Text, Tooltip } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../entities";
-// import { ContractRecommendationResponseT } from "../../shared/api/v1/contract";
 
 import { DocumentHelpers } from "../../shared/helpers";
 import { SuggestionT } from "../../shared/store/suggestions";
 import { observer } from "mobx-react";
-// import { SuggestionT } from "../../shared/types";
 
 type SuggestionPropT = {
   index: number;
   data: SuggestionT;
 };
 
+const T = {
+  buttonDismiss: {
+    ru: "Удалить",
+    en: "Dismiss",
+  },
+  buttonLocation: {
+    ru: "Найти в тексте",
+    en: "Search a location",
+  },
+  labelChange: {
+    ru: "Правка",
+    en: "Change",
+  },
+  labelComment: {
+    ru: "Комментарий",
+    en: "Comment",
+  },
+  buttonChange: {
+    ru: "Применить правку",
+    en: "Apply change",
+  },
+  buttonComment: {
+    ru: "Добавить комментарий",
+    en: "Add comment",
+  },
+};
+
 const SuggestionCard = (props: SuggestionPropT) => {
-  const { suggestionsStore } = useStores();
-  // const { suggestionsNew } = suggestionsStore;
+  const { suggestionsStore, menuStore } = useStores();
+  const { locale } = menuStore;
 
   const { data, index: indexSuggestion } = props;
 
@@ -97,26 +120,19 @@ const SuggestionCard = (props: SuggestionPropT) => {
           iconPosition="after"
           onClick={handleDismiss}
           icon={<DismissFilled fontSize={"1em"} color="grey" />}
-          // style={{ borderColor: "grey", borderWidth: "2px" }}
         >
-          Dismiss
+          {T.buttonDismiss[locale]}
         </Button>
       </div>
-      {/* {partContract && (
-        <div>
-          <Text weight="bold">PartContract (для теста): </Text>
-          <Text>{partContract}</Text>
-        </div>
-      )} */}
       {partModified && (
         <div>
-          <Text weight="bold">Change: </Text>
+          <Text weight="bold">{T.labelChange[locale]} </Text>
           <Text>{partModified}</Text>
         </div>
       )}
       {comment && (
         <div>
-          <Text weight="bold">Comment: </Text>
+          <Text weight="bold">{T.labelComment[locale]} </Text>
           <Text>{comment}</Text>
         </div>
       )}
@@ -136,13 +152,15 @@ const SuggestionCard = (props: SuggestionPropT) => {
             flexWrap: "wrap",
           }}
         >
-          <Button
-            appearance="outline"
-            size="medium"
-            onClick={handleShowInDocument}
-            icon={<LocationRippleRegular color="#0f6cbd" />}
-            style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
-          />
+          <Tooltip content={T.buttonLocation[locale]} relationship="label">
+            <Button
+              appearance="outline"
+              size="medium"
+              onClick={handleShowInDocument}
+              icon={<LocationRippleRegular color="#0f6cbd" />}
+              style={{ borderColor: "#0f6cbd", borderWidth: "2px" }}
+            />
+          </Tooltip>
         </div>
         <div
           style={{
@@ -156,23 +174,21 @@ const SuggestionCard = (props: SuggestionPropT) => {
           {!isApplyChange && isChangeExist && (
             <Button
               appearance="primary"
-              // disabled={!!isApplyChange}
               size="medium"
               onClick={handleApplyChange}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
             >
-              Apply change
+              {T.buttonChange[locale]}
             </Button>
           )}
           {!isApplyComment && isNoteExist && (
             <Button
               appearance="primary"
-              // disabled={isApplyComment}
               size="medium"
               onClick={handleAddComment}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
             >
-              Add comment
+              {T.buttonComment[locale]}
             </Button>
           )}
         </div>

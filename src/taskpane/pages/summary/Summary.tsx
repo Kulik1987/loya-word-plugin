@@ -1,50 +1,82 @@
 import React from "react";
-import { HeaderMenu } from "../../widgets";
-import { Button, Skeleton, SkeletonItem, Text } from "@fluentui/react-components";
-// import { useStores } from "../../shared/store";
+import { useStores } from "../../shared/store";
+import { SuggestionCard } from "../../widgets";
+import { Button, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
-import { useNavigate } from "react-router-dom";
-import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
+import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
+import { DocumentHelpers } from "../../shared/helpers";
+
+const T = {
+  waitingNotification: {
+    ru: "Идет подготовка отчета...",
+    en: "Please await...",
+  },
+  buttonApplyAll: {
+    ru: "Применить все",
+    en: "Apply All",
+  },
+};
 
 const Summary = () => {
-  // const { menuStore } = useStores();
-  const navigate = useNavigate();
+  const { suggestionsStore, menuStore } = useStores();
+  const { locale } = menuStore;
 
-  const handleNavigateToDraft = () => navigate("/draft");
-  const handleNavigateToReview = () => navigate("/review");
+  const { computedIsExistUntouchedSuggestions, suggestionsNew } = suggestionsStore;
 
-  const isProcessing = true;
-  const isDisplaySummary = true;
+  const { reviewTypeActive, reviewCustomProcessing, reviewGeneralProcessing } = suggestionsStore;
+
+  const isProcessing = reviewCustomProcessing || reviewGeneralProcessing;
+  const isDisplaySuggestions = reviewTypeActive !== null && !isProcessing;
+
+  const handleApplyAll = async () => {
+    suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
+      const { partContract, partModified, comment, isApplyChange, isApplyComment } = itemSuggestion;
+
+      await Word.run(async (context) => {
+        const range = await DocumentHelpers.findRange(context, partContract);
+        if (!isApplyChange) range.insertText(partModified, "Replace");
+        if (!isApplyComment) range.insertComment(comment);
+      })
+        .then(() => {
+          suggestionsStore.setSuggestionProperty(indexSuggestion, {
+            isApplyChange: true,
+            isApplyComment: true,
+          });
+        })
+        .catch((error) => {
+          console.log("Error [handleApplyAll]: " + error);
+        });
+    });
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       {isProcessing && (
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <Text as="h1" weight="bold" size={400}>
-            Идет подготовка отчета...
+            {T.waitingNotification[locale]}
           </Text>
-          <div
-            style={{
-              border: "1px solid rgba(0, 0, 0, 0.1)",
-              borderRadius: "8px",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              boxShadow: "0 3px 5px rgba(0, 0, 0, 0.25)",
-            }}
-          >
-            <Skeleton style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <SkeletonItem />
-              <SkeletonItem />
-              <SkeletonItem />
-              <div style={{ width: "50px" }}>
-                <SkeletonItem size={40} shape="rectangle" />
-              </div>
-            </Skeleton>
+          <div>
+            <SuggestionItemSkeleton />
           </div>
         </div>
       )}
-      {/* {isDisplaySummary && <Summary />} */}
+      {isDisplaySuggestions &&
+        suggestionsNew?.map((data, index) => {
+          return <SuggestionCard data={data} key={index} index={index} />;
+        })}
+      {computedIsExistUntouchedSuggestions && (
+        <div>
+          <Button
+            appearance="primary"
+            size="medium"
+            onClick={handleApplyAll}
+            style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+          >
+            {T.buttonApplyAll[locale]}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

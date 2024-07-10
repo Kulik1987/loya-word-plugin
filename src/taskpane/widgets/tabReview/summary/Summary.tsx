@@ -11,7 +11,7 @@ import { DocumentHelpers } from "../../../shared/helpers";
 const Summary = () => {
   const { suggestionsStore } = useStores();
 
-  const { isExistUntouchedSuggestions, suggestionsNew } = suggestionsStore;
+  const { computedIsExistUntouchedSuggestions, suggestionsNew } = suggestionsStore;
 
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
@@ -40,7 +40,7 @@ const Summary = () => {
           return <SuggestionCard data={data} key={index} index={index} />;
         })}
       </div>
-      {isExistUntouchedSuggestions && (
+      {computedIsExistUntouchedSuggestions && (
         <div>
           <Button
             appearance="primary"

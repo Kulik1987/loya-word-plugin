@@ -16,7 +16,7 @@ const ReviewTypeGeneral = () => {
 
   const handleStartReviewGeneral = () => {
     navigate("/summary");
-    // suggestionsStore.startReviewGeneral();
+    suggestionsStore.startReviewGeneral();
   };
 
   const handleChangeParty = (_event: React.SyntheticEvent, item: any) => {
