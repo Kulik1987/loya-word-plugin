@@ -1,15 +1,15 @@
 import React from "react";
 import { useStores } from "../../shared/store";
 import { SuggestionCard } from "../../widgets";
-import { Button, Text } from "@fluentui/react-components";
+import { Button, Divider, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
 import { DocumentHelpers } from "../../shared/helpers";
 
 const T = {
   waitingNotification: {
-    ru: "Идет подготовка отчета...",
-    en: "Please await...",
+    ru: "Идет подготовка отчета",
+    en: "Please await",
   },
   buttonApplyAll: {
     ru: "Применить все",
@@ -53,9 +53,11 @@ const Summary = () => {
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       {isProcessing && (
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <Text as="h1" weight="bold" size={400}>
-            {T.waitingNotification[locale]}
-          </Text>
+          <Divider alignContent="center" inset>
+            <Text size={300} weight="medium">
+              {T.waitingNotification[locale]}
+            </Text>
+          </Divider>
           <div>
             <SuggestionItemSkeleton />
           </div>
@@ -65,7 +67,7 @@ const Summary = () => {
         suggestionsNew?.map((data, index) => {
           return <SuggestionCard data={data} key={index} index={index} />;
         })}
-      {computedIsExistUntouchedSuggestions && (
+      {computedIsExistUntouchedSuggestions && !isProcessing && (
         <div>
           <Button
             appearance="primary"

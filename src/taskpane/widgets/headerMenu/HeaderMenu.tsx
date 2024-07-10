@@ -28,6 +28,14 @@ const HeaderMenu = () => {
   };
 
   const T = {
+    tooltipBack: {
+      ru: "Назад",
+      en: "Back",
+    },
+    tooltipLogout: {
+      ru: "Выйти",
+      en: "Logout",
+    },
     draft: {
       ru: "Написание",
       en: "Draft",
@@ -61,7 +69,7 @@ const HeaderMenu = () => {
 
   return (
     <div style={{ display: "flex", gap: "8px" }}>
-      <Tooltip content="Back" relationship="label">
+      <Tooltip content={T.tooltipBack[locale]} withArrow relationship="label">
         <Button
           appearance="transparent"
           size="large"
@@ -77,7 +85,7 @@ const HeaderMenu = () => {
         </Text>
       </div>
 
-      <Tooltip content="Logout" relationship="label">
+      <Tooltip content={T.tooltipLogout[locale]} withArrow relationship="label">
         <Button
           appearance="transparent"
           size="large"

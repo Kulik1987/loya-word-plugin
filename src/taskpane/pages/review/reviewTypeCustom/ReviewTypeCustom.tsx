@@ -16,7 +16,7 @@ const ReviewTypeCustom = () => {
 
   const handleStartReviewCustom = () => {
     navigate("/summary");
-    // suggestionsStore.startReviewCustom();
+    suggestionsStore.startReviewCustom();
   };
 
   const handleChangeParty = (_event: React.SyntheticEvent, item: any) => {

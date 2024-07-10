@@ -31,7 +31,7 @@ class SuggestionsStore {
 
   reviewGeneralProcessing: boolean = false;
 
-  reviewCustomProcessing: boolean = false;
+  reviewCustomProcessing: boolean = true;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -117,12 +117,14 @@ class SuggestionsStore {
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
       const textContract = this.rootStore.documentStore.documentText;
-      const response = await api.contract.recommendationCustom({
-        id: idQuery,
-        manualRequrement,
-        textContract,
-        party,
-      });
+      const response = isMockMode
+        ? { data: fakeResponse, idQuery }
+        : await api.contract.recommendationCustom({
+            id: idQuery,
+            manualRequrement,
+            textContract,
+            party,
+          });
       const { partContract, partModified, id } = response.data[0];
       const isNeedRepeatQuery = partContract === null || partModified === null;
 

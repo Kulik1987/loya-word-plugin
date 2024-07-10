@@ -7,6 +7,17 @@ import { ReviewTypeGeneral } from "./reviewTypeGeneral";
 import { ReviewTypeCustom } from "./reviewTypeCustom";
 import { PlayBook } from "./playBook";
 
+const T = {
+  dividerSelectReviewType: {
+    ru: "Выберите тип проверки",
+    en: "Select a review",
+  },
+  dividerPlaybooks: {
+    ru: "Плейбуки",
+    en: "Playbooks",
+  },
+};
+
 const Review = () => {
   const { documentStore, suggestionsStore, menuStore } = useStores();
   const { locale } = menuStore;
@@ -16,45 +27,29 @@ const Review = () => {
   const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
   const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
 
-  const isDisplayGeneral = isGeneralStarted || reviewTypeActive === null;
-  const isDisplayCustom = isCustomStarted || reviewTypeActive === null;
-
-  const isDisplayCommonInfo = isDisplayGeneral && isDisplayCustom;
-
   useEffect(() => {
     documentStore.copyToStoreDocumentText();
   }, []);
 
-  const T = {
-    dividerSelectReviewType: {
-      ru: "Выберите тип проверки",
-      en: "Select a review",
-    },
-    dividerPlaybooks: {
-      ru: "Плейбуки",
-      en: "Playbooks",
-    },
-  };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {isDisplayCommonInfo && (
-          <Divider>
-            <Text size={300}>{T.dividerSelectReviewType[locale]}</Text>
-          </Divider>
-        )}
-        {isDisplayGeneral && <ReviewTypeGeneral />}
-        {isDisplayCustom && <ReviewTypeCustom />}
+        <Divider alignContent="center" inset>
+          <Text size={300} weight="medium">
+            {T.dividerSelectReviewType[locale]}
+          </Text>
+        </Divider>
+        <ReviewTypeGeneral />
+        <ReviewTypeCustom />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {isDisplayCommonInfo && (
-          <Divider>
-            <Text size={300}>{T.dividerPlaybooks[locale]}</Text>
-          </Divider>
-        )}
-        {isDisplayCommonInfo && <PlayBook />}
+        <Divider alignContent="center" inset>
+          <Text size={300} weight="medium">
+            {T.dividerPlaybooks[locale]}
+          </Text>
+        </Divider>
+        <PlayBook />
       </div>
     </div>
   );
