@@ -28,7 +28,7 @@ const Settings = () => {
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {isDisplayCommonInfo && (
         <Text size={400} weight="bold">
-          Select a review
+          Выберите тип проверки
         </Text>
       )}
       {isDisplayGeneral && <GeneralConfig />}

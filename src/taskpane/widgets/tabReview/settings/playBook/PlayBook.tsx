@@ -7,7 +7,7 @@ const Playbook = () => {
   return (
     <>
       <Text size={400} weight="bold">
-        Playbooks
+        Плейбуки
       </Text>
       <div>
         <Button
@@ -17,7 +17,7 @@ const Playbook = () => {
           icon={<AddCircleRegular />}
           disabled
         >
-          New playbook
+          Добавить плейбуки
         </Button>
       </div>
     </>

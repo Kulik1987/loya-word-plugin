@@ -99,7 +99,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
           icon={<DismissFilled fontSize={"1em"} color="grey" />}
           // style={{ borderColor: "grey", borderWidth: "2px" }}
         >
-          Dismiss
+          Удалить
         </Button>
       </div>
       {/* {partContract && (
@@ -110,13 +110,13 @@ const SuggestionCard = (props: SuggestionPropT) => {
       )} */}
       {partModified && (
         <div>
-          <Text weight="bold">Change: </Text>
+          <Text weight="bold">Правка: </Text>
           <Text>{partModified}</Text>
         </div>
       )}
       {comment && (
         <div>
-          <Text weight="bold">Comment: </Text>
+          <Text weight="bold">Комментарий: </Text>
           <Text>{comment}</Text>
         </div>
       )}
@@ -161,7 +161,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
               onClick={handleApplyChange}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
             >
-              Apply change
+              Применить правку
             </Button>
           )}
           {!isApplyComment && isNoteExist && (
@@ -172,7 +172,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
               onClick={handleAddComment}
               style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
             >
-              Add comment
+              Добавить комментарий
             </Button>
           )}
         </div>

@@ -26,20 +26,20 @@ const CustomConfig = () => {
 
   return (
     <ReviewSettingPanel
-      title="Custom"
+      title="Индивидуальная"
       icon={<Settings24Regular color="grey" />}
-      subtitle="Focus the review on any topic"
+      subtitle="Добавьте любые свои инструкции"
     >
       <div>
-        <label htmlFor="selectVerification">Select the type verification</label>
-        <Select id="selectVerification">
-          <option>Comments and Readlines</option>
-          <option>Comments Only</option>
-          <option>Redlines Only</option>
+        <label htmlFor="selectVerification">Выберите, что отображать</label>
+        <Select id="selectVerification" disabled>
+          <option>Примечания и правки</option>
+          <option>Примечания</option>
+          <option>Правки</option>
         </Select>
       </div>
       <div>
-        <label htmlFor="selectParty">Select a party</label>
+        <label htmlFor="selectParty">Выберите сторону договора</label>
         <Select id="selectParty" disabled={!isPartiesExist} onChange={handleChangeParty}>
           {isPartiesExist &&
             parties.map((part, index) => {
@@ -47,9 +47,9 @@ const CustomConfig = () => {
             })}
         </Select>
       </div>
-      <Field label="Custom instructions">
+      <Field label="Пользовательские инструкции">
         <Textarea
-          placeholder="Enter a description of the condition..."
+          placeholder="Напишите конкретные требования или общие задачи проверки"
           rows={5}
           onChange={handleChangeCustomInstructions}
           defaultValue={formCustomInstructions ?? ""}
@@ -62,7 +62,7 @@ const CustomConfig = () => {
         style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
         disabled={!isPartiesExist}
       >
-        Start review
+        Начать проверку
       </Button>
     </ReviewSettingPanel>
   );
