@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Text, Tooltip } from "@fluentui/react-components";
+import { Button, Drawer, DrawerBody, DrawerHeader, DrawerHeaderTitle, Text, Tooltip } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
-import { ArrowExitFilled, ArrowExportLtrFilled } from "@fluentui/react-icons";
+import { ArrowExitFilled, ArrowExportLtrFilled, Dismiss24Regular } from "@fluentui/react-icons";
 import { RoutePathEnum } from "../../../app/navigation/Navigation";
-import { DrawerModal } from "../drawerModal";
 
 const T = {
   tooltipBack: {
@@ -34,7 +33,7 @@ const T = {
   },
 };
 
-const HeaderMenu = () => {
+const DrawerModal = () => {
   const { menuStore } = useStores();
   const { locale } = menuStore;
   const location = useLocation();
@@ -73,39 +72,33 @@ const HeaderMenu = () => {
   })(pathname);
 
   return (
-    <>
-      <DrawerModal />
+    <Drawer
+      // {...restoreFocusSourceAttributes}
+      // type={type}
+      separator
+      open={isOpen}
+      onOpenChange={(_, { open }) => setIsOpen(open)}
+    >
+      <DrawerHeader>
+        <DrawerHeaderTitle
+          action={
+            <Button
+              appearance="subtle"
+              aria-label="Close"
+              icon={<Dismiss24Regular />}
+              onClick={() => setIsOpen(false)}
+            />
+          }
+        >
+          Default Drawer
+        </DrawerHeaderTitle>
+      </DrawerHeader>
 
-      <div style={{ display: "flex", gap: "8px" }}>
-        <Tooltip content={T.tooltipBack[locale]} withArrow relationship="label">
-          <Button
-            appearance="transparent"
-            size="large"
-            onClick={handleClickBack}
-            disabled={isDisableGoBack}
-            icon={
-              <ArrowExitFilled style={{ transform: "rotate(180deg)", borderColor: "#0f6cbd", borderWidth: "2px" }} />
-            }
-          />
-        </Tooltip>
-
-        <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center" }}>
-          <Text as="h1" weight="bold" size={400}>
-            {title?.toLocaleUpperCase() ?? title}
-          </Text>
-        </div>
-
-        <Tooltip content={T.tooltipLogout[locale]} withArrow relationship="label">
-          <Button
-            appearance="transparent"
-            size="large"
-            onClick={handleLogout}
-            icon={<ArrowExportLtrFilled style={{ transform: "rotate(360deg)" }} />}
-          />
-        </Tooltip>
-      </div>
-    </>
+      <DrawerBody>
+        <p>Drawer content</p>
+      </DrawerBody>
+    </Drawer>
   );
 };
 
-export default observer(HeaderMenu);
+export default observer(DrawerModal);
