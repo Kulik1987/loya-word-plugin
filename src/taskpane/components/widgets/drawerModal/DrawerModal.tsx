@@ -128,7 +128,9 @@ const DrawerModal = (props: DrawerModalT) => {
               <Button
                 appearance="outline"
                 onClick={handleLogout}
-                icon={<TextBulletListSquareSearchRegular color="#fff" />}
+                style={{ borderColor: "#ce860f", color: "#ce860f" }}
+                icon={<TextBulletListSquareSearchRegular style={{ color: "#ce860f" }} />}
+                color="red"
               >
                 {T.btnLogout[locale]}
               </Button>
