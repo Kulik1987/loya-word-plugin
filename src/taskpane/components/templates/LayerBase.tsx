@@ -10,7 +10,7 @@ const LayerBase = () => {
     <>
       <div
         style={{
-          border: "2px solid green",
+          // border: "2px solid green",
           position: "absolute",
           display: "flex",
           flexDirection: "column",
