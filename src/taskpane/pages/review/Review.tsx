@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import { Divider, Text } from "@fluentui/react-components";
+import { Button, Divider, Text } from "@fluentui/react-components";
 import { useStores } from "../../store";
 import { ReviewTypesEnums } from "../../enums/suggestion";
 import { ReviewTypeGeneral } from "./reviewTypeGeneral";
 import { ReviewTypeCustom } from "./reviewTypeCustom";
 import { PlayBook } from "./playBook";
+import { AddCircleRegular } from "@fluentui/react-icons";
 
 const T = {
   dividerSelectReviewType: {
@@ -16,16 +17,24 @@ const T = {
     ru: "Плейбуки",
     en: "Playbooks",
   },
+  dividerAnonymizer: {
+    ru: "Анонимайзер",
+    en: "Anonymizer",
+  },
+  buttonAnonymizer: {
+    ru: "Добавить",
+    en: "Add",
+  },
 };
 
 const Review = () => {
-  const { documentStore, suggestionsStore, menuStore } = useStores();
+  const { documentStore, menuStore } = useStores();
   const { locale } = menuStore;
 
-  const { reviewTypeActive } = suggestionsStore;
+  // const { reviewTypeActive } = suggestionsStore;
 
-  const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
-  const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
+  // const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
+  // const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
 
   useEffect(() => {
     documentStore.copyToStoreDocumentText();
@@ -50,6 +59,26 @@ const Review = () => {
           </Text>
         </Divider>
         <PlayBook />
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <Divider alignContent="center" inset>
+          <Text size={300} weight="medium">
+            {T.dividerAnonymizer[locale]}
+          </Text>
+        </Divider>
+        <Text size={300}>Опция добавляет в конец документа текст договора с удаленными персональными данными</Text>
+        <div>
+          <Button
+            appearance="primary"
+            size="medium"
+            style={{ whiteSpace: "nowrap" }}
+            icon={<AddCircleRegular />}
+            disabled
+          >
+            {T.buttonAnonymizer[locale]}
+          </Button>
+        </div>
       </div>
     </div>
   );
