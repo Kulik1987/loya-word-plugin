@@ -131,7 +131,6 @@ class SuggestionsStore {
         }, 20000);
       } else {
         runInAction(() => {
-          // this.suggestionsNew = fakeResponseCustom;
           this.suggestionsNew = response.data;
           this.reviewCustomProcessing = false;
         });

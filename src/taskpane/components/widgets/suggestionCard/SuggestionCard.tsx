@@ -45,17 +45,22 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const { data, index: indexSuggestion } = props;
 
-  const { levelRisk, comment, partModified, partContract, isApplyChange, isApplyComment, isDismiss } = data;
-
-  const changeText = partModified;
-  const commentText = comment;
+  const {
+    levelRisk,
+    comment: commentText,
+    partModified: changeText,
+    partContract: sourceText,
+    isApplyChange,
+    // isApplyComment,
+    isDismiss,
+  } = data;
 
   const isChangeExist = !!changeText;
-  const isNoteExist = !!commentText;
+  const isCommentExist = !!commentText;
 
   const handleShowInDocument = async () => {
     await Word.run(async (context) => {
-      const searchText = !isApplyChange ? partContract : partModified;
+      const searchText = !isApplyChange ? sourceText : changeText;
       const findRange = await DocumentHelpers.findRange(context, searchText);
       findRange.select();
     }).catch((error) => {
@@ -65,7 +70,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleApplyChange = async () => {
     await Word.run(async (context) => {
-      DocumentHelpers.applyChange(context, partContract, partModified);
+      DocumentHelpers.applyChange(context, sourceText, changeText);
       context.sync();
     })
       .then(() => {
@@ -78,7 +83,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleAddComment = async () => {
     await Word.run(async (context) => {
-      const searchText = !isApplyChange ? partContract : partModified;
+      const searchText = !isApplyChange ? sourceText : changeText;
       DocumentHelpers.applyComment(context, searchText, commentText);
       context.sync();
     })
@@ -92,10 +97,10 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleDismiss = () => {
     suggestionsStore.setSuggestionProperty(indexSuggestion, { isDismiss: true });
-    // suggestionsStore.dismissSuggestion(indexSuggestion);
   };
 
   if (isDismiss) return null;
+
   return (
     <div
       style={{
@@ -120,16 +125,16 @@ const SuggestionCard = (props: SuggestionPropT) => {
           {T.buttonDismiss[locale]}
         </Button>
       </div>
-      {partModified && (
+      {isChangeExist && (
         <div>
           <Text weight="bold">{T.labelChange[locale]} </Text>
-          <Text>{partModified}</Text>
+          <Text>{changeText}</Text>
         </div>
       )}
-      {comment && (
+      {isCommentExist && (
         <div>
           <Text weight="bold">{T.labelComment[locale]} </Text>
-          <Text>{comment}</Text>
+          <Text>{commentText}</Text>
         </div>
       )}
       <div
@@ -167,7 +172,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
             flex: 1,
           }}
         >
-          {!isApplyChange && isChangeExist && (
+          {isChangeExist && (
             <Button
               appearance="primary"
               size="medium"
@@ -177,7 +182,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
               {T.buttonChange[locale]}
             </Button>
           )}
-          {!isApplyComment && isNoteExist && (
+          {isCommentExist && (
             <Button
               appearance="primary"
               size="medium"
