@@ -4,6 +4,7 @@ import fakeResponse from "./mockResponseAPI";
 import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
+import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 
@@ -20,7 +21,7 @@ class SuggestionsStore {
 
   suggestionsNew: SuggestionT[] | null = null;
 
-  parties: string[] | null = APP_SET_MOCK ? ["1", "2"] : null;
+  parties: string[] | null = null;
 
   formPartySelected: string | null = null;
 
@@ -156,9 +157,14 @@ class SuggestionsStore {
 
   requestParties = async () => {
     try {
+      console.log("requestParties [start]");
+
       const textContractSource = this.rootStore.documentStore.textContractSource;
+
       if (textContractSource) {
-        const response = await api.contract.parties({ textContract: textContractSource });
+        const response = APP_SET_MOCK
+          ? { data: fakeResponsePartiesAPI }
+          : await api.contract.parties({ textContract: textContractSource });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;
@@ -168,6 +174,8 @@ class SuggestionsStore {
       return "";
     } catch (error) {
       return "error";
+    } finally {
+      console.log("requestParties [final]");
     }
   };
 

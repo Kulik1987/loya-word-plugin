@@ -25,13 +25,7 @@ class DocumentStore {
     reaction(
       () => this.textContractSource,
       () => {
-        const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
-        const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
-        console.log("FLAGS", { APP_SET_MOCK, APP_SET_ANONYMIZER });
-
-        if (APP_SET_MOCK) {
-          console.log("Started MOCK_MODE", APP_SET_MOCK);
-        } else {
+        if (this.textContractSource?.length > 0) {
           this.rootStore.suggestionsStore.requestParties();
         }
       }
@@ -65,16 +59,14 @@ class DocumentStore {
         return context.sync().then(() => {
           const bodyText = body.text;
           runInAction(() => {
-            this.textContractSource = JSON.stringify(bodyText);
+            // this.textContractSource = JSON.stringify(bodyText);
+            this.textContractSource = bodyText;
+            console.log("copyTextContractToStore [success]");
           });
         });
-      })
-        .catch((error) => {
-          console.error("Произошла ошибка: " + error);
-        })
-        .finally(() => {
-          console.log("copyTextContractToStore [final]");
-        });
+      }).catch((error) => {
+        console.error("copyTextContractToStore [error]" + error);
+      });
     }
   };
 }
