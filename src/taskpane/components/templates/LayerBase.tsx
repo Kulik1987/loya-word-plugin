@@ -2,15 +2,11 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { HeaderMenu } from "../widgets";
 
-// const appVersion = process.env.appVersion;
-// const appBuildDate = process.env.appBuildDate;
-
 const LayerBase = () => {
   return (
     <>
       <div
         style={{
-          // border: "2px solid green",
           position: "absolute",
           display: "flex",
           flexDirection: "column",
@@ -23,22 +19,14 @@ const LayerBase = () => {
           overflow: "auto",
           gap: "32px",
           backgroundColor: "#fff",
+          overflowY: "scroll",
         }}
       >
         <HeaderMenu />
 
-        <div
-          style={{
-            // border: "1px solid rgba(0,0,0, 0.05)",
-            flex: 1,
-          }}
-        >
+        <div style={{ flex: 1 }}>
           <Outlet />
         </div>
-
-        {/* <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
-          v.{appVersion} {appBuildDate}
-        </div> */}
       </div>
     </>
   );
