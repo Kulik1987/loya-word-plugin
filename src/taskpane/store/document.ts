@@ -10,6 +10,7 @@ import {
   removePayment,
   removePersonData,
 } from "../helpers/anonymizer";
+const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
 
 class DocumentStore {
   rootStore: RootStore;
@@ -29,8 +30,15 @@ class DocumentStore {
       () => this.textContractSource,
       () => {
         if (this.textContractSource?.length > 0) {
+          if (APP_SET_ANONYMIZER) this.buildAnonymizedText();
           this.rootStore.suggestionsStore.requestParties();
         }
+      }
+    );
+    reaction(
+      () => this.textContractAnonymized,
+      () => {
+        console.log("textContractAnonymized [updated]");
       }
     );
   }
@@ -41,16 +49,18 @@ class DocumentStore {
   buildAnonymizedText = () => {
     const docText = this.textContractSource;
     if (typeof docText !== "string") return null;
-    this.textContractAnonymized = (() => {
-      let modText = "";
-      modText = removeAddressesByPart(docText);
-      modText = removeAmountByPart(modText);
-      modText = removePersonData(modText);
-      modText = removeContract(modText);
-      modText = removePayment(modText);
-      modText = replaceCompanyNames(modText);
-      return modText;
-    })();
+    runInAction(() => {
+      this.textContractAnonymized = (() => {
+        let modText = "";
+        modText = removeAddressesByPart(docText);
+        modText = removeAmountByPart(modText);
+        modText = removePersonData(modText);
+        modText = removeContract(modText);
+        modText = removePayment(modText);
+        modText = replaceCompanyNames(modText);
+        return modText;
+      })();
+    });
   };
 
   /**

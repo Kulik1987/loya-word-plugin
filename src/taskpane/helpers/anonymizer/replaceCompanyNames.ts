@@ -183,8 +183,6 @@ const replaceCompanyNames = (inputString: string): string => {
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexMBUFull);
   text = findAndReplaceParties(text, companyMap, normilizedMap, regexMBUShort);
 
-  console.log("text", text);
-
   return text;
 };
 

@@ -16,7 +16,7 @@ const Anonymizer = () => {
   const { locale } = menuStore;
 
   const handleAddAnonymizedText = async () => {
-    documentStore.buildAnonymizedText();
+    // documentStore.buildAnonymizedText();
     const { textContractAnonymized } = documentStore;
     if (typeof textContractAnonymized !== "string") return null;
     await Word.run(async (context) => {

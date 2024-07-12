@@ -7,6 +7,7 @@ import { ContractRecommendationResponseT } from "../api/v1/contract";
 import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
+const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
 
 type SuggestionPropertyT = {
   isDismiss?: boolean;
@@ -54,14 +55,8 @@ class SuggestionsStore {
     this.suggestionsNew = expand;
   };
 
-  resetStore = () => {
-    this.suggestionsNew = null;
-    this.reviewTypeActive = null;
-  };
-
   startReviewGeneral = async () => {
     this.clearSuggestions();
-    // await this.rootStore.documentStore.copyTextContractToStore();
     runInAction(() => {
       this.reviewTypeActive = ReviewTypesEnums.GENERAL;
       this.reviewGeneralProcessing = true;
@@ -71,7 +66,6 @@ class SuggestionsStore {
 
   startReviewCustom = async () => {
     this.clearSuggestions();
-    // await this.rootStore.documentStore.copyTextContractToStore();
     runInAction(() => {
       this.reviewCustomProcessing = true;
       this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
@@ -80,10 +74,11 @@ class SuggestionsStore {
   };
 
   getSuggestionGeneral = async (idQuery: string = undefined, repeatCount = 0) => {
-    const REPEAT_LIMIT = 10;
+    const REPEAT_LIMIT = 10; /** Количество повторных запросов при ожидании ответа */
     try {
-      // const response = { data: fakeResponse, idQuery }; // mock
-      const textContract = this.rootStore.documentStore.textContractSource;
+      const { textContractSource, textContractAnonymized } = this.rootStore.documentStore;
+      const textContract = APP_SET_ANONYMIZER ? textContractAnonymized : textContractSource;
+
       const party = this.formPartySelected;
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
@@ -114,11 +109,13 @@ class SuggestionsStore {
   };
 
   getSuggestionsCustom = async (idQuery: string = undefined, repeatCount = 0) => {
-    const REPEAT_LIMIT = 10;
+    const REPEAT_LIMIT = 10; /** Количество повторных запросов при ожидании ответа */
     try {
+      const { textContractSource, textContractAnonymized } = this.rootStore.documentStore;
+      const textContract = APP_SET_ANONYMIZER ? textContractAnonymized : textContractSource;
+
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
-      const textContract = this.rootStore.documentStore.textContractSource;
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationCustom({
@@ -159,7 +156,11 @@ class SuggestionsStore {
     try {
       console.log("requestParties [start]");
 
-      const textContractSource = this.rootStore.documentStore.textContractSource;
+      const { textContractSource, textContractAnonymized } = this.rootStore.documentStore;
+      const textContract = APP_SET_ANONYMIZER ? textContractAnonymized : textContractSource;
+
+      // const textContractSource = this.rootStore.documentStore.textContractSource;
+      console.log("requestParties [textContract]:", textContract);
 
       if (textContractSource) {
         const response = APP_SET_MOCK
@@ -192,6 +193,11 @@ class SuggestionsStore {
 
   clearSuggestions = () => {
     this.suggestionsNew = null;
+  };
+
+  resetStore = () => {
+    this.suggestionsNew = null;
+    this.reviewTypeActive = null;
   };
 }
 
