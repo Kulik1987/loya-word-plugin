@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Button, Divider, Text } from "@fluentui/react-components";
 import { useStores } from "../../store";
-import { ReviewTypesEnums } from "../../enums/suggestion";
 import { ReviewTypeGeneral } from "./reviewTypeGeneral";
 import { ReviewTypeCustom } from "./reviewTypeCustom";
 import { PlayBook } from "./playBook";
@@ -28,17 +27,30 @@ const T = {
 };
 
 const Review = () => {
-  const { documentStore, menuStore } = useStores();
+  const { menuStore, documentStore } = useStores();
   const { locale } = menuStore;
 
-  // const { reviewTypeActive } = suggestionsStore;
-
-  // const isGeneralStarted = reviewTypeActive === ReviewTypesEnums.GENERAL;
-  // const isCustomStarted = reviewTypeActive === ReviewTypesEnums.CUSTOM;
-
   useEffect(() => {
-    documentStore.copyToStoreDocumentText();
+    console.log("navigate to [page review]");
   }, []);
+
+  const handleAddAnonymizedText = async () => {
+    documentStore.buildAnonymizedText();
+    const { textContractAnonymized } = documentStore;
+    if (typeof textContractAnonymized !== "string") return null;
+    await Word.run(async (context) => {
+      const body = context.document.body;
+      // Создаем новый Range в конце документа для прокрутки к концу
+      const range = body.getRange("End");
+      range.select();
+      // Добавляем текст в конец документа
+      body.insertText(textContractAnonymized, Word.InsertLocation.end);
+
+      await context.sync();
+    }).catch((error) => {
+      console.log("Error [handleAddAnonymizedText]: " + error);
+    });
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
@@ -74,7 +86,7 @@ const Review = () => {
             size="medium"
             style={{ whiteSpace: "nowrap" }}
             icon={<AddCircleRegular />}
-            disabled
+            onClick={handleAddAnonymizedText}
           >
             {T.buttonAnonymizer[locale]}
           </Button>

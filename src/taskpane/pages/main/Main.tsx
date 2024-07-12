@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Divider, ToggleButton, Text, Image } from "@fluentui/react-components";
 import { useStores } from "../../store";
 import { observer } from "mobx-react";
@@ -6,32 +6,37 @@ import { useNavigate } from "react-router-dom";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { LocaleEnums } from "../../store/menu";
 
+const T = {
+  actionsLabel: {
+    ru: "Выберите действие",
+    en: "Select an action",
+  },
+  btnDraft: {
+    ru: "Написание",
+    en: "Draft",
+  },
+  btnReview: {
+    ru: "Проверка",
+    en: "Review",
+  },
+  dividerLang: {
+    ru: "Язык интерфейса",
+    en: "Interface language",
+  },
+};
+
 const Main = () => {
-  const { menuStore } = useStores();
+  const { menuStore, documentStore } = useStores();
   const { locale, setLocale } = menuStore;
   const navigate = useNavigate();
 
   const handleNavigateToDraft = () => navigate("./draft");
-  const handleNavigateToReview = () => navigate("./review");
+  const handleNavigateToReview = async () => navigate("./review");
 
-  const T = {
-    actionsLabel: {
-      ru: "Выберите действие",
-      en: "Select an action",
-    },
-    btnDraft: {
-      ru: "Написание",
-      en: "Draft",
-    },
-    btnReview: {
-      ru: "Проверка",
-      en: "Review",
-    },
-    dividerLang: {
-      ru: "Язык интерфейса",
-      en: "Interface language",
-    },
-  };
+  useEffect(() => {
+    documentStore.copyTextContractToStore();
+  }, []);
+
   return (
     <>
       {/* <Image width="90" height="90" src={logo} alt={title} /> */}

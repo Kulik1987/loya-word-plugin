@@ -60,15 +60,21 @@ class SuggestionsStore {
 
   startReviewGeneral = async () => {
     this.clearSuggestions();
-    this.reviewTypeActive = ReviewTypesEnums.GENERAL;
-    this.reviewGeneralProcessing = true;
+    // await this.rootStore.documentStore.copyTextContractToStore();
+    runInAction(() => {
+      this.reviewTypeActive = ReviewTypesEnums.GENERAL;
+      this.reviewGeneralProcessing = true;
+    });
     this.getSuggestionGeneral();
   };
 
   startReviewCustom = async () => {
     this.clearSuggestions();
-    this.reviewCustomProcessing = true;
-    this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
+    // await this.rootStore.documentStore.copyTextContractToStore();
+    runInAction(() => {
+      this.reviewCustomProcessing = true;
+      this.reviewTypeActive = ReviewTypesEnums.CUSTOM;
+    });
     this.getSuggestionsCustom();
   };
 
@@ -76,7 +82,7 @@ class SuggestionsStore {
     const REPEAT_LIMIT = 10;
     try {
       // const response = { data: fakeResponse, idQuery }; // mock
-      const textContract = this.rootStore.documentStore.documentText;
+      const textContract = this.rootStore.documentStore.textContractSource;
       const party = this.formPartySelected;
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
@@ -111,7 +117,7 @@ class SuggestionsStore {
     try {
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
-      const textContract = this.rootStore.documentStore.documentText;
+      const textContract = this.rootStore.documentStore.textContractSource;
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationCustom({
@@ -150,9 +156,9 @@ class SuggestionsStore {
 
   requestParties = async () => {
     try {
-      const documentText = this.rootStore.documentStore.documentText;
-      if (documentText) {
-        const response = await api.contract.parties({ textContract: documentText });
+      const textContractSource = this.rootStore.documentStore.textContractSource;
+      if (textContractSource) {
+        const response = await api.contract.parties({ textContract: textContractSource });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;
