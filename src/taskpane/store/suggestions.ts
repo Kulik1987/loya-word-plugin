@@ -162,10 +162,8 @@ class SuggestionsStore {
       // const textContractSource = this.rootStore.documentStore.textContractSource;
       console.log("requestParties [textContract]:", textContract);
 
-      if (textContractSource) {
-        const response = APP_SET_MOCK
-          ? { data: fakeResponsePartiesAPI }
-          : await api.contract.parties({ textContract: textContractSource });
+      if (textContract) {
+        const response = APP_SET_MOCK ? { data: fakeResponsePartiesAPI } : await api.contract.parties({ textContract });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;

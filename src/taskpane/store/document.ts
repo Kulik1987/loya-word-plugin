@@ -64,7 +64,7 @@ class DocumentStore {
   };
 
   /**
-   * @description Копирует текст контракта в стор
+   * @description Копирует текст контракта из документа в стор
    */
   copyTextContractToStore = async () => {
     console.log("copyTextContractToStore [start]");
