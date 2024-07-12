@@ -22,6 +22,9 @@ class DocumentStore {
     makeAutoObservable(this);
     this.rootStore = rootStore;
 
+    /**
+     * @description Реакция срабатывает на изменение в сторе основного текста контракта и запускает запрос на получение Сторон
+     */
     reaction(
       () => this.textContractSource,
       () => {
@@ -32,6 +35,9 @@ class DocumentStore {
     );
   }
 
+  /**
+   * @description Создает анонимизированный текст контракта и обновляет им textContractAnonymized в сторе
+   * */
   buildAnonymizedText = () => {
     const docText = this.textContractSource;
     if (typeof docText !== "string") return null;
@@ -47,6 +53,9 @@ class DocumentStore {
     })();
   };
 
+  /**
+   * @description Копирует текст контракта в стор
+   */
   copyTextContractToStore = async () => {
     console.log("copyTextContractToStore [start]");
     if (this.textContractSource === null) {

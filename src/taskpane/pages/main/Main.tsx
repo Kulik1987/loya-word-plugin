@@ -34,7 +34,13 @@ const Main = () => {
   const handleNavigateToReview = async () => navigate("./review");
 
   useEffect(() => {
-    documentStore.copyTextContractToStore();
+    if (documentStore.textContractSource === null) {
+      //TODO Тут надо решить в какой момент:
+      //TODO - обновлять контракт в сторе
+      //TODO - повторно запрашивать Стороны
+      // а пока контракт обновляется единожды при старте приложения
+      documentStore.copyTextContractToStore();
+    }
   }, []);
 
   return (

@@ -2,8 +2,12 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
   "cSpell.words": [
     "Анонимайзер",
+    "анонимизацию",
+    "анонимизированный",
     "плейбук",
     "Плейбуки",
+    "стор",
+    "сторе",
     "Сhoosing",
     "autorun",
     "Customizer",
