@@ -5,8 +5,7 @@ import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 
-// eslint-disable-next-line no-undef
-const isMockMode = process.env.isMockMode === "true";
+const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 
 type SuggestionPropertyT = {
   isDismiss?: boolean;
@@ -21,7 +20,7 @@ class SuggestionsStore {
 
   suggestionsNew: SuggestionT[] | null = null;
 
-  parties: string[] | null = isMockMode ? ["1", "2"] : null;
+  parties: string[] | null = APP_SET_MOCK ? ["1", "2"] : null;
 
   formPartySelected: string | null = null;
 
@@ -79,7 +78,7 @@ class SuggestionsStore {
       // const response = { data: fakeResponse, idQuery }; // mock
       const textContract = this.rootStore.documentStore.documentText;
       const party = this.formPartySelected;
-      const response = isMockMode
+      const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationGeneral({
             id: idQuery,
@@ -113,7 +112,7 @@ class SuggestionsStore {
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
       const textContract = this.rootStore.documentStore.documentText;
-      const response = isMockMode
+      const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationCustom({
             id: idQuery,

@@ -15,9 +15,14 @@ class DocumentStore {
       () => this.documentText,
       () => {
         // eslint-disable-next-line no-undef
-        const isMockMode = process.env.isMockMode === "true";
-        if (isMockMode) {
-          console.log("Started MOCK_MODE", isMockMode);
+        const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
+        const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
+        // // const FLAG2 = process.env?.FLAG2;
+        console.log("FLAGS", { APP_SET_MOCK, APP_SET_ANONYMIZER });
+        // console.log("isAn", isAn);
+
+        if (APP_SET_MOCK) {
+          console.log("Started MOCK_MODE", APP_SET_MOCK);
         } else {
           this.rootStore.suggestionsStore.requestParties();
         }
