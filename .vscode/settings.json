@@ -1,6 +1,13 @@
 {
   "eslint.validate": ["javascript", "javascriptreact", "typescript"],
   "cSpell.words": [
+    "Анонимайзер",
+    "анонимизацию",
+    "анонимизированный",
+    "плейбук",
+    "Плейбуки",
+    "стор",
+    "сторе",
     "Сhoosing",
     "anmzr",
     "autorun",
@@ -12,6 +19,7 @@
     "Punct",
     "Readlines",
     "Requrement",
+    "Speransky",
     "taskpane"
   ]
 }

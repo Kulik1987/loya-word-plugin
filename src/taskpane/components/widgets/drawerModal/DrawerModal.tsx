@@ -1,0 +1,148 @@
+import React from "react";
+import { useLocation } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerHeaderTitle,
+  Text,
+  ToggleButton,
+} from "@fluentui/react-components";
+import { observer } from "mobx-react";
+import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
+import { useStores } from "../../../store";
+import { RoutePathEnum } from "../../../app/navigation/Navigation";
+import { LocaleEnums } from "../../../store/menu";
+import { AuthStepperEnum } from "../../../store/auth";
+
+type DrawerModalT = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const T = {
+  title: {
+    ru: "Настройки",
+    en: "Settings",
+  },
+  tooltipBack: {
+    ru: "Назад",
+    en: "Back",
+  },
+  tooltipLogout: {
+    ru: "Выйти",
+    en: "Logout",
+  },
+  draft: {
+    ru: "Написание",
+    en: "Draft",
+  },
+  review: {
+    ru: "Проверка",
+    en: "Review",
+  },
+  summary: {
+    ru: "Отчет",
+    en: "Summary",
+  },
+  default: {
+    ru: "Сперанский",
+    en: "Speransky",
+  },
+  dividerLang: {
+    ru: "Язык интерфейса",
+    en: "Interface language",
+  },
+  btnLogout: {
+    ru: "Выйти",
+    en: "Logout",
+  },
+};
+const appVersion = process.env.appVersion;
+const appBuildDate = process.env.appBuildDate;
+const DrawerModal = (props: DrawerModalT) => {
+  const { isOpen, onClose } = props;
+  const { menuStore, authStore } = useStores();
+  const { locale, setLocale } = menuStore;
+  const location = useLocation();
+  const { pathname } = location;
+
+  // const navigate = useNavigate();
+
+  const handleClose = () => {
+    onClose();
+  };
+  const handleLogout = () => {
+    authStore.logout();
+    onClose();
+  };
+
+  const isDisplayButtonLogout = authStore.authStatus === AuthStepperEnum.LOGGED;
+  return (
+    <Drawer
+      // {...restoreFocusSourceAttributes}
+      // type={type}
+      separator
+      open={isOpen}
+      // onOpenChange={(_, { open }) => setIsOpen(open)}
+      onOpenChange={() => onClose()}
+    >
+      <DrawerHeader>
+        <DrawerHeaderTitle
+          action={<Button appearance="subtle" aria-label="Close" icon={<Dismiss24Regular />} onClick={handleClose} />}
+        >
+          {T.title[locale]}
+        </DrawerHeaderTitle>
+      </DrawerHeader>
+
+      <DrawerBody
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+          justifyContent: "space-between",
+          padding: "24px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
+          <Divider alignContent="center">
+            <Text size={300} weight="medium">
+              {T.dividerLang[locale]}
+            </Text>
+          </Divider>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
+            <ToggleButton checked={locale === LocaleEnums.RU} onClick={() => setLocale(LocaleEnums.RU)}>
+              RU
+            </ToggleButton>
+            <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
+              EN
+            </ToggleButton>
+          </div>
+        </div>
+        <div>
+          <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
+            {isDisplayButtonLogout && (
+              <Button
+                appearance="outline"
+                onClick={handleLogout}
+                style={{ borderColor: "#ce860f", color: "#ce860f" }}
+                icon={<TextBulletListSquareSearchRegular style={{ color: "#ce860f" }} />}
+                color="red"
+              >
+                {T.btnLogout[locale]}
+              </Button>
+            )}
+          </div>
+          <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
+            v.{appVersion} {appBuildDate}
+          </div>
+        </div>
+      </DrawerBody>
+    </Drawer>
+  );
+};
+
+export default observer(DrawerModal);
