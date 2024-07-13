@@ -42,5 +42,7 @@ jobs:
         with:
           push: true
           tags: |
+            arc14800.azurecr.io/${{ env.REPO }}:${{ github.sha }}${{ env.TAG_POSTFIX }}
+            arc14800.azurecr.io/${{ env.REPO }}:${{ env.BUILD_DATE }}${{ env.TAG_POSTFIX }}
             arc14800.azurecr.io/${{ env.REPO }}:latest${{ env.TAG_POSTFIX }}
           file: ./Dockerfile
