@@ -1,6 +1,6 @@
 {
   "name": "office-word-plugin-speransky",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/OfficeDev/Office-Addin-TaskPane-React.git"
