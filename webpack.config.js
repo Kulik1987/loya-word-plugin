@@ -15,7 +15,7 @@ async function getHttpsOptions() {
 }
 
 const appBuildDate = new Date();
-const appBuildVersion = `Build ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
+const appBuildVersion = `Build:  ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -99,7 +99,8 @@ module.exports = async (env, options) => {
         Promise: ["es6-promise", "Promise"],
       }),
       new webpack.DefinePlugin({
-        "process.env.isMockMode": JSON.stringify(process.env.isMockMode),
+        "process.env.APP_SET_MOCK": JSON.stringify(process.env.APP_SET_MOCK),
+        "process.env.APP_SET_ANONYMIZER": JSON.stringify(process.env.APP_SET_ANONYMIZER),
         "process.env.appVersion": JSON.stringify(packageJson.version),
         "process.env.appBuildDate": JSON.stringify(appBuildVersion),
       }),

@@ -1,20 +1,11 @@
 import React from "react";
-// import Header from "./components/Header";
-// import HeroList, { HeroListItem } from "./HeroList";
-// import TextInsertion from "./components/TextInsertion";
-// import { Suggestion } from "./widgets";
-// import { Button, makeStyles } from "@fluentui/react-components";
-// import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
-// import { BrowserRouter } from "react-router-dom";
 import { Navigation } from "./navigation";
-import { AuthProvider } from "./AuthProvider";
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <Navigation />
-    </AuthProvider>
-  );
-};
+const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
+const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
+
+console.log("Started config:", { APP_SET_MOCK, APP_SET_ANONYMIZER });
+
+const App = () => <Navigation />;
 
 export default App;
