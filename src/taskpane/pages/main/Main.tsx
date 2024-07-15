@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Divider, ToggleButton, Text, Image } from "@fluentui/react-components";
 import { useStores } from "../../store";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { LocaleEnums } from "../../store/menu";
+// import dmf from "./test";
 
 const T = {
   actionsLabel: {
@@ -29,6 +30,7 @@ const Main = () => {
   const { menuStore, documentStore } = useStores();
   const { locale, setLocale } = menuStore;
   const navigate = useNavigate();
+  // const [htmlString, setHtmlString] = useState<string | null>(null);
 
   const handleNavigateToDraft = () => navigate("./draft");
   const handleNavigateToReview = async () => navigate("./review");
@@ -109,6 +111,18 @@ const Main = () => {
               EN
             </ToggleButton>
           </div>
+
+          {/* <Button
+            style={{ width: "100%" }}
+            appearance="primary"
+            size="large"
+            onClick={handleTest}
+            icon={<DraftsRegular color="#fff" />}
+          >
+            Test
+          </Button> */}
+
+          {/* <div dangerouslySetInnerHTML={{ __html: htmlString }}></div> */}
         </div>
       </div>
     </>

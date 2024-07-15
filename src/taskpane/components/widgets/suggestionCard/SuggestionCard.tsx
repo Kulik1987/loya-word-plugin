@@ -6,6 +6,7 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
 import { DocumentHelpers } from "../../../helpers";
 import { SuggestionT } from "../../../store/suggestions";
+import diff from "../../../helpers/diff";
 
 type SuggestionPropT = {
   index: number;
@@ -22,11 +23,11 @@ const T = {
     en: "Search a location",
   },
   labelChange: {
-    ru: "Правка",
+    ru: "Правка:",
     en: "Change",
   },
   labelComment: {
-    ru: "Комментарий",
+    ru: "Комментарий:",
     en: "Comment",
   },
   buttonChange: {
@@ -42,6 +43,7 @@ const T = {
 const SuggestionCard = (props: SuggestionPropT) => {
   const { suggestionsStore, menuStore } = useStores();
   const { locale } = menuStore;
+  // const [htmlString, setHtmlString] = useState<string | null>(null);
 
   const { data, index: indexSuggestion } = props;
 
@@ -54,6 +56,10 @@ const SuggestionCard = (props: SuggestionPropT) => {
     // isApplyComment,
     isDismiss,
   } = data;
+
+  const htmlChangesMatching = (() => {
+    return diff.htmlChangesMatching(sourceText, changeText);
+  })();
 
   const isChangeExist = !!changeText;
   const isCommentExist = !!commentText;
@@ -128,7 +134,8 @@ const SuggestionCard = (props: SuggestionPropT) => {
       {isChangeExist && (
         <div>
           <Text weight="bold">{T.labelChange[locale]} </Text>
-          <Text>{changeText}</Text>
+          <div dangerouslySetInnerHTML={{ __html: htmlChangesMatching || changeText }} />
+          {/* <Text>{changeText}</Text> */}
         </div>
       )}
       {isCommentExist && (
