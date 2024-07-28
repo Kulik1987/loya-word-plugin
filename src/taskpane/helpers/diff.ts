@@ -12,48 +12,83 @@ export function getDifferencesSemantic(text1: string, text2: string) {
 }
 
 export async function compare(searchText: string, changeText: string) {
+  /** Подготовить массив различий между исходным текстом и правкой  */
   const differencesArray = getDifferencesSemantic(searchText, changeText);
   console.log("differencesArray", differencesArray);
 
+  async function acceptLastChange() {
+    await Word.run(async (context) => {
+      const body: Word.Body = context.document.body;
+      /** получаем все отслеживаемые изменения */
+      const trackedChanges: Word.TrackedChangeCollection = body.getTrackedChanges();
+      await context.sync();
+      /** применяем последнее изменение */
+      context.load(trackedChanges, "items");
+      await context.sync();
+      const lastIndex = trackedChanges.items.length - 1;
+      trackedChanges.items[lastIndex].accept();
+    }).catch((error) => {
+      console.log("Error [acceptLastChange]: " + error);
+    });
+  }
+
+  /** Обработка документа */
   await Word.run(async (context) => {
+    /** Найти диапазон с исходным текстом в документе  */
     const findRange = await DocumentHelpers.findRange(context, searchText);
 
-    let previousStableFragment;
     /**
      * - цикл по массиву различий
-     * -
      */
     for (const diffItem of differencesArray) {
       try {
         let isStable = diffItem[0] === 0;
         let isCreate = diffItem[0] === 1;
         let isDelete = diffItem[0] === -1;
-        let searchFragment = diffItem[1];
-        // console.log("part", { diffItem, searchFragment });
-        /**
-         * - если isCreate то ищем
-         */
-        if (isStable) {
-        }
-        if (isCreate) {
-        }
-
-        const foundInRange = findRange.search(searchFragment);
-        // Загружаем свойство items
-        context.load(foundInRange, "items");
+        let inputText = diffItem[1];
+        // findRange.insertText("", Word.InsertLocation.replace);
+        const a = findRange.insertText(inputText, Word.InsertLocation.end);
+        context.load(a, "text");
         await context.sync();
+        // console.log("a", a);
+
+        const trackedChanges = findRange.getTrackedChanges();
+        context.load(trackedChanges, "items");
+        await context.sync();
+        // console.log("trackedChanges", trackedChanges);
+
+        if (isStable) {
+          trackedChanges.items[0].accept();
+        }
+        // if (isCreate) {
+        //   findRange.insertText(inputText, Word.InsertLocation.end);
+        // }
+        if (isDelete) {
+          console.log("isDelete", { inputText, a });
+          // a.insertText("@@@@@", Word.InsertLocation.replace);
+          await context.sync();
+
+          // trackedChanges.items[0].accept();
+        }
+        // context.load(ttt, "items");
+        // await context.sync();
+        // console.log("ttt", ttt);
 
         // Перебираем все найденные диапазоны
-        foundInRange.items.forEach(async (range) => {
-          const text = range.text; // Получаем текст из диапазона
-          console.log("Found text:", text);
+        // foundInRange.items.forEach(async (range) => {
+        //   const text = range.text; // Получаем текст из диапазона
+        //   console.log("Found text:", text);
 
-          // Если нужно, можете сделать что-то с текстом здесь
-        });
+        //   // Если нужно, можете сделать что-то с текстом здесь
+        // });
       } catch (error) {
         console.log("error", error);
       }
     }
+    // const mainTrackedChanges = context.document.body.getTrackedChanges();
+    // context.load(mainTrackedChanges, "items");
+    // await context.sync();
+    // console.log("mainTrackedChanges", mainTrackedChanges);
   }).catch((error) => {
     console.log("Error [handleShowInDocument]: " + error);
   });
