@@ -16,21 +16,21 @@ export async function compare(searchText: string, changeText: string) {
   const differencesArray = getDifferencesSemantic(searchText, changeText);
   console.log("differencesArray", differencesArray);
 
-  async function acceptLastChange() {
-    await Word.run(async (context) => {
-      const body: Word.Body = context.document.body;
-      /** получаем все отслеживаемые изменения */
-      const trackedChanges: Word.TrackedChangeCollection = body.getTrackedChanges();
-      await context.sync();
-      /** применяем последнее изменение */
-      context.load(trackedChanges, "items");
-      await context.sync();
-      const lastIndex = trackedChanges.items.length - 1;
-      trackedChanges.items[lastIndex].accept();
-    }).catch((error) => {
-      console.log("Error [acceptLastChange]: " + error);
-    });
-  }
+  // async function acceptLastChange() {
+  //   await Word.run(async (context) => {
+  //     const body: Word.Body = context.document.body;
+  //     /** получаем все отслеживаемые изменения */
+  //     const trackedChanges: Word.TrackedChangeCollection = body.getTrackedChanges();
+  //     await context.sync();
+  //     /** применяем последнее изменение */
+  //     context.load(trackedChanges, "items");
+  //     await context.sync();
+  //     const lastIndex = trackedChanges.items.length - 1;
+  //     trackedChanges.items[lastIndex].accept();
+  //   }).catch((error) => {
+  //     console.log("Error [acceptLastChange]: " + error);
+  //   });
+  // }
 
   /** Обработка документа */
   await Word.run(async (context) => {
@@ -46,49 +46,37 @@ export async function compare(searchText: string, changeText: string) {
         let isCreate = diffItem[0] === 1;
         let isDelete = diffItem[0] === -1;
         let inputText = diffItem[1];
-        // findRange.insertText("", Word.InsertLocation.replace);
-        const a = findRange.insertText(inputText, Word.InsertLocation.end);
-        context.load(a, "text");
-        await context.sync();
-        // console.log("a", a);
 
-        const trackedChanges = findRange.getTrackedChanges();
-        context.load(trackedChanges, "items");
+        const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
+        context.load(insertedItem, "text");
         await context.sync();
-        // console.log("trackedChanges", trackedChanges);
 
         if (isStable) {
-          trackedChanges.items[0].accept();
-        }
-        // if (isCreate) {
-        //   findRange.insertText(inputText, Word.InsertLocation.end);
-        // }
-        if (isDelete) {
-          console.log("isDelete", { inputText, a });
-          // a.insertText("@@@@@", Word.InsertLocation.replace);
+          /** если элемент без изменений - принимаем правку */
+          const trackedChangeItem = insertedItem.getTrackedChanges();
+          context.load(trackedChangeItem, "items");
           await context.sync();
-
-          // trackedChanges.items[0].accept();
+          trackedChangeItem.items[0].accept();
         }
-        // context.load(ttt, "items");
-        // await context.sync();
-        // console.log("ttt", ttt);
 
-        // Перебираем все найденные диапазоны
-        // foundInRange.items.forEach(async (range) => {
-        //   const text = range.text; // Получаем текст из диапазона
-        //   console.log("Found text:", text);
+        if (isCreate) {
+          /** новый элемент отобразится как правка в режиме рецензирования */
+        }
 
-        //   // Если нужно, можете сделать что-то с текстом здесь
-        // });
+        if (isDelete) {
+          /** если элемент удален - сначала подтверждаем вставку
+           * (чтобы добавилась запись в истории рецензирования), потом удаляем
+           */
+          const trackedChangeItem = insertedItem.getTrackedChanges();
+          context.load(trackedChangeItem, "items");
+          await context.sync();
+          trackedChangeItem.items[0].accept();
+          insertedItem.clear();
+        }
       } catch (error) {
         console.log("error", error);
       }
     }
-    // const mainTrackedChanges = context.document.body.getTrackedChanges();
-    // context.load(mainTrackedChanges, "items");
-    // await context.sync();
-    // console.log("mainTrackedChanges", mainTrackedChanges);
   }).catch((error) => {
     console.log("Error [handleShowInDocument]: " + error);
   });
