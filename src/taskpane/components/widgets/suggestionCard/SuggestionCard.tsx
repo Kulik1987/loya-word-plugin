@@ -80,7 +80,13 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    compare(sourceText, changeText);
+    compare(sourceText, changeText)
+      .then(() => {
+        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
+      })
+      .catch((error) => {
+        console.log("Error [handleApplyChange]: " + error);
+      });
     //   await Word.run(async (context) => {
     //     DocumentHelpers.applyChange(context, sourceText, changeText);
     //     context.sync();

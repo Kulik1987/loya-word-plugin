@@ -4,7 +4,7 @@ import { SuggestionCard } from "../../components/widgets";
 import { Button, Divider, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
-import { DocumentHelpers } from "../../helpers";
+import { DocumentHelpers, compare } from "../../helpers";
 
 const T = {
   waitingNotification: {
@@ -30,13 +30,15 @@ const Summary = () => {
 
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
-      const { partContract, partModified, comment, isApplyChange, isApplyComment } = itemSuggestion;
+      const {
+        partContract: sourceText,
+        partModified: changeText,
+        comment,
+        isApplyChange,
+        isApplyComment,
+      } = itemSuggestion;
 
-      await Word.run(async (context) => {
-        const range = await DocumentHelpers.findRange(context, partContract);
-        if (!isApplyChange) range.insertText(partModified, "Replace");
-        if (!isApplyComment) range.insertComment(comment);
-      })
+      compare(sourceText, changeText)
         .then(() => {
           suggestionsStore.setSuggestionProperty(indexSuggestion, {
             isApplyChange: true,
@@ -46,6 +48,20 @@ const Summary = () => {
         .catch((error) => {
           console.log("Error [handleApplyAll]: " + error);
         });
+      // await Word.run(async (context) => {
+      //   const range = await DocumentHelpers.findRange(context, partContract);
+      //   if (!isApplyChange) range.insertText(partModified, "Replace");
+      //   if (!isApplyComment) range.insertComment(comment);
+      // })
+      //   .then(() => {
+      //     suggestionsStore.setSuggestionProperty(indexSuggestion, {
+      //       isApplyChange: true,
+      //       isApplyComment: true,
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error [handleApplyAll]: " + error);
+      //   });
     });
   };
 

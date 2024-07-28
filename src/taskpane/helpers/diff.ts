@@ -12,34 +12,23 @@ export function getDifferencesSemantic(text1: string, text2: string) {
 }
 
 export async function compare(searchText: string, changeText: string) {
-  /** Подготовить массив различий между исходным текстом и правкой  */
+  /** Подготовка массива различий между исходным текстом и правкой  */
   const differencesArray = getDifferencesSemantic(searchText, changeText);
   console.log("differencesArray", differencesArray);
-
-  // async function acceptLastChange() {
-  //   await Word.run(async (context) => {
-  //     const body: Word.Body = context.document.body;
-  //     /** получаем все отслеживаемые изменения */
-  //     const trackedChanges: Word.TrackedChangeCollection = body.getTrackedChanges();
-  //     await context.sync();
-  //     /** применяем последнее изменение */
-  //     context.load(trackedChanges, "items");
-  //     await context.sync();
-  //     const lastIndex = trackedChanges.items.length - 1;
-  //     trackedChanges.items[lastIndex].accept();
-  //   }).catch((error) => {
-  //     console.log("Error [acceptLastChange]: " + error);
-  //   });
-  // }
 
   /** Обработка документа */
   await Word.run(async (context) => {
     /** Найти диапазон с исходным текстом в документе  */
+    /** Очистка диапазона с исходным текстом */
+    /** Применение изменений */
     const findRange = await DocumentHelpers.findRange(context, searchText);
+    findRange.clear();
+    const trackedChangeR = findRange.getTrackedChanges();
+    context.load(trackedChangeR, "items");
+    await context.sync();
+    trackedChangeR.items[0].accept();
 
-    /**
-     * - цикл по массиву различий
-     */
+    /** Сборка новой строки по массиву отличий */
     for (const diffItem of differencesArray) {
       try {
         let isStable = diffItem[0] === 0;
