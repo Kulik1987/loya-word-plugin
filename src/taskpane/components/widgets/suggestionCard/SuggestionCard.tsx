@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
 import { Button, Text, Tooltip } from "@fluentui/react-components";
@@ -6,8 +6,7 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
 import { DocumentHelpers } from "../../../helpers";
 import { SuggestionT } from "../../../store/suggestions";
-import { htmlChangesMatching, getDifferencesSemantic, compare } from "../../../helpers/diff";
-import diff_match_patch from "diff-match-patch";
+import { htmlChangesMatching, compare } from "../../../helpers/diff";
 
 type SuggestionPropT = {
   index: number;
@@ -65,15 +64,21 @@ const SuggestionCard = (props: SuggestionPropT) => {
   const isChangeExist = !!changeText;
   const isCommentExist = !!commentText;
 
-  // useEffect(() => {
-  //   compare2(sourceText, changeText);
-  // }, []);
-
   const handleShowInDocument = async () => {
-    await Word.run(async (context) => {
-      const searchText = !isApplyChange ? sourceText : changeText;
-      const findRange = await DocumentHelpers.findRange(context, searchText);
-      findRange.select();
+    Word.run(async (context) => {
+      // const searchText = !isApplyChange ? sourceText : changeText;
+      try {
+        let findRange = await DocumentHelpers.findRange(context, changeText);
+        if (findRange === null) {
+          findRange = await DocumentHelpers.findRange(context, sourceText);
+        }
+        console.log("findRange", findRange);
+
+        if (findRange) findRange.select();
+        return null;
+      } catch (error) {
+        console.log("!", error);
+      }
     }).catch((error) => {
       console.log("Error [handleShowInDocument]: " + error);
     });

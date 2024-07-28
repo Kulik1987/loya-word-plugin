@@ -1,7 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 
-const MAX_LENGTH_SEARCH_STRING = 230;
+const MAX_LENGTH_SEARCH_STRING = 200;
 
 export class DocumentHelpers {
   /**
@@ -26,24 +26,30 @@ export class DocumentHelpers {
 
       const startRange = await this.searchText(context, startText);
       const endRange = await this.searchText(context, endText);
+      // Загружаем результаты
+      // await context.sync();
+      context.load(startRange, "items");
+      context.load(endRange, "items");
+      await context.sync();
 
-      const start = startRange.getFirst();
-      const end = isSearchTextLessMaxLength ? start : endRange.getFirst();
+      const isStartRangeExist = startRange.items.length > 0;
+      const isEndRangeExist = endRange.items.length > 0;
 
-      return start.expandTo(end);
+      console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
+
+      if (isStartRangeExist && isEndRangeExist) {
+        const start = startRange.getFirst();
+        const end = endRange.getFirst();
+        return start.expandTo(end);
+      }
+      if (isStartRangeExist && isSearchTextLessMaxLength) {
+        return startRange.getFirst();
+      }
+      return null;
     } catch (error) {
       console.log("error", error);
-      return null;
-    }
-  }
-
-  static async findRangeAndSelect(context: Word.RequestContext, searchText: string) {
-    try {
-      const range = await this.findRange(context, searchText);
-      range.select();
-    } catch (error) {
-      console.log("error", error);
-      return null;
+      throw error;
+      // return null;
     }
   }
 
@@ -96,10 +102,12 @@ export class DocumentHelpers {
         // 6. matchWholeWord: Если установлено в true, ищет только целые слова, а не части слова.
         // 7. matchWildcards: Если установлено в true, позволяет использовать шаблоны для поиска (например, символы замены).
       });
+
       return rangeCollection;
     } catch (error) {
       console.log("error", error);
-      return null;
+      throw error;
+      // return null;
     }
   }
 }
