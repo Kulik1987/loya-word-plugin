@@ -174,6 +174,8 @@ export class DocumentHelpers {
       const body = context.document.body;
       const rangeCollection = body.search(searchText, {
         ignoreSpace: true,
+        // ignorePunct: true,
+        // matchPrefix: true,
         // 1. ignorePunct: Если установлено в true, игнорирует знаки препинания при поиске.
         // 2. ignoreSpace: Если установлено в true, игнорирует пробелы при поиске.
         // 3. matchCase: Если установлено в true, учитывает регистр букв при поиске.
