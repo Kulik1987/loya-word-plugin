@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-import fakeResponse from "./mockResponseAPI";
 import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
+import fakeResponse from "./mockResponseAPI_2";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
@@ -183,11 +183,11 @@ class SuggestionsStore {
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
   }
 
-  get computedIsExistUntouchedSuggestions() {
-    return this.suggestionsNew?.some(
-      (item) => (item.isApplyChange !== true || item.isApplyComment !== true) && item.isDismiss !== true
-    );
-  }
+  // get computedIsExistUntouchedSuggestions() {
+  //   return this.suggestionsNew?.some(
+  //     (item) => (item.isApplyChange !== true || item.isApplyComment !== true) && item.isDismiss !== true
+  //   );
+  // }
 
   clearSuggestions = () => {
     this.suggestionsNew = null;
