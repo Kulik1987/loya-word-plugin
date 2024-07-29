@@ -6,7 +6,7 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
 import { DocumentHelpers } from "../../../helpers";
 import { SuggestionT } from "../../../store/suggestions";
-import { htmlChangesMatching, compare } from "../../../helpers/diff";
+import { htmlChangesMatching } from "../../../helpers/diff";
 
 type SuggestionPropT = {
   index: number;
@@ -52,7 +52,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
     comment: commentText,
     partContract: sourceText,
     partModified: changeText,
-    isApplyChange,
+    // isApplyChange,
     // isApplyComment,
     isDismiss,
   } = data;
@@ -66,7 +66,6 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleShowInDocument = async () => {
     Word.run(async (context) => {
-      // const searchText = !isApplyChange ? sourceText : changeText;
       try {
         let findRange = await DocumentHelpers.findRange(context, changeText);
         if (findRange === null) {
@@ -85,46 +84,20 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    compare(sourceText, changeText)
+    DocumentHelpers.collectRowByDiffArray(sourceText, changeText)
       .then(() => {
-        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
+        // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
       .catch((error) => {
         console.log("Error [handleApplyChange]: " + error);
       });
-    //   await Word.run(async (context) => {
-    //     DocumentHelpers.applyChange(context, sourceText, changeText);
-    //     context.sync();
-    //   })
-    //     .then(() => {
-    //       suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
-    //     })
-    //     .catch((error) => {
-    //       console.log("Error [handleApplyChange]: " + error);
-    //     });
   };
 
-  // const handleApplyChange = async () => {
-  //   await Word.run(async (context) => {
-  //     DocumentHelpers.applyChange(context, sourceText, changeText);
-  //     context.sync();
-  //   })
-  //     .then(() => {
-  //       suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error [handleApplyChange]: " + error);
-  //     });
-  // };
-
   const handleAddComment = async () => {
-    await Word.run(async (context) => {
-      const searchText = !isApplyChange ? sourceText : changeText;
-      DocumentHelpers.applyComment(context, searchText, commentText);
-      context.sync();
-    })
+    // const searchText = !isApplyChange ? sourceText : changeText;
+    DocumentHelpers.applyComment(sourceText, changeText, commentText)
       .then(() => {
-        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
+        // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })
       .catch((error) => {
         console.log("Error [handleAddComment]: " + error);

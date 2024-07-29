@@ -1,9 +1,75 @@
 /* global Word console */
 /// <reference types="office-js" />
 
+import { getDifferencesSemantic } from "./diff";
+
+// import
 const MAX_LENGTH_SEARCH_STRING = 200;
 
 export class DocumentHelpers {
+  /**
+   * @description функция собирает новую строку из массива различий и вставляет на место искомой строки, оставляя а режиме правок только измененные фрагменты строки
+   */
+  static async collectRowByDiffArray(searchText: string, changeText: string) {
+    /** Подготовка массива различий между исходным текстом и правкой  */
+    const differencesArray = getDifferencesSemantic(searchText, changeText);
+    console.log("differencesArray", differencesArray);
+
+    /** Обработка документа */
+    await Word.run(async (context) => {
+      /** Найти диапазон с исходным текстом в документе  */
+      /** Очистка диапазона с исходным текстом */
+      /** Применение изменений */
+      const findRange = await DocumentHelpers.findRange(context, searchText);
+      findRange.clear();
+      const trackedChangeR = findRange.getTrackedChanges();
+      context.load(trackedChangeR, "items");
+      await context.sync();
+      trackedChangeR.items[0].accept();
+
+      /** Сборка новой строки по массиву отличий */
+      for (const diffItem of differencesArray) {
+        try {
+          let isStable = diffItem[0] === 0;
+          let isCreate = diffItem[0] === 1;
+          let isDelete = diffItem[0] === -1;
+          let inputText = diffItem[1];
+
+          const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
+          context.load(insertedItem, "text");
+          await context.sync();
+
+          if (isStable) {
+            /** если элемент без изменений - принимаем правку */
+            const trackedChangeItem = insertedItem.getTrackedChanges();
+            context.load(trackedChangeItem, "items");
+            await context.sync();
+            trackedChangeItem.items[0].accept();
+          }
+
+          if (isCreate) {
+            /** новый элемент отобразится как правка в режиме рецензирования */
+          }
+
+          if (isDelete) {
+            /** если элемент удален - сначала подтверждаем вставку
+             * (чтобы добавилась запись в истории рецензирования), потом удаляем
+             */
+            const trackedChangeItem = insertedItem.getTrackedChanges();
+            context.load(trackedChangeItem, "items");
+            await context.sync();
+            trackedChangeItem.items[0].accept();
+            insertedItem.clear();
+          }
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+    }).catch((error) => {
+      console.log("Error [handleShowInDocument]: " + error);
+    });
+  }
+
   /**
    * @description функция отдает диапазон с искомым текстом
    */
@@ -53,24 +119,38 @@ export class DocumentHelpers {
     }
   }
 
-  static async applyChange(context: Word.RequestContext, searchText: string, editText: string) {
-    try {
-      const range = await this.findRange(context, searchText);
-      range.insertText(editText, "Replace");
-    } catch (error) {
-      console.log("error", error);
-      return null;
-    }
-  }
+  // static async applyChange(context: Word.RequestContext, searchText: string, editText: string) {
+  //   try {
+  //     const range = await this.findRange(context, searchText);
+  //     range.insertText(editText, "Replace");
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     return null;
+  //   }
+  // }
 
-  static async applyComment(context: Word.RequestContext, searchText: string, commentText: string) {
-    try {
-      const range = await this.findRange(context, searchText);
-      range.insertComment(commentText);
-    } catch (error) {
-      console.log("error", error);
-      throw error;
-    }
+  static async applyComment(sourceText: string, changeText: string, commentText: string) {
+    await Word.run(async (context) => {
+      console.log("[applyComment] args", { changeText, sourceText });
+
+      try {
+        let findRange = await DocumentHelpers.findRange(context, changeText);
+        if (findRange === null) {
+          findRange = await DocumentHelpers.findRange(context, sourceText);
+        }
+
+        // const range = await this.findRange(context, searchText);
+        // console.log("[applyComment] !!!", { context, searchText });
+        console.log("[applyComment] range", findRange);
+
+        findRange.insertComment(commentText);
+      } catch (error) {
+        console.log("error", error);
+        throw error;
+      }
+    }).catch((error) => {
+      console.log("Error [applyComment]: " + error);
+    });
   }
 
   // static async applyChangeAndComment(

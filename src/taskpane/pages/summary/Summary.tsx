@@ -4,7 +4,7 @@ import { SuggestionCard } from "../../components/widgets";
 import { Button, Divider, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
-import { DocumentHelpers, compare } from "../../helpers";
+import { DocumentHelpers } from "../../helpers";
 
 const T = {
   waitingNotification: {
@@ -21,7 +21,10 @@ const Summary = () => {
   const { suggestionsStore, menuStore } = useStores();
   const { locale } = menuStore;
 
-  const { computedIsExistUntouchedSuggestions, suggestionsNew } = suggestionsStore;
+  const {
+    // computedIsExistUntouchedSuggestions,
+    suggestionsNew,
+  } = suggestionsStore;
 
   const { reviewTypeActive, reviewCustomProcessing, reviewGeneralProcessing } = suggestionsStore;
 
@@ -33,20 +36,28 @@ const Summary = () => {
       const {
         partContract: sourceText,
         partModified: changeText,
-        comment,
-        isApplyChange,
-        isApplyComment,
+        comment: commentText,
+        // isApplyChange,
+        // isApplyComment,
       } = itemSuggestion;
 
-      compare(sourceText, changeText)
+      await DocumentHelpers.collectRowByDiffArray(sourceText, changeText)
         .then(() => {
-          suggestionsStore.setSuggestionProperty(indexSuggestion, {
-            isApplyChange: true,
-            isApplyComment: true,
-          });
+          // suggestionsStore.setSuggestionProperty(indexSuggestion, {
+          //   isApplyChange: true,
+          //   isApplyComment: true,
+          // });
         })
         .catch((error) => {
           console.log("Error [handleApplyAll]: " + error);
+        });
+
+      await DocumentHelpers.applyComment(sourceText, changeText, commentText)
+        .then(() => {
+          suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
+        })
+        .catch((error) => {
+          console.log("Error [handleAddComment]: " + error);
         });
       // await Word.run(async (context) => {
       //   const range = await DocumentHelpers.findRange(context, partContract);
@@ -83,18 +94,21 @@ const Summary = () => {
         suggestionsNew?.map((data, index) => {
           return <SuggestionCard data={data} key={index} index={index} />;
         })}
-      {computedIsExistUntouchedSuggestions && !isProcessing && (
-        <div>
-          <Button
-            appearance="primary"
-            size="medium"
-            onClick={handleApplyAll}
-            style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
-          >
-            {T.buttonApplyAll[locale]}
-          </Button>
-        </div>
-      )}
+      {
+        // computedIsExistUntouchedSuggestions &&
+        !isProcessing && (
+          <div>
+            <Button
+              appearance="primary"
+              size="medium"
+              onClick={handleApplyAll}
+              style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+            >
+              {T.buttonApplyAll[locale]}
+            </Button>
+          </div>
+        )
+      }
     </div>
   );
 };
