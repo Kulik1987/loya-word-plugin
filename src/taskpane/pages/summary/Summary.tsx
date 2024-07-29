@@ -8,7 +8,7 @@ import { DocumentHelpers } from "../../helpers";
 
 const T = {
   waitingNotification: {
-    ru: "Идет подготовка отчета",
+    ru: "Идет подготовка рекомендаций",
     en: "Please await",
   },
   buttonApplyAll: {
