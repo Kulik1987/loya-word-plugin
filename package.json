@@ -1,6 +1,6 @@
 {
-  "name": "office-addin-taskpane-react",
-  "version": "0.2.6",
+  "name": "office-word-plugin-speransky",
+  "version": "0.3.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/OfficeDev/Office-Addin-TaskPane-React.git"
@@ -18,9 +18,12 @@
   },
   "scripts": {
     "build": "webpack --mode production",
+    "build-anonymizer": "cross-env APP_SET_ANONYMIZER=true webpack --mode production",
     "build:dev": "webpack --mode development",
     "dev-server": "webpack serve --mode development",
-    "dev-server-mock": "cross-env isMockMode=true webpack serve --mode development",
+    "dev-server-anonymizer": "cross-env APP_SET_ANONYMIZER=true webpack serve --mode development",
+    "dev-server-MOCK": "cross-env APP_SET_MOCK=true  webpack serve --mode development",
+    "dev-server-anonymizer-MOCK": "cross-env APP_SET_MOCK=true APP_SET_ANONYMIZER=true webpack serve --mode development",
     "lint": "office-addin-lint check",
     "lint:fix": "office-addin-lint fix",
     "prettier": "office-addin-lint prettier",
@@ -36,16 +39,19 @@
     "@fluentui/react-components": "^9.30.4",
     "@fluentui/react-icons": "^2.0.214",
     "core-js": "^3.9.1",
+    "diff-match-patch": "^1.0.5",
     "es6-promise": "^4.2.8",
     "mobx": "^6.12.3",
     "mobx-react": "^9.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1",
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-typescript": "^7.13.0",
+    "@types/diff-match-patch": "^1.0.36",
     "@types/office-js": "^1.0.387",
     "@types/office-runtime": "^1.0.23",
     "@types/react": "^18.2.21",
@@ -63,7 +69,7 @@
     "husky": "^9.0.11",
     "less": "^3.9.0",
     "less-loader": "^10.0.1",
-    "lint-staged": "^15.2.6",
+    "lint-staged": "^15.2.7",
     "office-addin-cli": "^1.5.5",
     "office-addin-debugging": "^5.0.12",
     "office-addin-dev-certs": "^1.11.4",
