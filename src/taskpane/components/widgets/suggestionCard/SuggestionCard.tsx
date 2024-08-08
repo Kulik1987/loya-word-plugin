@@ -6,7 +6,7 @@ import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
 import { DocumentHelpers } from "../../../helpers";
 import { SuggestionT } from "../../../store/suggestions";
-import diff from "../../../helpers/diff";
+import { htmlChangesMatching } from "../../../helpers/diff";
 
 type SuggestionPropT = {
   index: number;
@@ -50,37 +50,43 @@ const SuggestionCard = (props: SuggestionPropT) => {
   const {
     levelRisk,
     comment: commentText,
-    partModified: changeText,
     partContract: sourceText,
-    isApplyChange,
+    partModified: changeText,
+    // isApplyChange,
     // isApplyComment,
     isDismiss,
   } = data;
 
-  const htmlChangesMatching = (() => {
-    return diff.htmlChangesMatching(sourceText, changeText);
+  const htmlChangesMatchingText = (() => {
+    return htmlChangesMatching(sourceText, changeText);
   })();
 
   const isChangeExist = !!changeText;
   const isCommentExist = !!commentText;
 
   const handleShowInDocument = async () => {
-    await Word.run(async (context) => {
-      const searchText = !isApplyChange ? sourceText : changeText;
-      const findRange = await DocumentHelpers.findRange(context, searchText);
-      findRange.select();
+    Word.run(async (context) => {
+      try {
+        let findRange = await DocumentHelpers.findRange(context, changeText);
+        if (findRange === null) {
+          findRange = await DocumentHelpers.findRange(context, sourceText);
+        }
+        console.log("findRange", findRange);
+
+        if (findRange) findRange.select();
+        return null;
+      } catch (error) {
+        console.log("!", error);
+      }
     }).catch((error) => {
       console.log("Error [handleShowInDocument]: " + error);
     });
   };
 
   const handleApplyChange = async () => {
-    await Word.run(async (context) => {
-      DocumentHelpers.applyChange(context, sourceText, changeText);
-      context.sync();
-    })
+    DocumentHelpers.collectRowByDiffArray(sourceText, changeText)
       .then(() => {
-        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
+        // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
       .catch((error) => {
         console.log("Error [handleApplyChange]: " + error);
@@ -88,13 +94,10 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleAddComment = async () => {
-    await Word.run(async (context) => {
-      const searchText = !isApplyChange ? sourceText : changeText;
-      DocumentHelpers.applyComment(context, searchText, commentText);
-      context.sync();
-    })
+    // const searchText = !isApplyChange ? sourceText : changeText;
+    DocumentHelpers.applyComment(sourceText, changeText, commentText)
       .then(() => {
-        suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
+        // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })
       .catch((error) => {
         console.log("Error [handleAddComment]: " + error);
@@ -134,7 +137,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
       {isChangeExist && (
         <div>
           <Text weight="bold">{T.labelChange[locale]} </Text>
-          <div dangerouslySetInnerHTML={{ __html: htmlChangesMatching || changeText }} />
+          <div dangerouslySetInnerHTML={{ __html: htmlChangesMatchingText || changeText }} />
           {/* <Text>{changeText}</Text> */}
         </div>
       )}

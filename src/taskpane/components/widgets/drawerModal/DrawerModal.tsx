@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -13,7 +12,6 @@ import {
 import { observer } from "mobx-react";
 import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { useStores } from "../../../store";
-import { RoutePathEnum } from "../../../app/navigation/Navigation";
 import { LocaleEnums } from "../../../store/menu";
 import { AuthStepperEnum } from "../../../store/auth";
 
@@ -26,30 +24,6 @@ const T = {
   title: {
     ru: "Настройки",
     en: "Settings",
-  },
-  tooltipBack: {
-    ru: "Назад",
-    en: "Back",
-  },
-  tooltipLogout: {
-    ru: "Выйти",
-    en: "Logout",
-  },
-  draft: {
-    ru: "Написание",
-    en: "Draft",
-  },
-  review: {
-    ru: "Проверка",
-    en: "Review",
-  },
-  summary: {
-    ru: "Отчет",
-    en: "Summary",
-  },
-  default: {
-    ru: "Сперанский",
-    en: "Speransky",
   },
   dividerLang: {
     ru: "Язык интерфейса",
@@ -66,10 +40,6 @@ const DrawerModal = (props: DrawerModalT) => {
   const { isOpen, onClose } = props;
   const { menuStore, authStore } = useStores();
   const { locale, setLocale } = menuStore;
-  const location = useLocation();
-  const { pathname } = location;
-
-  // const navigate = useNavigate();
 
   const handleClose = () => {
     onClose();
@@ -81,14 +51,7 @@ const DrawerModal = (props: DrawerModalT) => {
 
   const isDisplayButtonLogout = authStore.authStatus === AuthStepperEnum.LOGGED;
   return (
-    <Drawer
-      // {...restoreFocusSourceAttributes}
-      // type={type}
-      separator
-      open={isOpen}
-      // onOpenChange={(_, { open }) => setIsOpen(open)}
-      onOpenChange={() => onClose()}
-    >
+    <Drawer separator open={isOpen} onOpenChange={() => onClose()}>
       <DrawerHeader>
         <DrawerHeaderTitle
           action={<Button appearance="subtle" aria-label="Close" icon={<Dismiss24Regular />} onClick={handleClose} />}
