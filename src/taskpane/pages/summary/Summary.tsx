@@ -18,8 +18,10 @@ const T = {
 };
 
 const Summary = () => {
-  const { suggestionsStore, menuStore } = useStores();
+  const { suggestionsStore, menuStore, configStore } = useStores();
   const { locale } = menuStore;
+  const { optionsSupportedCurrentApi } = configStore;
+  const { isAccessToRangeInsertComment } = optionsSupportedCurrentApi;
 
   const {
     // computedIsExistUntouchedSuggestions,
@@ -41,7 +43,7 @@ const Summary = () => {
         // isApplyComment,
       } = itemSuggestion;
 
-      await DocumentHelpers.collectRowByDiffArray(sourceText, changeText)
+      await DocumentHelpers.applyChange(sourceText, changeText, optionsSupportedCurrentApi)
         .then(() => {
           // suggestionsStore.setSuggestionProperty(indexSuggestion, {
           //   isApplyChange: true,
@@ -52,13 +54,15 @@ const Summary = () => {
           console.log("Error [handleApplyAll]: " + error);
         });
 
-      await DocumentHelpers.applyComment(sourceText, changeText, commentText)
-        .then(() => {
-          suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
-        })
-        .catch((error) => {
-          console.log("Error [handleAddComment]: " + error);
-        });
+      if (isAccessToRangeInsertComment) {
+        await DocumentHelpers.applyComment(sourceText, changeText, commentText)
+          .then(() => {
+            suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
+          })
+          .catch((error) => {
+            console.log("Error [handleAddComment]: " + error);
+          });
+      }
       // await Word.run(async (context) => {
       //   const range = await DocumentHelpers.findRange(context, partContract);
       //   if (!isApplyChange) range.insertText(partModified, "Replace");

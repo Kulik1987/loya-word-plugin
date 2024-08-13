@@ -67,7 +67,6 @@ class DocumentStore {
    * @description Копирует текст контракта из документа в стор
    */
   copyTextContractToStore = async () => {
-    console.log("copyTextContractToStore [start]");
     if (this.textContractSource === null) {
       await Word.run((context) => {
         // Получаем активное тело документа
@@ -80,7 +79,6 @@ class DocumentStore {
           runInAction(() => {
             // this.textContractSource = JSON.stringify(bodyText);
             this.textContractSource = bodyText;
-            console.log("copyTextContractToStore [success]");
           });
         });
       }).catch((error) => {

@@ -41,8 +41,10 @@ const T = {
 };
 
 const SuggestionCard = (props: SuggestionPropT) => {
-  const { suggestionsStore, menuStore } = useStores();
+  const { suggestionsStore, menuStore, configStore } = useStores();
   const { locale } = menuStore;
+  const { optionsSupportedCurrentApi } = configStore;
+  const { isAccessToRangeInsertComment } = optionsSupportedCurrentApi;
   // const [htmlString, setHtmlString] = useState<string | null>(null);
 
   const { data, index: indexSuggestion } = props;
@@ -84,7 +86,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    DocumentHelpers.collectRowByDiffArray(sourceText, changeText)
+    DocumentHelpers.applyChange(sourceText, changeText, optionsSupportedCurrentApi)
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
@@ -197,7 +199,12 @@ const SuggestionCard = (props: SuggestionPropT) => {
               appearance="primary"
               size="medium"
               onClick={handleAddComment}
-              style={{ borderColor: "#0f6cbd", borderWidth: "2px", whiteSpace: "nowrap" }}
+              disabled={isAccessToRangeInsertComment === false}
+              style={{
+                borderColor: isAccessToRangeInsertComment ? "#0f6cbd" : "transparent",
+                borderWidth: "2px",
+                whiteSpace: "nowrap",
+              }}
             >
               {T.buttonComment[locale]}
             </Button>

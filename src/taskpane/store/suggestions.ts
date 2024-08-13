@@ -154,13 +154,10 @@ class SuggestionsStore {
 
   requestParties = async () => {
     try {
-      console.log("requestParties [start]");
-
       const { textContractSource, textContractAnonymized } = this.rootStore.documentStore;
       const textContract = APP_SET_ANONYMIZER ? textContractAnonymized : textContractSource;
 
-      // const textContractSource = this.rootStore.documentStore.textContractSource;
-      console.log("requestParties [textContract]:", textContract);
+      console.log("requestParties [start]", { textContract });
 
       if (textContract) {
         const response = APP_SET_MOCK ? { data: fakeResponsePartiesAPI } : await api.contract.parties({ textContract });
