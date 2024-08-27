@@ -117,7 +117,7 @@ module.exports = async (env, options) => {
       port: process.env.npm_package_config_dev_server_port || 3000,
       proxy: {
         "/v1": {
-          target: `https://app.loya.legal`,
+          target: `https://apptest.loya.legal`,
           // target: `http://ec2-13-53-249-255.eu-north-1.compute.amazonaws.com:8080`,
           secure: false,
           changeOrigin: true,

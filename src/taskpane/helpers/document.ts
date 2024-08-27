@@ -6,27 +6,63 @@ import { getDifferencesSemantic } from "./diff";
 // import
 const MAX_LENGTH_SEARCH_STRING = 200;
 
+interface ApplyChangeI {
+  sourceText: string;
+  changeText: string;
+  optionsSupportedCurrentApi: any;
+  type: string;
+}
+
+interface ApplyCommentI {
+  sourceText: string;
+  changeText: string;
+  commentText: string;
+}
 export class DocumentHelpers {
-  static async applyChange(
-    // context: Word.RequestContext,
-    searchText: string,
-    editText: string,
-    optionsSupportedCurrentApi: any
-  ) {
+  static async applyChange(props: ApplyChangeI) {
     try {
-      console.log("[applyChange]", { searchText, editText });
+      const { sourceText: searchText, changeText: editText, optionsSupportedCurrentApi, type } = props;
+      console.log("[applyChange]", { searchText, editText, type });
       console.log("optionsSupportedCurrentApi", optionsSupportedCurrentApi);
 
       const { isAccessToRangeInsertText, isAccessToRangeInsertTextSemantic } = optionsSupportedCurrentApi;
-      if (isAccessToRangeInsertTextSemantic) {
-        this.applyChangeSemantic(searchText, editText);
-      } else if (isAccessToRangeInsertText) {
-        this.applyChangeBasic(searchText, editText);
+      if (type === "new") {
+        await this.applyChangeAddNewParagraph(searchText, editText);
+      } else {
+        if (isAccessToRangeInsertTextSemantic) {
+          this.applyChangeSemantic(searchText, editText);
+        } else if (isAccessToRangeInsertText) {
+          this.applyChangeBasic(searchText, editText);
+        }
       }
     } catch (error) {
       console.log("error", error);
       return null;
     }
+  }
+
+  static async applyChangeAddNewParagraph(searchText: string, newParagraphText: string) {
+    await Word.run(async (context) => {
+      const range = await this.findRange(context, searchText);
+      // context.load(range, "style");
+      // await context.sync();
+      // const rStyle = range.style;
+
+      // Вставляем новый параграф после диапазона
+      range.insertText(newParagraphText, "After");
+      // const paragraph = range.insertText(newParagraphText, "After");
+      // const paragraph = range.insertParagraph(newParagraphText, Word.InsertLocation.after);
+
+      // Установка стиля (например, обычный текст)
+      // paragraph.style = rStyle;
+      // paragraph.styleBuiltIn = "Normal";
+      // paragraph.font.bold = false;
+      // paragraph.font.italic = false;
+      // paragraph.font.size = 12; // Установите нужный размер шрифта
+      await context.sync();
+    }).catch((error) => {
+      console.log("Error [applyChangeAddNewParagraph]: " + error);
+    });
   }
 
   static async applyChangeBasic(searchText: string, changeText: string) {
@@ -150,7 +186,9 @@ export class DocumentHelpers {
     }
   }
 
-  static async applyComment(sourceText: string, changeText: string, commentText: string) {
+  static async applyComment(props: ApplyCommentI) {
+    const { sourceText, changeText, commentText } = props;
+
     await Word.run(async (context) => {
       console.log("[applyComment] args", { changeText, sourceText });
 
@@ -173,22 +211,6 @@ export class DocumentHelpers {
       console.log("Error [applyComment]: " + error);
     });
   }
-
-  // static async applyChangeAndComment(
-  //   context: Word.RequestContext,
-  //   searchText: string,
-  //   editText: string,
-  //   commentText: string
-  // ) {
-  //   try {
-  //     const range = await this.findRange(context, searchText);
-  //     range.insertText(editText, "Replace");
-  //     range.insertComment(commentText);
-  //   } catch (error) {
-  //     console.log("error", error);
-  //     return null;
-  //   }
-  // }
 
   static async searchText(context: Word.RequestContext, searchText: string) {
     try {
@@ -215,6 +237,3 @@ export class DocumentHelpers {
   }
 }
 
-// export const convert = {
-//   splitStringIntoChunks,
-// };

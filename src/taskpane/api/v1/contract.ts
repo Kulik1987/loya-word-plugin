@@ -33,6 +33,8 @@ export type ContractRecommendationResponseT = {
   partContract: string;
   partModified: string;
   comment: string;
+
+  type: string;
 };
 
 const contract = {
