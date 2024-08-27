@@ -180,12 +180,6 @@ class SuggestionsStore {
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
   }
 
-  // get computedIsExistUntouchedSuggestions() {
-  //   return this.suggestionsNew?.some(
-  //     (item) => (item.isApplyChange !== true || item.isApplyComment !== true) && item.isDismiss !== true
-  //   );
-  // }
-
   clearSuggestions = () => {
     this.suggestionsNew = null;
   };

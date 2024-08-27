@@ -49,15 +49,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const { data, index: indexSuggestion } = props;
 
-  const {
-    levelRisk,
-    comment: commentText,
-    partContract: sourceText,
-    partModified: changeText,
-    // isApplyChange,
-    // isApplyComment,
-    isDismiss,
-  } = data;
+  const { levelRisk, comment: commentText, partContract: sourceText, partModified: changeText, isDismiss, type } = data;
 
   const htmlChangesMatchingText = (() => {
     return htmlChangesMatching(sourceText, changeText);
@@ -86,7 +78,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    DocumentHelpers.applyChange(sourceText, changeText, optionsSupportedCurrentApi)
+    DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
@@ -97,7 +89,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleAddComment = async () => {
     // const searchText = !isApplyChange ? sourceText : changeText;
-    DocumentHelpers.applyComment(sourceText, changeText, commentText)
+    DocumentHelpers.applyComment({ sourceText, changeText, commentText })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })

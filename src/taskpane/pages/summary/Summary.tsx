@@ -35,27 +35,18 @@ const Summary = () => {
 
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
-      const {
-        partContract: sourceText,
-        partModified: changeText,
-        comment: commentText,
-        // isApplyChange,
-        // isApplyComment,
-      } = itemSuggestion;
+      const { partContract: sourceText, partModified: changeText, comment: commentText, type } = itemSuggestion;
 
-      await DocumentHelpers.applyChange(sourceText, changeText, optionsSupportedCurrentApi)
+      await DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
         .then(() => {
-          // suggestionsStore.setSuggestionProperty(indexSuggestion, {
-          //   isApplyChange: true,
-          //   isApplyComment: true,
-          // });
+          console.log("applyChange success");
         })
         .catch((error) => {
           console.log("Error [handleApplyAll]: " + error);
         });
 
       if (isAccessToRangeInsertComment) {
-        await DocumentHelpers.applyComment(sourceText, changeText, commentText)
+        await DocumentHelpers.applyComment({ sourceText, changeText, commentText })
           .then(() => {
             suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
           })
@@ -63,20 +54,6 @@ const Summary = () => {
             console.log("Error [handleAddComment]: " + error);
           });
       }
-      // await Word.run(async (context) => {
-      //   const range = await DocumentHelpers.findRange(context, partContract);
-      //   if (!isApplyChange) range.insertText(partModified, "Replace");
-      //   if (!isApplyComment) range.insertComment(comment);
-      // })
-      //   .then(() => {
-      //     suggestionsStore.setSuggestionProperty(indexSuggestion, {
-      //       isApplyChange: true,
-      //       isApplyComment: true,
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error [handleApplyAll]: " + error);
-      //   });
     });
   };
 
