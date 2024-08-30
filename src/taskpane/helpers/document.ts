@@ -1,6 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 // import storeConfig from "../store/config";
+import { OptionsSupportedCurrentApiI } from "../store/config";
 import { getDifferencesSemantic } from "./diff";
 
 // import
@@ -9,7 +10,7 @@ const MAX_LENGTH_SEARCH_STRING = 200;
 interface ApplyChangeI {
   sourceText: string;
   changeText: string;
-  optionsSupportedCurrentApi: any;
+  optionsSupportedCurrentApi: OptionsSupportedCurrentApiI;
   type: string;
 }
 
