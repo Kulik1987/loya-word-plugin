@@ -25,8 +25,8 @@ const T = {
     en: "Review",
   },
   summary: {
-    ru: "Отчет",
-    en: "Summary",
+    ru: "Рекомендации",
+    en: "Recommendation",
   },
   default: {
     ru: "Сперанский",

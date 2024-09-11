@@ -1,6 +1,13 @@
 import { diff_match_patch } from "diff-match-patch";
 
-const htmlChangesMatching = (source: string, target: string): string | null => {
+export function getDifferencesSemantic(text1: string, text2: string) {
+  let dmp = new diff_match_patch();
+  var diff = dmp.diff_main(text1, text2);
+  dmp.diff_cleanupSemantic(diff);
+  return diff;
+}
+
+export function htmlChangesMatching(source: string, target: string): string | null {
   // TODO: добавить вывод ошибок
   try {
     let dmp = new diff_match_patch();
@@ -42,6 +49,4 @@ const htmlChangesMatching = (source: string, target: string): string | null => {
 
     return null;
   }
-};
-
-export default { htmlChangesMatching };
+}

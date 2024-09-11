@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-import fakeResponse from "./mockResponseAPI";
 import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
+import fakeResponse from "./mockResponseAPI_3";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
@@ -154,13 +154,10 @@ class SuggestionsStore {
 
   requestParties = async () => {
     try {
-      console.log("requestParties [start]");
-
       const { textContractSource, textContractAnonymized } = this.rootStore.documentStore;
       const textContract = APP_SET_ANONYMIZER ? textContractAnonymized : textContractSource;
 
-      // const textContractSource = this.rootStore.documentStore.textContractSource;
-      console.log("requestParties [textContract]:", textContract);
+      console.log("requestParties [start]", { textContract });
 
       if (textContract) {
         const response = APP_SET_MOCK ? { data: fakeResponsePartiesAPI } : await api.contract.parties({ textContract });
@@ -181,12 +178,6 @@ class SuggestionsStore {
   get isSuggestionExist() {
     const suggestions = this.suggestionsNew;
     return Array.isArray(suggestions) && suggestions.length > 0 ? true : false;
-  }
-
-  get computedIsExistUntouchedSuggestions() {
-    return this.suggestionsNew?.some(
-      (item) => (item.isApplyChange !== true || item.isApplyComment !== true) && item.isDismiss !== true
-    );
   }
 
   clearSuggestions = () => {
