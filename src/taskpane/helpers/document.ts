@@ -24,7 +24,7 @@ export class DocumentHelpers {
     try {
       const { sourceText: searchText, changeText: editText, optionsSupportedCurrentApi, type } = props;
       console.log("[applyChange]", { searchText, editText, type });
-      console.log("optionsSupportedCurrentApi", optionsSupportedCurrentApi);
+      // console.log("optionsSupportedCurrentApi", optionsSupportedCurrentApi);
 
       const { isAccessToRangeInsertText, isAccessToRangeInsertTextSemantic } = optionsSupportedCurrentApi;
       if (type === "new") {
@@ -163,9 +163,8 @@ export class DocumentHelpers {
       /** Длина текста МЕНЬШЕ лимита */
       if (isSearchTextLessMaxLength) {
         const range = await this.searchText(context, searchText);
-
-        context.load(range, "items");
-        console.log("range", range);
+        // context.load(range, "items");
+        // console.log("range", range);
         await context.sync();
         const start = range.getFirst();
         return start;
@@ -175,12 +174,10 @@ export class DocumentHelpers {
       if (!isSearchTextLessMaxLength) {
         const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
         const endText = searchText.slice(searchTextLength - MAX_LENGTH_SEARCH_STRING, searchTextLength);
-        console.log({ startText, endText, searchText });
+        // console.log({ startText, endText, searchText });
 
         const startRange = await this.searchText(context, startText);
         const endRange = await this.searchText(context, endText);
-        // Загружаем результаты
-        // await context.sync();
         context.load(startRange, "items");
         context.load(endRange, "items");
         await context.sync();
@@ -212,19 +209,30 @@ export class DocumentHelpers {
     const { sourceText, changeText, commentText } = props;
 
     await Word.run(async (context) => {
-      console.log("[applyComment] args", { changeText, sourceText });
+      console.log("[applyComment]", { context, sourceText, changeText, commentText });
 
       try {
+        /**
+         * Ищем фрагмент текста с примененными правками
+         * если такой не найден ищем по исходному тексту
+         */
         let findRange = await DocumentHelpers.findRange(context, changeText);
         if (findRange === null) {
           findRange = await DocumentHelpers.findRange(context, sourceText);
         }
 
-        // const range = await this.findRange(context, searchText);
-        // console.log("[applyComment] !!!", { context, searchText });
-        console.log("[applyComment] range", findRange);
+        /** Проверка на существование комментария в диапазоне */
+        const comments = findRange.getComments();
+        comments.load("items");
+        await context.sync();
+        const isCommentExist = comments.items.some((el) => el.content === commentText);
 
-        findRange.insertComment(commentText);
+        /** */
+        if (isCommentExist) {
+          console.log("Этот комментарий уже добавлен!"); //TODO: тут должен быть вызов нотификации
+        } else {
+          findRange.insertComment(commentText);
+        }
       } catch (error) {
         console.log("error", error);
         throw error;
