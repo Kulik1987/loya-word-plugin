@@ -150,34 +150,55 @@ export class DocumentHelpers {
     //   ignoreSpace: true,
     //   trimQuery: true,
     // }
-  ) {
+  ): Promise<Word.Range | null> {
     try {
-      // console.log("searchText", searchText);
-      const isSearchTextLessMaxLength = searchText.length <= MAX_LENGTH_SEARCH_STRING;
+      /**
+       * 1.
+       */
+      const searchTextLength = searchText.length;
+      const isSearchTextLessMaxLength = searchTextLength <= MAX_LENGTH_SEARCH_STRING;
 
-      const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
-      const endText = searchText.slice(searchText.length - MAX_LENGTH_SEARCH_STRING, searchText.length);
+      console.log("SEARCH TEXT:", { isSearchTextLessMaxLength, searchText, length: searchTextLength });
 
-      const startRange = await this.searchText(context, startText);
-      const endRange = await this.searchText(context, endText);
-      // Загружаем результаты
-      // await context.sync();
-      context.load(startRange, "items");
-      context.load(endRange, "items");
-      await context.sync();
+      /** Длина текста МЕНЬШЕ лимита */
+      if (isSearchTextLessMaxLength) {
+        const range = await this.searchText(context, searchText);
 
-      const isStartRangeExist = startRange.items.length > 0;
-      const isEndRangeExist = endRange.items.length > 0;
-
-      console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
-
-      if (isStartRangeExist && isEndRangeExist) {
-        const start = startRange.getFirst();
-        const end = endRange.getFirst();
-        return start.expandTo(end);
+        context.load(range, "items");
+        console.log("range", range);
+        await context.sync();
+        const start = range.getFirst();
+        return start;
       }
-      if (isStartRangeExist && isSearchTextLessMaxLength) {
-        return startRange.getFirst();
+
+      /** Длина текста БОЛЬШЕ лимита */
+      if (!isSearchTextLessMaxLength) {
+        const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
+        const endText = searchText.slice(searchTextLength - MAX_LENGTH_SEARCH_STRING, searchTextLength);
+        console.log({ startText, endText, searchText });
+
+        const startRange = await this.searchText(context, startText);
+        const endRange = await this.searchText(context, endText);
+        // Загружаем результаты
+        // await context.sync();
+        context.load(startRange, "items");
+        context.load(endRange, "items");
+        await context.sync();
+
+        const isStartRangeExist = startRange.items.length > 0;
+        const isEndRangeExist = endRange.items.length > 0;
+
+        console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
+
+        if (isStartRangeExist && isEndRangeExist) {
+          const start = startRange.getFirst();
+          const end = endRange.getFirst();
+          return start.expandTo(end);
+        }
+        // if (isStartRangeExist && isSearchTextLessMaxLength) {
+        //   return startRange.getFirst();
+        // }
+        // return null;
       }
       return null;
     } catch (error) {
@@ -218,7 +239,7 @@ export class DocumentHelpers {
       const body = context.document.body;
       const rangeCollection = body.search(searchText, {
         ignoreSpace: true,
-        // ignorePunct: true,
+        ignorePunct: true,
         // matchPrefix: true,
         // 1. ignorePunct: Если установлено в true, игнорирует знаки препинания при поиске.
         // 2. ignoreSpace: Если установлено в true, игнорирует пробелы при поиске.

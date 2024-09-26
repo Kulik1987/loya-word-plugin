@@ -65,7 +65,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
         if (findRange === null) {
           findRange = await DocumentHelpers.findRange(context, sourceText);
         }
-        console.log("findRange", findRange);
+        // console.log("findRange", findRange);
 
         if (findRange) findRange.select();
         return null;
