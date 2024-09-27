@@ -85,52 +85,59 @@ export class DocumentHelpers {
 
     /** Обработка документа */
     await Word.run(async (context) => {
-      /** Найти диапазон с исходным текстом в документе  */
-      /** Очистка диапазона с исходным текстом */
-      /** Применение изменений */
-      const findRange = await DocumentHelpers.findRange(context, searchText);
-      findRange.clear();
-      const trackedChangeR = findRange.getTrackedChanges();
-      context.load(trackedChangeR, "items");
-      await context.sync();
-      trackedChangeR.items[0].accept();
+      /** Найти уже примененные правки */
+      const rangeAppliedChanges = await DocumentHelpers.findRange(context, changeText);
+      // console.log("rangeAppliedChanges", rangeAppliedChanges);
 
-      /** Сборка новой строки по массиву отличий */
-      for (const diffItem of differencesArray) {
-        try {
-          let isStable = diffItem[0] === 0;
-          let isCreate = diffItem[0] === 1;
-          let isDelete = diffItem[0] === -1;
-          let inputText = diffItem[1];
+      /** Если примененной правки не найдено: */
+      if (rangeAppliedChanges === null) {
+        /** Найти диапазон с исходным текстом в документе  */
+        const findRange = await DocumentHelpers.findRange(context, searchText);
+        /** Очистка диапазона с исходным текстом */
+        findRange.clear();
+        const trackedChangeR = findRange.getTrackedChanges();
+        context.load(trackedChangeR, "items");
+        await context.sync();
+        trackedChangeR.items[0].accept();
 
-          const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
-          context.load(insertedItem, "text");
-          await context.sync();
+        /** Сборка новой строки по массиву отличий */
+        for (const diffItem of differencesArray) {
+          try {
+            let isStable = diffItem[0] === 0;
+            let isCreate = diffItem[0] === 1;
+            let isDelete = diffItem[0] === -1;
+            let inputText = diffItem[1];
 
-          if (isStable) {
-            /** если элемент без изменений - принимаем правку */
-            const trackedChangeItem = insertedItem.getTrackedChanges();
-            context.load(trackedChangeItem, "items");
+            /** Применение изменений */
+            const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
+            context.load(insertedItem, "text");
             await context.sync();
-            trackedChangeItem.items[0].accept();
-          }
 
-          if (isCreate) {
-            /** новый элемент отобразится как правка в режиме рецензирования */
-          }
+            if (isStable) {
+              /** если элемент без изменений - принимаем правку */
+              const trackedChangeItem = insertedItem.getTrackedChanges();
+              context.load(trackedChangeItem, "items");
+              await context.sync();
+              trackedChangeItem.items[0].accept();
+            }
 
-          if (isDelete) {
-            /** если элемент удален - сначала подтверждаем вставку
-             * (чтобы добавилась запись в истории рецензирования), потом удаляем
-             */
-            const trackedChangeItem = insertedItem.getTrackedChanges();
-            context.load(trackedChangeItem, "items");
-            await context.sync();
-            trackedChangeItem.items[0].accept();
-            insertedItem.clear();
+            if (isCreate) {
+              /** новый элемент отобразится как правка в режиме рецензирования */
+            }
+
+            if (isDelete) {
+              /** если элемент удален - сначала подтверждаем вставку
+               * (чтобы добавилась запись в истории рецензирования), потом удаляем
+               */
+              const trackedChangeItem = insertedItem.getTrackedChanges();
+              context.load(trackedChangeItem, "items");
+              await context.sync();
+              trackedChangeItem.items[0].accept();
+              insertedItem.clear();
+            }
+          } catch (error) {
+            console.log("error", error);
           }
-        } catch (error) {
-          console.log("error", error);
         }
       }
     }).catch((error) => {
