@@ -165,11 +165,11 @@ export class DocumentHelpers {
         const range = await this.searchText(context, searchText);
         // context.load(range, "items");
         // console.log("range", range);
-        await context.sync();
+        // await context.sync();
         const start = range.getFirst();
         return start;
       }
-
+      // else {
       /** Длина текста БОЛЬШЕ лимита */
       if (!isSearchTextLessMaxLength) {
         const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
@@ -192,11 +192,9 @@ export class DocumentHelpers {
           const end = endRange.getFirst();
           return start.expandTo(end);
         }
-        // if (isStartRangeExist && isSearchTextLessMaxLength) {
-        //   return startRange.getFirst();
-        // }
-        // return null;
       }
+
+      /** этот return досягаем? */
       return null;
     } catch (error) {
       console.log("error", error);
@@ -257,10 +255,11 @@ export class DocumentHelpers {
         // 6. matchWholeWord: Если установлено в true, ищет только целые слова, а не части слова.
         // 7. matchWildcards: Если установлено в true, позволяет использовать шаблоны для поиска (например, символы замены).
       });
+      console.log("[rangeCollection]", rangeCollection);
 
       return rangeCollection;
     } catch (error) {
-      console.log("error", error);
+      console.log("[searchText] error", error);
       throw error;
       // return null;
     }
