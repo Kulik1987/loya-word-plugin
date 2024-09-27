@@ -1,10 +1,17 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
+
+export interface OptionsSupportedCurrentApiI {
+  searchInBody: boolean;
+  isAccessToRangeInsertComment: boolean;
+  isAccessToRangeInsertText: boolean;
+  isAccessToRangeInsertTextSemantic: boolean;
+}
 class ConfigStore {
   rootStore: RootStore;
 
   /** Функции плагина поддерживаемые текущей версией офис  */
-  optionsSupportedCurrentApi = {
+  optionsSupportedCurrentApi: OptionsSupportedCurrentApiI = {
     searchInBody: false,
     isAccessToRangeInsertComment: false,
     isAccessToRangeInsertText: false,

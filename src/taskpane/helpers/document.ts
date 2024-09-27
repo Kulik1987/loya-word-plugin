@@ -1,6 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 // import storeConfig from "../store/config";
+import { OptionsSupportedCurrentApiI } from "../store/config";
 import { getDifferencesSemantic } from "./diff";
 
 // import
@@ -9,7 +10,7 @@ const MAX_LENGTH_SEARCH_STRING = 200;
 interface ApplyChangeI {
   sourceText: string;
   changeText: string;
-  optionsSupportedCurrentApi: any;
+  optionsSupportedCurrentApi: OptionsSupportedCurrentApiI;
   type: string;
 }
 
@@ -23,7 +24,7 @@ export class DocumentHelpers {
     try {
       const { sourceText: searchText, changeText: editText, optionsSupportedCurrentApi, type } = props;
       console.log("[applyChange]", { searchText, editText, type });
-      console.log("optionsSupportedCurrentApi", optionsSupportedCurrentApi);
+      // console.log("optionsSupportedCurrentApi", optionsSupportedCurrentApi);
 
       const { isAccessToRangeInsertText, isAccessToRangeInsertTextSemantic } = optionsSupportedCurrentApi;
       if (type === "new") {
@@ -84,52 +85,59 @@ export class DocumentHelpers {
 
     /** Обработка документа */
     await Word.run(async (context) => {
-      /** Найти диапазон с исходным текстом в документе  */
-      /** Очистка диапазона с исходным текстом */
-      /** Применение изменений */
-      const findRange = await DocumentHelpers.findRange(context, searchText);
-      findRange.clear();
-      const trackedChangeR = findRange.getTrackedChanges();
-      context.load(trackedChangeR, "items");
-      await context.sync();
-      trackedChangeR.items[0].accept();
+      /** Найти уже примененные правки */
+      const rangeAppliedChanges = await DocumentHelpers.findRange(context, changeText);
+      // console.log("rangeAppliedChanges", rangeAppliedChanges);
 
-      /** Сборка новой строки по массиву отличий */
-      for (const diffItem of differencesArray) {
-        try {
-          let isStable = diffItem[0] === 0;
-          let isCreate = diffItem[0] === 1;
-          let isDelete = diffItem[0] === -1;
-          let inputText = diffItem[1];
+      /** Если примененной правки не найдено: */
+      if (rangeAppliedChanges === null) {
+        /** Найти диапазон с исходным текстом в документе  */
+        const findRange = await DocumentHelpers.findRange(context, searchText);
+        /** Очистка диапазона с исходным текстом */
+        findRange.clear();
+        const trackedChangeR = findRange.getTrackedChanges();
+        context.load(trackedChangeR, "items");
+        await context.sync();
+        trackedChangeR.items[0].accept();
 
-          const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
-          context.load(insertedItem, "text");
-          await context.sync();
+        /** Сборка новой строки по массиву отличий */
+        for (const diffItem of differencesArray) {
+          try {
+            let isStable = diffItem[0] === 0;
+            let isCreate = diffItem[0] === 1;
+            let isDelete = diffItem[0] === -1;
+            let inputText = diffItem[1];
 
-          if (isStable) {
-            /** если элемент без изменений - принимаем правку */
-            const trackedChangeItem = insertedItem.getTrackedChanges();
-            context.load(trackedChangeItem, "items");
+            /** Применение изменений */
+            const insertedItem = findRange.insertText(inputText, Word.InsertLocation.end);
+            context.load(insertedItem, "text");
             await context.sync();
-            trackedChangeItem.items[0].accept();
-          }
 
-          if (isCreate) {
-            /** новый элемент отобразится как правка в режиме рецензирования */
-          }
+            if (isStable) {
+              /** если элемент без изменений - принимаем правку */
+              const trackedChangeItem = insertedItem.getTrackedChanges();
+              context.load(trackedChangeItem, "items");
+              await context.sync();
+              trackedChangeItem.items[0].accept();
+            }
 
-          if (isDelete) {
-            /** если элемент удален - сначала подтверждаем вставку
-             * (чтобы добавилась запись в истории рецензирования), потом удаляем
-             */
-            const trackedChangeItem = insertedItem.getTrackedChanges();
-            context.load(trackedChangeItem, "items");
-            await context.sync();
-            trackedChangeItem.items[0].accept();
-            insertedItem.clear();
+            if (isCreate) {
+              /** новый элемент отобразится как правка в режиме рецензирования */
+            }
+
+            if (isDelete) {
+              /** если элемент удален - сначала подтверждаем вставку
+               * (чтобы добавилась запись в истории рецензирования), потом удаляем
+               */
+              const trackedChangeItem = insertedItem.getTrackedChanges();
+              context.load(trackedChangeItem, "items");
+              await context.sync();
+              trackedChangeItem.items[0].accept();
+              insertedItem.clear();
+            }
+          } catch (error) {
+            console.log("error", error);
           }
-        } catch (error) {
-          console.log("error", error);
         }
       }
     }).catch((error) => {
@@ -149,35 +157,51 @@ export class DocumentHelpers {
     //   ignoreSpace: true,
     //   trimQuery: true,
     // }
-  ) {
+  ): Promise<Word.Range | null> {
     try {
-      // console.log("searchText", searchText);
-      const isSearchTextLessMaxLength = searchText.length <= MAX_LENGTH_SEARCH_STRING;
+      /**
+       * 1.
+       */
+      const searchTextLength = searchText.length;
+      const isSearchTextLessMaxLength = searchTextLength <= MAX_LENGTH_SEARCH_STRING;
 
-      const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
-      const endText = searchText.slice(searchText.length - MAX_LENGTH_SEARCH_STRING, searchText.length);
+      console.log("SEARCH TEXT:", { isSearchTextLessMaxLength, searchText, length: searchTextLength });
 
-      const startRange = await this.searchText(context, startText);
-      const endRange = await this.searchText(context, endText);
-      // Загружаем результаты
-      // await context.sync();
-      context.load(startRange, "items");
-      context.load(endRange, "items");
-      await context.sync();
-
-      const isStartRangeExist = startRange.items.length > 0;
-      const isEndRangeExist = endRange.items.length > 0;
-
-      console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
-
-      if (isStartRangeExist && isEndRangeExist) {
-        const start = startRange.getFirst();
-        const end = endRange.getFirst();
-        return start.expandTo(end);
+      /** Длина текста МЕНЬШЕ лимита */
+      if (isSearchTextLessMaxLength) {
+        const range = await this.searchText(context, searchText);
+        // context.load(range, "items");
+        // console.log("range", range);
+        // await context.sync();
+        const start = range.getFirst();
+        return start;
       }
-      if (isStartRangeExist && isSearchTextLessMaxLength) {
-        return startRange.getFirst();
+      // else {
+      /** Длина текста БОЛЬШЕ лимита */
+      if (!isSearchTextLessMaxLength) {
+        const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
+        const endText = searchText.slice(searchTextLength - MAX_LENGTH_SEARCH_STRING, searchTextLength);
+        // console.log({ startText, endText, searchText });
+
+        const startRange = await this.searchText(context, startText);
+        const endRange = await this.searchText(context, endText);
+        context.load(startRange, "items");
+        context.load(endRange, "items");
+        await context.sync();
+
+        const isStartRangeExist = startRange.items.length > 0;
+        const isEndRangeExist = endRange.items.length > 0;
+
+        console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
+
+        if (isStartRangeExist && isEndRangeExist) {
+          const start = startRange.getFirst();
+          const end = endRange.getFirst();
+          return start.expandTo(end);
+        }
       }
+
+      /** этот return досягаем? */
       return null;
     } catch (error) {
       console.log("error", error);
@@ -190,19 +214,30 @@ export class DocumentHelpers {
     const { sourceText, changeText, commentText } = props;
 
     await Word.run(async (context) => {
-      console.log("[applyComment] args", { changeText, sourceText });
+      console.log("[applyComment]", { context, sourceText, changeText, commentText });
 
       try {
+        /**
+         * Ищем фрагмент текста с примененными правками
+         * если такой не найден ищем по исходному тексту
+         */
         let findRange = await DocumentHelpers.findRange(context, changeText);
         if (findRange === null) {
           findRange = await DocumentHelpers.findRange(context, sourceText);
         }
 
-        // const range = await this.findRange(context, searchText);
-        // console.log("[applyComment] !!!", { context, searchText });
-        console.log("[applyComment] range", findRange);
+        /** Проверка на существование комментария в диапазоне */
+        const comments = findRange.getComments();
+        comments.load("items");
+        await context.sync();
+        const isCommentExist = comments.items.some((el) => el.content === commentText);
 
-        findRange.insertComment(commentText);
+        /** */
+        if (isCommentExist) {
+          console.log("Этот комментарий уже добавлен!"); //TODO: тут должен быть вызов нотификации
+        } else {
+          findRange.insertComment(commentText);
+        }
       } catch (error) {
         console.log("error", error);
         throw error;
@@ -217,7 +252,7 @@ export class DocumentHelpers {
       const body = context.document.body;
       const rangeCollection = body.search(searchText, {
         ignoreSpace: true,
-        // ignorePunct: true,
+        ignorePunct: true,
         // matchPrefix: true,
         // 1. ignorePunct: Если установлено в true, игнорирует знаки препинания при поиске.
         // 2. ignoreSpace: Если установлено в true, игнорирует пробелы при поиске.
@@ -227,10 +262,11 @@ export class DocumentHelpers {
         // 6. matchWholeWord: Если установлено в true, ищет только целые слова, а не части слова.
         // 7. matchWildcards: Если установлено в true, позволяет использовать шаблоны для поиска (например, символы замены).
       });
+      console.log("[rangeCollection]", rangeCollection);
 
       return rangeCollection;
     } catch (error) {
-      console.log("error", error);
+      console.log("[searchText] error", error);
       throw error;
       // return null;
     }
