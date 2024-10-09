@@ -10,7 +10,7 @@ const Playbook = () => {
 
   const T = {
     buttonAddPlaybook: {
-      ru: "Добавить плейбук",
+      ru: "Добавить чек-лист",
       en: "New playbook",
     },
   };

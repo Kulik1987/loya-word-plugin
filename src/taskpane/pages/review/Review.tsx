@@ -15,7 +15,7 @@ const T = {
     en: "Select a review",
   },
   dividerPlaybooks: {
-    ru: "Плейбуки",
+    ru: "Чек-листы",
     en: "Playbooks",
   },
   dividerAnonymizer: {
