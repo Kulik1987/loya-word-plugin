@@ -4,7 +4,7 @@ import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
-import fakeResponse from "./mockResponseAPI_3";
+import fakeResponse from "./mockResponseAPI_4";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
