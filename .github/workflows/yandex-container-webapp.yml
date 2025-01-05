@@ -1,0 +1,63 @@
+name: Build and push Docker image to Yandex Cloud Container Registry
+
+on:
+  push:
+    branches:
+      - main
+      - test
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - uses: actions/checkout@v4
+
+      # Шаг 2: Установка Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      # Шаг 3: Установка Yandex CLI
+      - name: Install Yandex CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          echo 'export PATH=$HOME/yandex-cloud/bin:$PATH' >> $GITHUB_ENV
+          export PATH=$HOME/yandex-cloud/bin:$PATH
+
+      # Шаг 4: Настройка Yandex CLI
+      - name: Configure Yandex CLI
+        run: |
+          export PATH=$HOME/yandex-cloud/bin:$PATH
+          yc config set token ${{ secrets.YC_OAUTH_TOKEN }}
+          yc config set cloud-id b1gqp0kd09qfedr2co15
+          yc config set folder-id b1g8hmgah06emp51j71u
+          yc container registry configure-docker
+
+      # Шаг 5: Модификация docker-credential-yc
+      - name: Patch docker-credential-yc
+        run: |
+          export PATH=$HOME/yandex-cloud/bin:$PATH
+          sed -i 's|yc|'"$HOME/yandex-cloud/bin/yc"'|g' $HOME/yandex-cloud/bin/docker-credential-yc
+          cp $HOME/yandex-cloud/bin/docker-credential-yc /usr/local/bin/
+          chmod +x /usr/local/bin/docker-credential-yc
+
+      # Шаг 7: Определение тега образа
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+      - name: Set tag postfix based on branch
+        if: github.ref == 'refs/heads/test'
+        run: echo "TAG_POSTFIX=-test" >> $GITHUB_ENV
+      - name: Set tag postfix to empty for main
+        if: github.ref == 'refs/heads/main'
+        run: echo "TAG_POSTFIX=" >> $GITHUB_ENV
+
+      # Шаг 8: Сборка и отправка Docker-образа в Yandex Container Registry
+      - name: Build and push Docker image to Yandex Container Registry
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: .
+          push: true
+          tags: cr.yandex/crp45p1oonj6jjlkat6l/${{ env.REPO }}:latest${{ env.TAG_POSTFIX }}
+          file: ./Dockerfile
