@@ -41,6 +41,7 @@ const AuthProvider = () => {
       if (data.access === true) {
         authStore.setAuthStatus(AuthStepperEnum.LOGGED);
         localStorage.setItem("authStatus", AuthStepperEnum.LOGGED);
+        // localStorage.setItem("authStatus", "user.logged");
       } else {
         authStore.setAuthStatus(AuthStepperEnum.FORBIDDEN);
       }
