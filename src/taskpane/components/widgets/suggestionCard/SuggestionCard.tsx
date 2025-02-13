@@ -49,7 +49,14 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const { data, index: indexSuggestion } = props;
 
-  const { levelRisk, comment: commentText, partContract: sourceText, partModified: changeText, isDismiss, type } = data;
+  const {
+    level_risk,
+    comment: commentText,
+    part_contract: sourceText,
+    part_modified: changeText,
+    isDismiss,
+    type,
+  } = data;
 
   const htmlChangesMatchingText = (() => {
     return htmlChangesMatching(sourceText, changeText);
@@ -117,7 +124,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <PriorityFlag flag={levelRisk} />
+        <PriorityFlag flag={level_risk} />
         <Button
           appearance="subtle"
           size="small"

@@ -7,20 +7,23 @@ import {
 } from "../routes";
 
 export type ContractPartiesPayloadT = {
-  textContract: string;
+  llm_provider: "openai";
+  text_contract: string;
 };
 
 export type ContractRecommendationGeneralPayloadT = {
+  llm_provider: "openai";
   id?: string | undefined;
-  party: string;
-  textContract: string;
+  partie: string;
+  text_contract: string;
 };
 
 export type ContractRecommendationCustomPayloadT = {
+  llm_provider: "openai";
   id?: string | undefined;
-  party: string;
-  textContract: string;
-  manualRequrement: string;
+  partie: string;
+  text_contract: string;
+  manual_requrement: string;
 };
 
 export type ContractPartiesResponseT = {
@@ -29,11 +32,10 @@ export type ContractPartiesResponseT = {
 
 export type ContractRecommendationResponseT = {
   id?: string;
-  levelRisk: LevelOfCriticalEnum;
-  partContract: string;
-  partModified: string;
+  level_risk: LevelOfCriticalEnum;
+  part_contract: string;
+  part_modified: string;
   comment: string;
-
   type: string;
 };
 

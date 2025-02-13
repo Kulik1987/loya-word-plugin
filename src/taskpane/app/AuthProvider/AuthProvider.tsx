@@ -38,7 +38,7 @@ const AuthProvider = () => {
       const response = await api.auth.checkAccess(login);
       console.log(response);
       const { data } = response;
-      if (data.access === true) {
+      if (data.is_access === true) {
         authStore.setAuthStatus(AuthStepperEnum.LOGGED);
         localStorage.setItem("authStatus", AuthStepperEnum.LOGGED);
         // localStorage.setItem("authStatus", "user.logged");
