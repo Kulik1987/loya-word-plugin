@@ -2,7 +2,10 @@ import axios from "../instanceAxios";
 import { AxiosResponse } from "axios";
 
 export type requestAuthCheckAccessT = {
-  access: boolean;
+  // access: boolean;
+  is_access: boolean;
+  success: boolean;
+  message: string;
 };
 
 const contract = {

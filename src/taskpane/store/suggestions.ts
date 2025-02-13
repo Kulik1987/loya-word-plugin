@@ -83,11 +83,12 @@ class SuggestionsStore {
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationGeneral({
+            llm_provider: "openai",
             id: idQuery,
-            textContract,
-            party,
+            text_contract: textContract,
+            partie: party,
           });
-      const { partContract, partModified, id } = response.data[0];
+      const { part_contract: partContract, part_modified: partModified, id } = response.data[0];
       const isNeedRepeatQuery = partContract === null || partModified === null;
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
         // eslint-disable-next-line no-undef
@@ -119,12 +120,13 @@ class SuggestionsStore {
       const response = APP_SET_MOCK
         ? { data: fakeResponse, idQuery }
         : await api.contract.recommendationCustom({
+            llm_provider: "openai",
             id: idQuery,
-            manualRequrement,
-            textContract,
-            party,
+            manual_requrement: manualRequrement,
+            text_contract: textContract,
+            partie: party,
           });
-      const { partContract, partModified, id } = response.data[0];
+      const { part_contract: partContract, part_modified: partModified, id } = response.data[0];
       const isNeedRepeatQuery = partContract === null || partModified === null;
 
       if (isNeedRepeatQuery && REPEAT_LIMIT > repeatCount) {
@@ -160,7 +162,9 @@ class SuggestionsStore {
       console.log("requestParties [start]", { textContract });
 
       if (textContract) {
-        const response = APP_SET_MOCK ? { data: fakeResponsePartiesAPI } : await api.contract.parties({ textContract });
+        const response = APP_SET_MOCK
+          ? { data: fakeResponsePartiesAPI }
+          : await api.contract.parties({ text_contract: textContract, llm_provider: "openai" });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;
