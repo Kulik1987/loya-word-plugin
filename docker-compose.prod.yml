@@ -1,9 +1,9 @@
-version: "3.8"
+version: "4.1"
 
 services:
   app:
-    container_name: loya-plugin-anonymazer-local
-    image: avs85/loya-plugin-anonymazer-local
+    container_name: speranskiy-plugin
+    image: avs85/speranskiy-plugin
     build:
       context: .
       target: production
