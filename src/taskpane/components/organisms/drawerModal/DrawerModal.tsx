@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  Button,
-  Divider,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerHeaderTitle,
-  Text,
-  ToggleButton,
-} from "@fluentui/react-components";
 import { observer } from "mobx-react";
+import { Button, Drawer, DrawerBody, DrawerHeader, DrawerHeaderTitle } from "@fluentui/react-components";
 import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { useStores } from "../../../store";
-import { LocaleEnums } from "../../../store/menu";
 import { AuthStepperEnum } from "../../../store/auth";
 import { SelectionLang, SelectionModelAi } from "../../widgets";
 
@@ -35,8 +25,9 @@ const T = {
     en: "Logout",
   },
 };
-const appVersion = process.env.appVersion;
-const appBuildDate = process.env.appBuildDate;
+
+const appBuildNumber = process.env.appBuildNumber;
+
 const DrawerModal = (props: DrawerModalT) => {
   const { isOpen, onClose } = props;
   const { menuStore, authStore } = useStores();
@@ -88,9 +79,7 @@ const DrawerModal = (props: DrawerModalT) => {
               </Button>
             )}
           </div>
-          <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>
-            v.{appVersion} {appBuildDate}
-          </div>
+          <div style={{ display: "flex", paddingTop: "12px", color: "#B7B7B7" }}>v.{appBuildNumber}</div>
         </div>
       </DrawerBody>
     </Drawer>

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Button, Divider, ToggleButton, Text, Image } from "@fluentui/react-components";
-import { useStores } from "../../store";
-import { observer } from "mobx-react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
-import { LocaleEnums } from "../../store/menu";
+import { Button, Divider, Text } from "@fluentui/react-components";
 import { SelectionLang, SelectionModelAi } from "../../components/widgets";
-// import dmf from "./test";
+import { useStores } from "../../store";
 
 const T = {
   actionsLabel: {
@@ -29,9 +27,8 @@ const T = {
 
 const Main = () => {
   const { menuStore, documentStore } = useStores();
-  const { locale, setLocale } = menuStore;
+  const { locale } = menuStore;
   const navigate = useNavigate();
-  // const [htmlString, setHtmlString] = useState<string | null>(null);
 
   const handleNavigateToDraft = () => navigate("./draft");
   const handleNavigateToReview = async () => navigate("./review");
@@ -48,7 +45,6 @@ const Main = () => {
 
   return (
     <>
-      {/* <Image width="90" height="90" src={logo} alt={title} /> */}
       <div style={{ display: "flex", gap: "32px", flexDirection: "column", flexWrap: "wrap" }}>
         <div
           style={{
@@ -100,32 +96,6 @@ const Main = () => {
         >
           <SelectionLang />
           <SelectionModelAi />
-          {/* <Divider alignContent="center" inset style={{ paddingBottom: "6px" }}>
-            <Text size={300} weight="medium">
-              {T.dividerLang[locale]}
-            </Text>
-          </Divider>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
-            <ToggleButton checked={locale === LocaleEnums.RU} onClick={() => setLocale(LocaleEnums.RU)}>
-              RU
-            </ToggleButton>
-            <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
-              EN
-            </ToggleButton>
-          </div> */}
-
-          {/* <Button
-            style={{ width: "100%" }}
-            appearance="primary"
-            size="large"
-            onClick={handleTest}
-            icon={<DraftsRegular color="#fff" />}
-          >
-            Test
-          </Button> */}
-
-          {/* <div dangerouslySetInnerHTML={{ __html: htmlString }}></div> */}
         </div>
       </div>
     </>

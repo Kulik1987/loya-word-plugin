@@ -1,6 +1,6 @@
 {
   "name": "ms-word-addin-speransky",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/OfficeDev/Office-Addin-TaskPane-React.git"
@@ -39,6 +39,7 @@
     "@fluentui/react-components": "^9.30.4",
     "@fluentui/react-icons": "^2.0.214",
     "core-js": "^3.9.1",
+    "dayjs": "^1.11.13",
     "diff-match-patch": "^1.0.5",
     "es6-promise": "^4.2.8",
     "mobx": "^6.12.3",
