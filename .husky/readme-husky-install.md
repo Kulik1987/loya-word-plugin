@@ -1,3 +1,10 @@
+# Установка Husky от версии "^9.0.0"
+npm install husky --save-dev
+
+# Инициализация Husky
+npx husky-init
+
+# Файл хука husky/pre-commit
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
