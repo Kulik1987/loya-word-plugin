@@ -1,5 +1,4 @@
 export enum LevelOfCriticalEnum {
-  "CRITICAL" = "critical",
   "HIGH" = "high",
   "MEDIUM" = "middle",
   "LOW" = "low",
@@ -14,4 +13,10 @@ export enum InsertPlaceEnum {
 export enum ReviewTypesEnums {
   "GENERAL" = "GENERAL",
   "CUSTOM" = "CUSTOM",
+}
+
+export enum ProviderLLMEnums {
+  "OPEN_AI" = "openai",
+  "GIGA_CHAT" = "gigachat",
+  "MISTRAL" = "mistral",
 }

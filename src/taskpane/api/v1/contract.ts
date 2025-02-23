@@ -1,4 +1,4 @@
-import { LevelOfCriticalEnum } from "../../enums";
+import { LevelOfCriticalEnum, ProviderLLMEnums } from "../../enums";
 import axios from "../instanceAxios";
 import {
   PLUGIN_CONTRACT_PARTIES,
@@ -7,19 +7,19 @@ import {
 } from "../routes";
 
 export type ContractPartiesPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   text_contract: string;
 };
 
 export type ContractRecommendationGeneralPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   id?: string | undefined;
   partie: string;
   text_contract: string;
 };
 
 export type ContractRecommendationCustomPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   id?: string | undefined;
   partie: string;
   text_contract: string;
@@ -28,6 +28,7 @@ export type ContractRecommendationCustomPayloadT = {
 
 export type ContractPartiesResponseT = {
   parties: string[];
+  questions: string[];
 };
 
 export type ContractRecommendationResponseT = {

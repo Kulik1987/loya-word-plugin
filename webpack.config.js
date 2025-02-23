@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-const packageJson = require("./package.json");
+const appVersion = require("./utils/appVersion");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -13,9 +12,6 @@ async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
-
-const appBuildDate = new Date();
-const appBuildVersion = `Build:  ${appBuildDate.getHours()}${appBuildDate.getMinutes()}`;
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -101,8 +97,7 @@ module.exports = async (env, options) => {
       new webpack.DefinePlugin({
         "process.env.APP_SET_MOCK": JSON.stringify(process.env.APP_SET_MOCK),
         "process.env.APP_SET_ANONYMIZER": JSON.stringify(process.env.APP_SET_ANONYMIZER),
-        "process.env.appVersion": JSON.stringify(packageJson.version),
-        "process.env.appBuildDate": JSON.stringify(appBuildVersion),
+        "process.env.appBuildNumber": JSON.stringify(appVersion()),
       }),
     ],
     devServer: {
@@ -118,8 +113,6 @@ module.exports = async (env, options) => {
       proxy: {
         "/v1": {
           target: `https://speranskiy-test.aimpulse.ru/speransky/`,
-          // target: `https://speranskiy-test.aimpulse.ru`,
-          // target: `http://ec2-13-53-249-255.eu-north-1.compute.amazonaws.com:8080`,
           secure: false,
           changeOrigin: true,
         },

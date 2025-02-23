@@ -3,8 +3,8 @@ import type RootStore from ".";
 import { ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
-import fakeResponsePartiesAPI from "./mockResponsePartiesAPI";
-import fakeResponse from "./mockResponseAPI_2";
+import mockParties from "./mock/mockParties";
+import mockSuggestions from "./mock/mockSuggestions_1";
 
 const APP_SET_MOCK = process.env.APP_SET_MOCK === "true";
 const APP_SET_ANONYMIZER = process.env.APP_SET_ANONYMIZER === "true";
@@ -81,9 +81,9 @@ class SuggestionsStore {
 
       const party = this.formPartySelected;
       const response = APP_SET_MOCK
-        ? { data: fakeResponse, idQuery }
+        ? { data: mockSuggestions, idQuery }
         : await api.contract.recommendationGeneral({
-            llm_provider: "openai",
+            llm_provider: this.rootStore.menuStore.providerLLM,
             id: idQuery,
             text_contract: textContract,
             partie: party,
@@ -118,9 +118,9 @@ class SuggestionsStore {
       const manualRequrement = this.formCustomInstructions;
       const party = this.formPartySelected;
       const response = APP_SET_MOCK
-        ? { data: fakeResponse, idQuery }
+        ? { data: mockSuggestions, idQuery }
         : await api.contract.recommendationCustom({
-            llm_provider: "openai",
+            llm_provider: this.rootStore.menuStore.providerLLM,
             id: idQuery,
             manual_requrement: manualRequrement,
             text_contract: textContract,
@@ -163,8 +163,11 @@ class SuggestionsStore {
 
       if (textContract) {
         const response = APP_SET_MOCK
-          ? { data: fakeResponsePartiesAPI }
-          : await api.contract.parties({ text_contract: textContract, llm_provider: "openai" });
+          ? { data: mockParties }
+          : await api.contract.parties({
+              text_contract: textContract,
+              llm_provider: this.rootStore.menuStore.providerLLM,
+            });
         const { parties } = response.data;
         runInAction(() => {
           this.parties = parties || null;

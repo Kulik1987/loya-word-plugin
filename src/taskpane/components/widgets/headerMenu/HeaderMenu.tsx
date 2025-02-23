@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { useStores } from "../../../store";
 import { ArrowLeftRegular, ListRtlRegular } from "@fluentui/react-icons";
 import { RoutePathEnum } from "../../../app/navigation/Navigation";
-import { DrawerModal } from "../drawerModal";
+import { DrawerModal } from "../../organisms";
 
 const T = {
   tooltipBack: {
