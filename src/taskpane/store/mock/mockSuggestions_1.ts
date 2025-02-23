@@ -38,7 +38,7 @@ const mockParties: ContractRecommendationResponseT[] = [
     type: "edit",
   },
   {
-    level_risk: LevelOfCriticalEnum.CRITICAL,
+    level_risk: LevelOfCriticalEnum.HIGH,
     part_contract:
       "В случае неисполнения или ненадлежащего исполнения обязательств, вытекающих из настоящего Соглашения, Сторона до обращения в суд предъявляет не исполнившей обязательства Стороне претензию в порядке, предусмотренном настоящим разделом.",
     part_modified:
