@@ -34,6 +34,7 @@ export type ContractRecommendationCustomPayloadT = {
 
 export type ContractPartiesResponseT = {
   parties: string[];
+  questions: string[];
 };
 
 export type ContractRecommendationResponseT = {

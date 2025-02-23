@@ -6,8 +6,8 @@ import { ProviderLLMEnums } from "../../../api/v1/contract";
 
 const T = {
   dividerLang: {
-    ru: "Выбор модели",
-    en: "Interface language",
+    ru: "LLM модель",
+    en: "LLM model",
   },
 };
 
