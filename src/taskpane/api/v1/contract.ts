@@ -1,16 +1,10 @@
-import { LevelOfCriticalEnum } from "../../enums";
+import { LevelOfCriticalEnum, ProviderLLMEnums } from "../../enums";
 import axios from "../instanceAxios";
 import {
   PLUGIN_CONTRACT_PARTIES,
   PLUGIN_CONTRACT_RECOMMENDATION_GENERAL,
   PLUGIN_CONTRACT_RECOMMENDATION_CUSTOM,
 } from "../routes";
-
-export enum ProviderLLMEnums {
-  "OPEN_AI" = "openai",
-  "GIGA_CHAT" = "gigachat",
-  "MISTRAL" = "mistral",
-}
 
 export type ContractPartiesPayloadT = {
   llm_provider: ProviderLLMEnums;

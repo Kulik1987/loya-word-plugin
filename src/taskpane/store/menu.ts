@@ -1,6 +1,6 @@
 import { autorun, makeAutoObservable } from "mobx";
 import type RootStore from ".";
-import { ProviderLLMEnums } from "../api/v1/contract";
+import { ProviderLLMEnums } from "../enums";
 
 export enum MenuItemsEnums {
   "DRAFT" = "DRAFT",
@@ -17,7 +17,7 @@ class MenuStore {
 
   locale: LocaleEnums = LocaleEnums.RU;
 
-  providerLLM: ProviderLLMEnums = ProviderLLMEnums.OPEN_AI;
+  providerLLM: ProviderLLMEnums = ProviderLLMEnums.GIGA_CHAT;
 
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 

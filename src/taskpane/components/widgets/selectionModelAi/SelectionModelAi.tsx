@@ -2,7 +2,8 @@ import React from "react";
 import { Divider, Text, ToggleButton } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
-import { ProviderLLMEnums } from "../../../api/v1/contract";
+import { ProviderLLMEnums } from "../../../enums";
+ 
 
 const T = {
   dividerLang: {
