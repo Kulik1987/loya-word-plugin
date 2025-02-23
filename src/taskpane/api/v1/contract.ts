@@ -6,20 +6,26 @@ import {
   PLUGIN_CONTRACT_RECOMMENDATION_CUSTOM,
 } from "../routes";
 
+export enum ProviderLLMEnums {
+  "OPEN_AI" = "openai",
+  "GIGA_CHAT" = "gigachat",
+  "MISTRAL" = "mistral",
+}
+
 export type ContractPartiesPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   text_contract: string;
 };
 
 export type ContractRecommendationGeneralPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   id?: string | undefined;
   partie: string;
   text_contract: string;
 };
 
 export type ContractRecommendationCustomPayloadT = {
-  llm_provider: "openai";
+  llm_provider: ProviderLLMEnums;
   id?: string | undefined;
   partie: string;
   text_contract: string;

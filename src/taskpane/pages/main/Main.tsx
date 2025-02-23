@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { LocaleEnums } from "../../store/menu";
+import { SelectionLang, SelectionModelAi } from "../../components/widgets";
 // import dmf from "./test";
 
 const T = {
@@ -93,11 +94,13 @@ const Main = () => {
             padding: "24px 16px",
             display: "flex",
             flexDirection: "column",
-            gap: "12px",
+            gap: "36px",
             // boxShadow: "0 2px 3px rgba(0, 0, 0, 0.25)",
           }}
         >
-          <Divider alignContent="center" inset style={{ paddingBottom: "6px" }}>
+          <SelectionLang />
+          <SelectionModelAi />
+          {/* <Divider alignContent="center" inset style={{ paddingBottom: "6px" }}>
             <Text size={300} weight="medium">
               {T.dividerLang[locale]}
             </Text>
@@ -110,7 +113,7 @@ const Main = () => {
             <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
               EN
             </ToggleButton>
-          </div>
+          </div> */}
 
           {/* <Button
             style={{ width: "100%" }}

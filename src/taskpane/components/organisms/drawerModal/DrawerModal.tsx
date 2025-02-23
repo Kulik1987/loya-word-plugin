@@ -14,6 +14,7 @@ import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/r
 import { useStores } from "../../../store";
 import { LocaleEnums } from "../../../store/menu";
 import { AuthStepperEnum } from "../../../store/auth";
+import { SelectionLang, SelectionModelAi } from "../../widgets";
 
 type DrawerModalT = {
   isOpen: boolean;
@@ -69,21 +70,9 @@ const DrawerModal = (props: DrawerModalT) => {
           padding: "24px",
         }}
       >
-        <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>
-          <Divider alignContent="center">
-            <Text size={300} weight="medium">
-              {T.dividerLang[locale]}
-            </Text>
-          </Divider>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
-            <ToggleButton checked={locale === LocaleEnums.RU} onClick={() => setLocale(LocaleEnums.RU)}>
-              RU
-            </ToggleButton>
-            <ToggleButton checked={locale === LocaleEnums.EN} onClick={() => setLocale(LocaleEnums.EN)}>
-              EN
-            </ToggleButton>
-          </div>
+        <div style={{ display: "flex", gap: "36px", flexDirection: "column" }}>
+          <SelectionLang />
+          <SelectionModelAi />
         </div>
         <div>
           <div style={{ display: "flex", gap: "16px", flexDirection: "column" }}>

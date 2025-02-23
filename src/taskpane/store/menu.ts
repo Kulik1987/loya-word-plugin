@@ -1,5 +1,6 @@
 import { autorun, makeAutoObservable } from "mobx";
 import type RootStore from ".";
+import { ProviderLLMEnums } from "../api/v1/contract";
 
 export enum MenuItemsEnums {
   "DRAFT" = "DRAFT",
@@ -16,6 +17,8 @@ class MenuStore {
 
   locale: LocaleEnums = LocaleEnums.RU;
 
+  providerLLM: ProviderLLMEnums = ProviderLLMEnums.OPEN_AI;
+
   currentMenuItem: MenuItemsEnums | null = MenuItemsEnums.REVIEW;
 
   constructor(rootStore: RootStore) {
@@ -27,6 +30,11 @@ class MenuStore {
       if (locale && Object.values(LocaleEnums).includes(locale as LocaleEnums)) {
         this.locale = locale as LocaleEnums;
       }
+
+      const providerLLM = localStorage.getItem("speransky_provider_llm");
+      if (providerLLM && Object.values(ProviderLLMEnums).includes(providerLLM as ProviderLLMEnums)) {
+        this.providerLLM = providerLLM as ProviderLLMEnums;
+      }
     });
   }
 
@@ -37,6 +45,11 @@ class MenuStore {
   setLocale = (locale: LocaleEnums) => {
     localStorage.setItem("speransky_locale", locale);
     this.locale = locale;
+  };
+
+  setProviderLLM = (provider: ProviderLLMEnums) => {
+    localStorage.setItem("speransky_provider_llm", provider);
+    this.providerLLM = provider;
   };
 }
 
