@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type RootStore from ".";
-import { ReviewTypesEnums } from "../enums";
+import { ProviderLLMEnums, ReviewTypesEnums } from "../enums";
 import api from "../api/v1";
 import { ContractRecommendationResponseT } from "../api/v1/contract";
 import mockParties from "./mock/mockParties";
@@ -83,7 +83,8 @@ class SuggestionsStore {
       const response = APP_SET_MOCK
         ? { data: mockSuggestions, idQuery }
         : await api.contract.recommendationGeneral({
-            llm_provider: this.rootStore.menuStore.providerLLM,
+            // llm_provider: this.rootStore.menuStore.providerLLM,
+            llm_provider: (process.env.APP_LLM_MODEL as ProviderLLMEnums) ?? this.rootStore.menuStore.providerLLM,
             id: idQuery,
             text_contract: textContract,
             partie: party,
@@ -120,7 +121,8 @@ class SuggestionsStore {
       const response = APP_SET_MOCK
         ? { data: mockSuggestions, idQuery }
         : await api.contract.recommendationCustom({
-            llm_provider: this.rootStore.menuStore.providerLLM,
+            // llm_provider: this.rootStore.menuStore.providerLLM,
+            llm_provider: (process.env.APP_LLM_MODEL as ProviderLLMEnums) ?? this.rootStore.menuStore.providerLLM,
             id: idQuery,
             manual_requrement: manualRequrement,
             text_contract: textContract,
@@ -165,8 +167,9 @@ class SuggestionsStore {
         const response = APP_SET_MOCK
           ? { data: mockParties }
           : await api.contract.parties({
+              // llm_provider: this.rootStore.menuStore.providerLLM,
+              llm_provider: (process.env.APP_LLM_MODEL as ProviderLLMEnums) ?? this.rootStore.menuStore.providerLLM,
               text_contract: textContract,
-              llm_provider: this.rootStore.menuStore.providerLLM,
             });
         const { parties } = response.data;
         runInAction(() => {
