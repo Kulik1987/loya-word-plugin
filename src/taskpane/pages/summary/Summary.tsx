@@ -35,7 +35,7 @@ const Summary = () => {
 
   const handleApplyAll = async () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
-      const { partContract: sourceText, partModified: changeText, comment: commentText, type } = itemSuggestion;
+      const { part_contract: sourceText, part_modified: changeText, comment: commentText, type } = itemSuggestion;
 
       await DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
         .then(() => {

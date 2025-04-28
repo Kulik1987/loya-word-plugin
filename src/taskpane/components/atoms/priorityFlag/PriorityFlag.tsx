@@ -3,10 +3,10 @@ import { LevelOfCriticalEnum } from "../../../enums/suggestion";
 
 const PriorityFlag = ({ flag }: { flag: LevelOfCriticalEnum }) => {
   const state = {
-    [LevelOfCriticalEnum.CRITICAL]: {
-      color: "rgba(233, 20, 116, 1)",
-      backgroundColor: "rgba(233, 20, 116, 0.25)",
-    },
+    // [LevelOfCriticalEnum.CRITICAL]: {
+    //   color: "rgba(233, 20, 116, 1)",
+    //   backgroundColor: "rgba(233, 20, 116, 0.25)",
+    // },
     [LevelOfCriticalEnum.HIGH]: {
       color: "rgba(234, 151, 21, 1)",
       backgroundColor: "rgba(234, 151, 21, 0.25)",

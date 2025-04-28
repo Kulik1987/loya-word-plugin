@@ -9,6 +9,9 @@ COPY package.json .
 # COPY package-lock.json .
 RUN npm install --production
 RUN npm install --dev
+
+ENV APP_LLM_MODEL="gigachat"
+
 # Copy app files
 COPY . .
 # Build the app
