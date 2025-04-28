@@ -10,7 +10,7 @@ COPY package.json .
 RUN npm install --production
 RUN npm install --dev
 
-ENV APP_LLM_MODEL="gigachat"
+ENV APP_LLM_MODEL="openai"
 
 # Copy app files
 COPY . .
