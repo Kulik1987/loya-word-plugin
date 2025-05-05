@@ -5,10 +5,10 @@ import { useStores } from "../../../store";
 import { Button, Text, Tooltip } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
-import { DocumentHelpers } from "../../../helpers";
+import { ApplyService } from "../../../services/applyService";
+import { SearchService } from "../../../services/searchService";
 import { SuggestionT } from "../../../store/suggestions";
 import { htmlChangesMatching } from "../../../helpers/diff";
-import { SearchService } from "../../../services/searchService";
 
 type SuggestionPropT = {
   index: number;
@@ -87,7 +87,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
+    ApplyService.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
@@ -98,7 +98,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleAddComment = async () => {
     // const searchText = !isApplyChange ? sourceText : changeText;
-    DocumentHelpers.applyComment({ sourceText, changeText, commentText })
+    ApplyService.applyComment({ sourceText, changeText, commentText })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })

@@ -1,9 +1,8 @@
 /* global Word console */
 /// <reference types="office-js" />
-// import storeConfig from "../store/config";
 import { OptionsSupportedCurrentApiI } from "../store/config";
-import { getDifferencesSemantic } from "./diff";
-import { SearchService } from "../services/searchService";
+import { getDifferencesSemantic } from "../helpers/diff";
+import { SearchService } from "./searchService";
 
 interface ApplyChangeI {
   sourceText: string;
@@ -18,7 +17,7 @@ interface ApplyCommentI {
   commentText: string;
 }
 
-export class DocumentHelpers {
+export class ApplyService {
   static async applyChange(props: ApplyChangeI) {
     try {
       const { sourceText: searchText, changeText: editText, optionsSupportedCurrentApi, type } = props;
