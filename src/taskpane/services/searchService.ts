@@ -1,7 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 
-const MAX_LENGTH_SEARCH_STRING = 200;
+const MAX_LENGTH_SEARCH_STRING = 20;
 
 export class SearchService {
   static async findRange(context: Word.RequestContext, searchText: string): Promise<Word.Range | null> {
@@ -20,23 +20,23 @@ export class SearchService {
 
       /** Длина текста БОЛЬШЕ лимита */
       if (!isSearchTextLessMaxLength) {
-        const startText = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
-        const endText = searchText.slice(searchTextLength - MAX_LENGTH_SEARCH_STRING, searchTextLength);
+        const textStart = searchText.slice(0, MAX_LENGTH_SEARCH_STRING);
+        const textEnd = searchText.slice(searchTextLength - MAX_LENGTH_SEARCH_STRING, searchTextLength);
 
-        const startRange = await this.searchText(context, startText);
-        const endRange = await this.searchText(context, endText);
-        context.load(startRange, "items");
-        context.load(endRange, "items");
+        const rangeStart = await this.searchText(context, textStart);
+        const rangeEnd = await this.searchText(context, textEnd);
+        context.load(rangeStart, "items");
+        context.load(rangeEnd, "items");
         await context.sync();
 
-        const isStartRangeExist = startRange.items.length > 0;
-        const isEndRangeExist = endRange.items.length > 0;
+        const isRangeStartExist = rangeStart.items.length > 0;
+        const isRangeEndExist = rangeEnd.items.length > 0;
 
-        console.log("isRangesExist", { isStartRangeExist, isEndRangeExist });
+        console.log("RANGE", { textStart, textEnd, isRangeStartExist, isRangeEndExist });
 
-        if (isStartRangeExist && isEndRangeExist) {
-          const start = startRange.getFirst();
-          const end = endRange.getFirst();
+        if (isRangeStartExist && isRangeEndExist) {
+          const start = rangeStart.getFirst();
+          const end = rangeEnd.getFirst();
           return start.expandTo(end);
         }
       }
@@ -48,10 +48,10 @@ export class SearchService {
     }
   }
 
-  private static async searchText(context: Word.RequestContext, searchText: string) {
+  private static async searchText(context: Word.RequestContext, value: string) {
     try {
       const body = context.document.body;
-      const rangeCollection = body.search(searchText, {
+      const rangeCollection = body.search(value, {
         ignoreSpace: true,
         ignorePunct: true,
       });
