@@ -1,3 +1,4 @@
+/* global Word console */
 import React from "react";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
@@ -7,6 +8,7 @@ import { PriorityFlag } from "../../atoms";
 import { DocumentHelpers } from "../../../helpers";
 import { SuggestionT } from "../../../store/suggestions";
 import { htmlChangesMatching } from "../../../helpers/diff";
+import { SearchService } from "../../../services/searchService";
 
 type SuggestionPropT = {
   index: number;
@@ -68,9 +70,9 @@ const SuggestionCard = (props: SuggestionPropT) => {
   const handleShowInDocument = async () => {
     Word.run(async (context) => {
       try {
-        let findRange = await DocumentHelpers.findRange(context, changeText);
+        let findRange = await SearchService.findRange(context, changeText);
         if (findRange === null) {
-          findRange = await DocumentHelpers.findRange(context, sourceText);
+          findRange = await SearchService.findRange(context, sourceText);
         }
         console.log("[handleShowInDocument] findRange", findRange);
 
