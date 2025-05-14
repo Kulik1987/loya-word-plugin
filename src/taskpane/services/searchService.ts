@@ -1,7 +1,7 @@
 /* global Word console */
 /// <reference types="office-js" />
 
-const MAX_LENGTH_SEARCH_STRING = 20;
+const MAX_LENGTH_SEARCH_STRING = 100;
 
 export class SearchService {
   static async findRange(context: Word.RequestContext, searchText: string): Promise<Word.Range | null> {

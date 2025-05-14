@@ -113,7 +113,8 @@ module.exports = async (env, options) => {
       port: process.env.npm_package_config_dev_server_port || 3000,
       proxy: {
         "/v1": {
-          target: `https://speranskiy-test.aimpulse.ru/speransky/`,
+          // target: `https://speranskiy-test.aimpulse.ru/speransky/`,
+          target: `https://sper-giga-test.aimpulse.ru/speransky/`,
           secure: false,
           changeOrigin: true,
         },
