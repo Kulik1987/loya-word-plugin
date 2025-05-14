@@ -1,10 +1,12 @@
+/* global Word console */
 import React from "react";
 import { observer } from "mobx-react";
 import { useStores } from "../../../store";
 import { Button, Text, Tooltip } from "@fluentui/react-components";
 import { DismissFilled, LocationRippleRegular } from "@fluentui/react-icons";
 import { PriorityFlag } from "../../atoms";
-import { DocumentHelpers } from "../../../helpers";
+import { ApplyService } from "../../../services/applyService";
+import { SearchService } from "../../../services/searchService";
 import { SuggestionT } from "../../../store/suggestions";
 import { htmlChangesMatching } from "../../../helpers/diff";
 
@@ -68,9 +70,9 @@ const SuggestionCard = (props: SuggestionPropT) => {
   const handleShowInDocument = async () => {
     Word.run(async (context) => {
       try {
-        let findRange = await DocumentHelpers.findRange(context, changeText);
+        let findRange = await SearchService.findRange(context, changeText);
         if (findRange === null) {
-          findRange = await DocumentHelpers.findRange(context, sourceText);
+          findRange = await SearchService.findRange(context, sourceText);
         }
         console.log("[handleShowInDocument] findRange", findRange);
 
@@ -85,7 +87,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
   };
 
   const handleApplyChange = async () => {
-    DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
+    ApplyService.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyChange: true });
       })
@@ -96,7 +98,7 @@ const SuggestionCard = (props: SuggestionPropT) => {
 
   const handleAddComment = async () => {
     // const searchText = !isApplyChange ? sourceText : changeText;
-    DocumentHelpers.applyComment({ sourceText, changeText, commentText })
+    ApplyService.applyComment({ sourceText, changeText, commentText })
       .then(() => {
         // suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
       })
