@@ -3,7 +3,8 @@ server {
 
   location /v1/ {
     # proxy_pass 'https://speranskiy-test.aimpulse.ru/speransky/v1/';
-    proxy_pass 'https://sper-giga-test.aimpulse.ru/speransky/v1/';
+    # proxy_pass 'https://sper-giga-test.aimpulse.ru/speransky/v1/';
+    proxy_pass ${API_URL};
   }
 
   location / {

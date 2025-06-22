@@ -1,3 +1,5 @@
+/* eslint-env node */
+require("dotenv").config();
 const appVersion = require("./utils/appVersion");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -12,6 +14,9 @@ async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
+
+console.log("process.env.API_PROXY_URL", process.env.API_PROXY_URL);
+console.log("process.env.APP_LLM_MODEL", process.env.APP_LLM_MODEL);
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
@@ -113,8 +118,7 @@ module.exports = async (env, options) => {
       port: process.env.npm_package_config_dev_server_port || 3000,
       proxy: {
         "/v1": {
-          // target: `https://speranskiy-test.aimpulse.ru/speransky/`,
-          target: `https://sper-giga-test.aimpulse.ru/speransky/`,
+          target: process.env.API_PROXY_URL,
           secure: false,
           changeOrigin: true,
         },
