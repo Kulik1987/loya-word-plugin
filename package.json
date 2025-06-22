@@ -1,6 +1,6 @@
 {
   "name": "ms-word-addin-speransky",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "repository": {
     "type": "git",
     "url": "https://github.com/OfficeDev/Office-Addin-TaskPane-React.git"
@@ -17,6 +17,9 @@
     }
   },
   "scripts": {
+    "docker:up": "docker compose -f docker-compose.prod.yml up",
+    "docker:up:recreate": "docker compose -f docker-compose.prod.yml up --force-recreate",
+    "docker:down": "docker compose -f docker-compose.prod.yml down",
     "build": "webpack --mode production",
     "build-anonymizer": "cross-env APP_SET_ANONYMIZER=true webpack --mode production",
     "build:dev": "webpack --mode development",
