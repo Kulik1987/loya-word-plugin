@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
 import { DraftsRegular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { Button, Divider, Text } from "@fluentui/react-components";
-import { SelectionLang, SelectionModelAi } from "../../components/widgets";
+import {
+  SelectionLang,
+  // SelectionModelAi
+} from "../../components/widgets";
 import { useStores } from "../../store";
 
 const T = {

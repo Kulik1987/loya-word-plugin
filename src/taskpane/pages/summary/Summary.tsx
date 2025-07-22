@@ -4,7 +4,7 @@ import { SuggestionCard } from "../../components/widgets";
 import { Button, Divider, Text } from "@fluentui/react-components";
 import { observer } from "mobx-react";
 import { SuggestionItemSkeleton } from "./suggestionItemSkeleton";
-import { DocumentHelpers } from "../../helpers";
+import { ApplyService } from "../../services/applyService";
 
 const T = {
   waitingNotification: {
@@ -37,7 +37,7 @@ const Summary = () => {
     suggestionsNew.forEach(async (itemSuggestion, indexSuggestion) => {
       const { part_contract: sourceText, part_modified: changeText, comment: commentText, type } = itemSuggestion;
 
-      await DocumentHelpers.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
+      await ApplyService.applyChange({ sourceText, changeText, optionsSupportedCurrentApi, type })
         .then(() => {
           console.log("applyChange success");
         })
@@ -46,7 +46,7 @@ const Summary = () => {
         });
 
       if (isAccessToRangeInsertComment) {
-        await DocumentHelpers.applyComment({ sourceText, changeText, commentText })
+        await ApplyService.applyComment({ sourceText, changeText, commentText })
           .then(() => {
             suggestionsStore.setSuggestionProperty(indexSuggestion, { isApplyComment: true });
           })

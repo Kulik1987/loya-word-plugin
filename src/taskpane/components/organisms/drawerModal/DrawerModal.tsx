@@ -4,7 +4,10 @@ import { Button, Drawer, DrawerBody, DrawerHeader, DrawerHeaderTitle } from "@fl
 import { Dismiss24Regular, TextBulletListSquareSearchRegular } from "@fluentui/react-icons";
 import { useStores } from "../../../store";
 import { AuthStepperEnum } from "../../../store/auth";
-import { SelectionLang, SelectionModelAi } from "../../widgets";
+import {
+  SelectionLang,
+  // SelectionModelAi
+} from "../../widgets";
 
 type DrawerModalT = {
   isOpen: boolean;
@@ -31,7 +34,7 @@ const appBuildNumber = process.env.appBuildNumber;
 const DrawerModal = (props: DrawerModalT) => {
   const { isOpen, onClose } = props;
   const { menuStore, authStore } = useStores();
-  const { locale, setLocale } = menuStore;
+  const { locale } = menuStore;
 
   const handleClose = () => {
     onClose();

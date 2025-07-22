@@ -1,9 +1,16 @@
-version: "4.1"
+version: "3.8"
 
 services:
   app:
     container_name: speranskiy-plugin
     image: avs85/speranskiy-plugin
+    ports:
+      - "80:80"
     build:
       context: .
       target: production
+      args:
+        - APP_LLM_MODEL=openai
+
+    environment:
+      - API_URL=https://speranskiy-test.aimpulse.ru/speransky/v1/
